@@ -1,0 +1,9 @@
+.input-warpper {
+	display: flex;
+	flex-direction: column;
+
+}
+#input-field {
+	height: 1.3rem;
+	margin-top: 0.2rem;
+}

@@ -1,0 +1,22 @@
+.header {
+  height: 100px;
+  background: lightgrey;
+}
+
+.header_wrapper {
+  height: 100%;
+  padding: 0 2%;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: 1fr;
+  align-items: center;
+  justify-content: center;
+}
+
+.header__user-name {
+  font-weight: bold;
+  width: fit-content;
+  grid-column: 7;
+  justify-self: end;
+  margin-right: 10%;
+}

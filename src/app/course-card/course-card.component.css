@@ -1,0 +1,25 @@
+.course-card{
+    border: 2px solid green;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 3%;
+    padding: 1%;
+    margin: 0.5vw 0;
+}
+
+.course-card__title{
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.course-card__description{
+   font-size: 1.2rem; 
+}
+
+.course-card__authors{
+    display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}

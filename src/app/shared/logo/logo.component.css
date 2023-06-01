@@ -1,0 +1,7 @@
+.header__logo {
+	margin: 0;
+	width: 150px;
+	height: 70px;
+	grid-column: 1;
+	justify-self: start;
+}
