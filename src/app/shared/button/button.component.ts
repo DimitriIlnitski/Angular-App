@@ -6,10 +6,14 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./button.component.css']
 })
 export class ButtonComponent {
+  constructor(){
+    this.buttonTypes='';
+    this.buttonText='Default Text';
+  }
   @Input()
-  buttonTypes?: 'header__button';
+  buttonTypes: string;
   @Input()
-  buttonText = 'Default Text';
+  buttonText: string;
   @Output()
   buttonClick=new EventEmitter<void>();
 

@@ -1,8 +1,6 @@
-<div className='input-warpper'>
-    <label className='' htmlFor=''>
-        Label
+<div class='input-warpper'>
+    <label [class]='labelClass' [for]='idInput'>
+        {{labelText}}
     </label>
-
-    <input type='text' id='' name='' placeholder='' value=''
-    />
+    <input class="input-field" type='text' [(ngModel)]="value" [id]="idInput" [name]="idInput" [placeholder]="placeholderText"/>
 </div>

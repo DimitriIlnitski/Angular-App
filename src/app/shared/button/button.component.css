@@ -1,12 +1,20 @@
 .button {
-	border: 2px solid rgb(148, 53, 148);
-	background-color: white;
-	font-weight: bold;
-	width: 8rem;
-	height: 1.7rem;
+  border: 2px solid rgb(148, 53, 148);
+  background-color: white;
+  font-weight: bold;
+  width: 8rem;
+  height: 1.7rem;
 }
 
-.header__button{
-	grid-column: 8;
-	justify-self: end;
+.header__button {
+  grid-column: 8;
+  justify-self: end;
+}
+
+.search-bar__button{
+  margin-left: 0.5rem;
+}
+
+.load-more__button {
+  width: 100%;
 }

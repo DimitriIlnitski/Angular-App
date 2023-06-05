@@ -1,7 +1,9 @@
 <section class='main'>
     <div class='main__wrapper'>
         <div class='course-controls'>
-
+        <app-search-bar></app-search-bar>
+        <app-button [buttonText]="'Add course'"></app-button>
     </div>
+                <app-course-card *ngFor="let course of courseList" [courseItem]="course"></app-course-card>
     </div>
 </section>

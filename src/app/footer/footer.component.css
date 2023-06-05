@@ -1,0 +1,16 @@
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 95vw;
+  height: 50px;
+  background: lightgrey;
+  border: 1px solid red;
+}
+
+.footer_wrapper {
+  height: 100%;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  border: 1px solid blue;
+}

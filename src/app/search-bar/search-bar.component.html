@@ -1,4 +1,6 @@
 <form class='search-bar'>
-    <app-input></app-input>
-    <app-button></app-button>
+    <app-input [placeholderText]="'Text to search'"></app-input>
+    <app-button [buttonTypes]="'search-bar__button'" 
+                [buttonText]="'Search'"
+                ></app-button>
 </form>

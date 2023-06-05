@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
 
 @Component({
   selector: 'app-input',
@@ -6,5 +7,20 @@ import { Component } from '@angular/core';
   styleUrls: ['./input.component.css']
 })
 export class InputComponent {
-
+  constructor(){
+    this.labelText='';
+    this.labelClass='';
+    this.placeholderText='';
+    this.idInput='';
+    this.value='';
+  }
+@Input()
+labelText: string;
+@Input()
+labelClass: string;
+@Input()
+placeholderText: string;
+@Input()
+idInput: string;
+value;
 }

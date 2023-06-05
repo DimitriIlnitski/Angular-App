@@ -1,7 +1,11 @@
+import { User } from "./user.interface";
+
 export interface Course {
-    id: string;
-    title: string;
-    creationDate: string;
-	duration: number;
+    id: number;
+    name: string;
     description: string;
+    isTopRated: boolean;
+    date: string;
+    authors: Array<User>
+    length: number;  
 }

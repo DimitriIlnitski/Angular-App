@@ -1,8 +1,7 @@
 <div class='container'>
     <app-header></app-header>
     <app-breadcrumbs></app-breadcrumbs>
-    <app-search-bar></app-search-bar>
-    <app-courses></app-courses>
-    <app-button></app-button>
+    <app-courses [courseList]="mockedArray"></app-courses>
+    <app-button [buttonTypes]="'load-more__button'" [buttonText]="'Load more'"></app-button>
     <app-footer></app-footer>
 </div>

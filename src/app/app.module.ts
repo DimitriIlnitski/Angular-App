@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -11,6 +12,7 @@ import { LogoComponent } from './shared/logo/logo.component';
 import { FooterComponent } from './footer/footer.component';
 import { CoursesComponent } from './courses/courses.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
+import { CourseCardComponent } from './course-card/course-card.component';
 
 @NgModule({
   declarations: [
@@ -23,10 +25,12 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
     CoursesComponent,
     LogoComponent,
     SearchBarComponent,
+    CourseCardComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
