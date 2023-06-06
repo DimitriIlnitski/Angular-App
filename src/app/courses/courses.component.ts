@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Course } from '../interfaces/course.interface';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-courses',
@@ -12,4 +13,9 @@ export class CoursesComponent {
 }
   @Input()
   courseList: Array<Course>;
+  faPlus=faPlus;
+
+  trackByCourseId(index: number, course: Course): string{
+    return course.id;
+  }
 }

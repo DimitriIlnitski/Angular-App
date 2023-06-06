@@ -8,7 +8,6 @@
 
 .header__button {
   grid-column: 8;
-  justify-self: end;
 }
 
 .search-bar__button{
@@ -17,4 +16,5 @@
 
 .load-more__button {
   width: 100%;
+  height: 2.5rem;
 }

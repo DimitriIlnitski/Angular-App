@@ -2,8 +2,8 @@
     <div class='main__wrapper'>
         <div class='course-controls'>
         <app-search-bar></app-search-bar>
-        <app-button [buttonText]="'Add course'"></app-button>
+        <app-button [buttonText]="'Add course'" [toShow]="true" [iconType]="faPlus"></app-button>
     </div>
-                <app-course-card *ngFor="let course of courseList" [courseItem]="course"></app-course-card>
+        <app-course-card *ngFor="let course of courseList; trackBy: trackByCourseId" [courseItem]="course"></app-course-card>
     </div>
 </section>

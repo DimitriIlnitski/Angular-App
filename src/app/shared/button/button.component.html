@@ -1,3 +1,4 @@
 <button class="button" [ngClass]="buttonTypes" type='submit' (click)="clickHandler()">
+  <fa-icon *ngIf="toShow"[class]="iconClass" [icon]="iconType"></fa-icon>
   {{buttonText}} 
 </button>

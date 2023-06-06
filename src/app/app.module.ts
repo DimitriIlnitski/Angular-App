@@ -13,6 +13,7 @@ import { FooterComponent } from './footer/footer.component';
 import { CoursesComponent } from './courses/courses.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { CourseCardComponent } from './course-card/course-card.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { CourseCardComponent } from './course-card/course-card.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

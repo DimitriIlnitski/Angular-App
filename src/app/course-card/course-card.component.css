@@ -1,7 +1,7 @@
 .course-card{
     border: 2px solid green;
     display: grid;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 4fr 1fr;
     grid-template-rows: 1fr;
     gap: 3%;
     padding: 1%;
@@ -17,9 +17,13 @@
    font-size: 1.2rem; 
 }
 
-.course-card__authors{
-    display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
+.course-card__right{
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   grid-template-rows: 1fr 1fr;
+   gap: 2%;
+}
+
+.course-card__time{
+    color: grey;
 }
