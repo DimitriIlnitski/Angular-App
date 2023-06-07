@@ -1,7 +1,14 @@
 <div class='container'>
     <app-header></app-header>
     <app-breadcrumbs></app-breadcrumbs>
+    <section class='main'>
+    <div class='main__wrapper'>
     <app-courses [courseList]="mockedArray"></app-courses>
-    <app-button [buttonTypes]="'load-more__button'" [buttonText]="'Load more'"></app-button>
+    <app-button [buttonTypes]="'load-more__button'" 
+    [buttonText]="'Load more'" (buttonClick)="handleClickLoadMore()">
+    </app-button>
+    </div>
+    </section>
+
     <app-footer></app-footer>
 </div>

@@ -2,5 +2,9 @@
     <label [class]='labelClass' [for]='idInput'>
         {{labelText}}
     </label>
-    <input class="input-field" type='text' [(ngModel)]="value" [id]="idInput" [name]="idInput" [placeholder]="placeholderText"/>
+    <input class="input-field" type='text' 
+    [(ngModel)]="value" [id]="idInput" 
+    [name]="idInput" [placeholder]="placeholderText"
+    (input)="onValueChange()"
+    />
 </div>

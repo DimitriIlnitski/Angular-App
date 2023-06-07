@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges, 
+  DoCheck, AfterContentInit, 
+  AfterContentChecked, AfterViewInit, 
+  AfterViewChecked, OnDestroy } from '@angular/core';
 import { Course } from './interfaces/course.interface';
 
 @Component({
@@ -6,11 +9,21 @@ import { Course } from './interfaces/course.interface';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnChanges,
+DoCheck, AfterContentInit, 
+AfterContentChecked, AfterViewInit, 
+AfterViewChecked, OnDestroy {
   mockedArray: Array<Course> = [];
   
+  handleClickLoadMore(){
+  console.log('Load more');
+}
   
+  ngOnChanges():void{
+    console.log('ngOnChanges');
+  }
   ngOnInit(): void {
+    console.log('ngOnInit');
     this.mockedArray= [
   {
     "id": '8693',
@@ -28,4 +41,23 @@ export class AppComponent implements OnInit {
   },
   ]
   }
+ngDoCheck():void{
+console.log('ngDoCheck');
+}
+ngAfterContentInit():void{
+console.log('ngAfterContentInit');
+}
+ngAfterContentChecked():void{
+console.log('ngAfterContentChecked');
+}
+ngAfterViewInit():void{
+console.log('ngAfterViewInit')
+}
+ngAfterViewChecked():void{
+console.log('ngAfterViewChecked');
+}
+ngOnDestroy():void{
+console.log('ngDoCheck');
+}
+
 }

@@ -12,7 +12,12 @@
         <fa-icon class="course-card__time" [icon]="faCalendar"></fa-icon>
         {{formatedDate}}
         </div>
-        <app-button [buttonText]="'Edit'" [toShow]="true" [iconType]="faPen"></app-button>
-        <app-button [buttonText]="'Delete'" [toShow]="true" [iconType]="faTrash"></app-button>
+        <app-button [buttonTypes]="'course-card__button'" [buttonText]="'Edit'" [toShow]="true" [iconType]="faPen"></app-button>
+        <app-button [buttonTypes]="'course-card__button'" 
+        [buttonText]="'Delete'" 
+        [toShow]="true" 
+        [iconType]="faTrash"
+        (buttonClick)="deleteClick()">
+        </app-button>
     </div>
 </article>

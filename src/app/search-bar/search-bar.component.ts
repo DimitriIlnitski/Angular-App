@@ -6,5 +6,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./search-bar.component.css']
 })
 export class SearchBarComponent {
+inputValue ='';
 
+handleValueChange(value:string){
+  this.inputValue = value;
+}
+
+handleClick(){
+  console.log(this.inputValue);
+}
 }

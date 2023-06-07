@@ -3,7 +3,7 @@
   background: white;
   font-size: 1rem;
   font-weight: bold;
-  border: 1px solid red;
   display: flex;
   align-items: center;
+  margin-left: 2.5vw;
 }

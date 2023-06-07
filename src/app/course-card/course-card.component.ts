@@ -26,6 +26,11 @@ faPen=faPen;
 faTrash = faTrash;
 formatedDate=''; 
 formatedTime='';
+
+deleteClick(){
+  console.log(this.courseItem.id);
+}
+
 ngOnInit():void{
 this.formatedTime = Helper.formatTime(this.courseItem.duration);
 this.formatedDate = Helper.formatDate(this.courseItem.creationDate);
