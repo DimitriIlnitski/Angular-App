@@ -1,0 +1,9 @@
+.course-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 1rem 0;
+}
+.course-controls > :nth-child(2) {
+  display: flex;
+  justify-content: end;
+}

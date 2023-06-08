@@ -1,0 +1,9 @@
+.breadcrumbs {
+  height: 40px;
+  background: white;
+  font-size: 1rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  margin-left: 2.5vw;
+}

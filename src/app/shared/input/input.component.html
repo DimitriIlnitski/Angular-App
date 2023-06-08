@@ -1,1 +1,10 @@
-<p>input works!</p>
+<div class='input-warpper'>
+    <label [class]='labelClass' [for]='idInput'>
+        {{labelText}}
+    </label>
+    <input class="input-field" type='text' 
+    [(ngModel)]="value" [id]="idInput" 
+    [name]="idInput" [placeholder]="placeholderText"
+    (input)="onValueChange()"
+    />
+</div>

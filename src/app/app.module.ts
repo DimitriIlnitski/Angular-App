@@ -1,40 +1,34 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import { LogoComponent } from './header/logo/logo.component';
-import { LoginComponent } from './header/login/login.component';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { InputComponent } from './shared/input/input.component';
 import { ButtonComponent } from './shared/button/button.component';
+import { LogoComponent } from './shared/logo/logo.component';
 import { FooterComponent } from './footer/footer.component';
 import { CoursesComponent } from './courses/courses.component';
-import { SectionComponent } from './section/section.component';
-import { SearchBarComponent } from './section/search-bar/search-bar.component';
-import { CourseCardComponent } from './courses/course-card/course-card.component';
+import { SearchBarComponent } from './search-bar/search-bar.component';
+import { CourseCardComponent } from './course-card/course-card.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    LogoComponent,
-    LoginComponent,
     BreadcrumbsComponent,
     InputComponent,
     ButtonComponent,
     FooterComponent,
     CoursesComponent,
-    SectionComponent,
+    LogoComponent,
     SearchBarComponent,
     CourseCardComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
+  imports: [BrowserModule, FormsModule, FontAwesomeModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,0 +1,31 @@
+.course-card {
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 3%;
+  padding: 1%;
+  margin: 1.5vw 0;
+  background: white;
+  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.course-card__name {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.course-card__description {
+  font-size: 1.2rem;
+}
+
+.course-card__right {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 2%;
+}
+
+.course-card__time {
+  color: grey;
+}

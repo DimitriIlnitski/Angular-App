@@ -1,0 +1,19 @@
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  background: rgb(48, 50, 63);
+  color: white;
+  font-size: 0.8rem;
+}
+
+.footer_wrapper {
+  width: 95vw;
+  height: 100%;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}

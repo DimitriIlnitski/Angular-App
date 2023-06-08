@@ -1,1 +1,9 @@
-<p>search-bar works!</p>
+<form class='search-bar'>
+    <app-input [placeholderText]="'Text to search'"
+    (valueChange)="handleValueChange($event)">
+    </app-input>
+    <app-button [buttonTypes]="'search-bar__button'" 
+                [buttonText]="'Search'"
+                (buttonClick)="handleClick()"
+                ></app-button>
+</form>

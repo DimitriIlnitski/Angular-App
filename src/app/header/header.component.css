@@ -1,0 +1,33 @@
+.header {
+  width: 100%;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  background: rgb(48, 50, 63);
+}
+
+.header_wrapper {
+  width: 95vw;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: 1fr;
+  align-items: center;
+  justify-items: end;
+  justify-content: end;
+}
+
+.header__user-name {
+  font-weight: bold;
+  font-size: 0.9rem;
+  width: fit-content;
+  grid-column: 9;
+  margin-right: 10%;
+  color: white;
+  display: flex;
+  padding: 5%;
+}
+
+.header_wrapper :first-child {
+  justify-self: left;
+}

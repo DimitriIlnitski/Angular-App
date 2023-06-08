@@ -1,1 +1,23 @@
-<p>course-card works!</p>
+<article class='course-card'>
+    <div>
+        <h2 class='course-card__name'>{{courseItem.title}}</h2>
+        <p class='course-card__description'>{{courseItem.description}}</p>
+    </div>
+    <div class="course-card__right">
+        <div> 
+        <fa-icon class="course-card__time" [icon]="faClock"></fa-icon>
+        {{courseItem.duration}}
+        </div>
+        <div>
+        <fa-icon class="course-card__time" [icon]="faCalendar"></fa-icon>
+        {{courseItem.creationDate}}
+        </div>
+        <app-button [buttonTypes]="'course-card__button'" [buttonText]="'Edit'" [toShow]="true" [iconType]="faPen"></app-button>
+        <app-button [buttonTypes]="'course-card__button'" 
+        [buttonText]="'Delete'" 
+        [toShow]="true" 
+        [iconType]="faTrash"
+        (buttonClick)="deleteClick()">
+        </app-button>
+    </div>
+</article>
