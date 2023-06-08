@@ -5,6 +5,7 @@
 
 .main {
   width: 100%;
+  height: calc(100vh - 140px);
   display: flex;
   justify-content: center;
   background: rgb(228, 231, 245);
