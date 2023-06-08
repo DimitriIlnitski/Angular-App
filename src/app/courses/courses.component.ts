@@ -5,17 +5,22 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
-  styleUrls: ['./courses.component.css']
+  styleUrls: ['./courses.component.css'],
 })
 export class CoursesComponent {
-  constructor() {
-  this.courseList = [];
-}
   @Input()
-  courseList: Array<Course>;
-  faPlus=faPlus;
+  courseList: Course[] = [];
+  faPlus = faPlus;
 
-  trackByCourseId(index: number, course: Course): string{
+  trackByCourseId(index: number, course: Course): string {
     return course.id;
+  }
+
+  handleClickLoadMore() {
+    console.log('Load more');
+  }
+
+  showDeleteId(id: string){
+    console.log(id);
   }
 }

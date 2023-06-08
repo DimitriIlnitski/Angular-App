@@ -1,5 +1,20 @@
-        <div class='course-controls'>
-        <app-search-bar></app-search-bar>
-        <app-button [buttonTypes]="'courses__button'" [buttonText]="'Add course'" [toShow]="true" [iconType]="faPlus"></app-button>
-    </div>
-        <app-course-card *ngFor="let course of courseList; trackBy: trackByCourseId" [courseItem]="course"></app-course-card>
+<div class="course-controls">
+  <app-search-bar></app-search-bar>
+  <app-button
+    [buttonTypes]="'courses__button'"
+    [buttonText]="'Add course'"
+    [toShow]="true"
+    [iconType]="faPlus"
+  ></app-button>
+</div>
+<app-course-card
+  *ngFor="let course of courseList; trackBy: trackByCourseId"
+  [courseItem]="course"
+  (cardDeleteClick)="showDeleteId($event)"
+></app-course-card>
+<app-button
+  [buttonTypes]="'load-more__button'"
+  [buttonText]="'Load more'"
+  (buttonClick)="handleClickLoadMore()"
+>
+</app-button>

@@ -6,11 +6,11 @@
     <div class="course-card__right">
         <div> 
         <fa-icon class="course-card__time" [icon]="faClock"></fa-icon>
-        {{formatedTime}}
+        {{courseItem.duration}}
         </div>
         <div>
         <fa-icon class="course-card__time" [icon]="faCalendar"></fa-icon>
-        {{formatedDate}}
+        {{courseItem.creationDate}}
         </div>
         <app-button [buttonTypes]="'course-card__button'" [buttonText]="'Edit'" [toShow]="true" [iconType]="faPen"></app-button>
         <app-button [buttonTypes]="'course-card__button'" 

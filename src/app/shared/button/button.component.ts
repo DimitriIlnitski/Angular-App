@@ -5,29 +5,23 @@ import { faQuestion } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-button',
   templateUrl: './button.component.html',
-  styleUrls: ['./button.component.css']
+  styleUrls: ['./button.component.css'],
 })
 export class ButtonComponent {
-  constructor(){
-    this.buttonTypes='';
-    this.buttonText='Default Text';
-    this.iconType=faQuestion;
-    this.iconClass='';
-  }
   @Input()
-  buttonTypes: string;
+  buttonTypes = '';
   @Input()
-  buttonText: string;
+  buttonText = 'Default Text';
   @Input()
-  iconType: IconDefinition;
+  iconType: IconDefinition = faQuestion;
   @Input()
-  iconClass: string;
+  iconClass = '';
   @Input()
   toShow = false;
   @Output()
-  buttonClick=new EventEmitter<void>();
+  buttonClick = new EventEmitter<void>();
 
-  clickHandler(){
+  clickHandler() {
     this.buttonClick.emit();
   }
 }
