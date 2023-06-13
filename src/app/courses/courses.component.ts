@@ -20,7 +20,7 @@ export class CoursesComponent {
     console.log('Load more');
   }
 
-  showDeleteId(id: string){
+  showDeleteId(id: string) {
     console.log(id);
   }
 }
