@@ -7,6 +7,9 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./input.component.css'],
 })
 export class InputComponent {
+  dispatchEvent(arg0: Event) {
+    throw new Error('Method not implemented.');
+  }
   @Input()
   labelText = '';
   @Input()

@@ -27,7 +27,6 @@ export class AppComponent
     AfterViewChecked,
     OnDestroy
 {
-  title = 'angular-app';
   mockedArray: Course[] = [];
 
   ngOnChanges(): void {

@@ -27,13 +27,12 @@ describe('ButtonComponent', () => {
     expect(component.buttonText).toEqual('Default Text');
     expect(component.iconType).toEqual(faQuestion);
     expect(component.iconClass).toEqual('');
-    expect(component.toShow).toEqual(false);
+    expect(component.toShow).toBe(false);
   });
 
   it('should emit event when clickHandler is called', () => {
     spyOn(component.buttonClick, 'emit');
     component.clickHandler();
-    fixture.detectChanges();
     expect(component.buttonClick.emit).toHaveBeenCalled();
   });
 });

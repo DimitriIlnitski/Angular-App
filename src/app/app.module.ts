@@ -32,3 +32,4 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+

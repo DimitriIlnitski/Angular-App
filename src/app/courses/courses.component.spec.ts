@@ -32,7 +32,7 @@ describe('CoursesComponent', () => {
     expect(component.faPlus).toEqual(faPlus);
   });
 
-  it('should have return correct id when trackByCourseId is called', () => {
+  it('should return correct id when trackByCourseId is called', () => {
     const fakeCourse: Course = {
       id: 'A',
       title: 'Empty',
@@ -45,8 +45,9 @@ describe('CoursesComponent', () => {
   });
 
   it('should log when handleClickLoadMore is called', () => {
+    const btn = el.query(By.css('.load-more__button')).nativeElement;    
     spyOn(console, 'log');
-    component.handleClickLoadMore();
+    btn.click();
     fixture.detectChanges();
     expect(console.log).toHaveBeenCalledWith('Load more');
   });
@@ -55,8 +56,7 @@ describe('CoursesComponent', () => {
     const fakeId = 'Fake';
     spyOn(console, 'log');
     component.showDeleteId(fakeId);
-    fixture.detectChanges();
-    expect(console.log).toHaveBeenCalledWith('Fake');
+    expect(console.log).toHaveBeenCalledWith(fakeId);
   });
 
   it('should show list of courses', () => {
@@ -80,6 +80,6 @@ describe('CoursesComponent', () => {
     ];
     fixture.detectChanges();
     const courseCards = el.queryAll(By.css('.course-card'));
-    expect(courseCards.length).toEqual(2);
+    expect(courseCards.length).toBe(2);
   });
 });
