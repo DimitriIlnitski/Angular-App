@@ -5,6 +5,7 @@ import {
   faCalendar,
   faPen,
   faTrash,
+  faStar,
 } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -20,11 +21,19 @@ export class CourseCardComponent {
     description: 'Empty',
     creationDate: 'Empty',
     duration: 0,
+    isTopRated: false,
   };
   faClock = faClock;
   faCalendar = faCalendar;
   faPen = faPen;
   faTrash = faTrash;
+  faStar = faStar;
+
+  getRating(){
+      return {
+        'course-card__star--not-visible': !this.courseItem.isTopRated
+      }
+  }
 
   @Output()
   cardDeleteClick = new EventEmitter<string>();

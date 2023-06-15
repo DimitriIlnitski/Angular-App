@@ -8,13 +8,19 @@
   ></app-button>
 </div>
 <app-course-card
-  *ngFor="let course of courseList; trackBy: trackByCourseId"
+  *ngFor="let course of filteredCourseList | listSortByCreationDate; trackBy: trackByCourseId"
   [courseItem]="course"
   (cardDeleteClick)="showDeleteId($event)"
 ></app-course-card>
 <app-button
+  *ngIf="courseList.length > 0"
   [buttonTypes]="'load-more__button'"
   [buttonText]="'Load more'"
   (buttonClick)="handleClickLoadMore()"
 >
 </app-button>
+<div 
+*ngIf="courseList.length === 0"
+class="course-nocourses"
+>No data, feel free to add new course</div>
+

@@ -13,6 +13,10 @@ import { CoursesComponent } from './courses/courses.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { CourseCardComponent } from './course-card/course-card.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CardBorderColorDirective } from './directives/card-border-color.directive';
+import { DurationFormatPipe } from './shared/pipes/duration-format.pipe';
+import { ListSortByCreationDatePipe } from './shared/pipes/list-sort-by-creation-date.pipe';
+import { ListFilterCourseNamePipe } from './shared/pipes/list-filter-course-name.pipe';
 
 @NgModule({
   declarations: [
@@ -26,9 +30,12 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     LogoComponent,
     SearchBarComponent,
     CourseCardComponent,
+    CardBorderColorDirective,
+    DurationFormatPipe,
+    ListSortByCreationDatePipe,
   ],
   imports: [BrowserModule, FormsModule, FontAwesomeModule],
-  providers: [],
+  providers: [ListFilterCourseNamePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
