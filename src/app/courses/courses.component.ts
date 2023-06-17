@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Course } from '../interfaces/course.interface';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { ListFilterCourseNamePipe } from '../shared/pipes/list-filter-course-name.pipe';
@@ -8,10 +8,8 @@ import { ListFilterCourseNamePipe } from '../shared/pipes/list-filter-course-nam
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.css'],
 })
-export class CoursesComponent implements OnChanges {
-  constructor(private listFilterCourseNamePipe: ListFilterCourseNamePipe) {
-    this.filteredCourseList = this.courseList;
-  }
+export class CoursesComponent implements OnInit {
+  constructor(private listFilterCourseNamePipe: ListFilterCourseNamePipe) {}
 
   @Input()
   courseList: Course[] = [];
@@ -32,10 +30,18 @@ export class CoursesComponent implements OnChanges {
     console.log(id);
   }
 
-  ngOnChanges() {
+  setSearchTerm(searchTerm: string) {
+    this.searchTerm = searchTerm;
+  }
+
+  filterArray() {
     this.filteredCourseList = this.listFilterCourseNamePipe.transform(
       this.courseList,
       this.searchTerm
     );
+  }
+
+  ngOnInit() {
+    this.filteredCourseList = this.courseList;
   }
 }
