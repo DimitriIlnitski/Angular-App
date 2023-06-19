@@ -16,10 +16,10 @@ import {
 export class CourseCardComponent {
   @Input()
   courseItem: Course = {
-    id: 'Empty',
-    title: 'Empty',
-    description: 'Empty',
-    creationDate: 'Empty',
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    creationDate: '2023-06-19',
     duration: 0,
     isTopRated: false,
   };
@@ -29,10 +29,10 @@ export class CourseCardComponent {
   faTrash = faTrash;
   faStar = faStar;
 
-  getRating(){
-      return {
-        'course-card__star--not-visible': !this.courseItem.isTopRated
-      }
+  getRating() {
+    return {
+      'course-card__star--not-visible': !this.courseItem.isTopRated,
+    };
   }
 
   @Output()

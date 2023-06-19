@@ -4,7 +4,6 @@ import { Directive, HostBinding, Input, OnInit } from '@angular/core';
   selector: '[appCardBorderColor]',
 })
 export class CardBorderColorDirective implements OnInit {
-  // constructor() { }
 
   @Input('appCardBorderColor')
   courseDate = '';

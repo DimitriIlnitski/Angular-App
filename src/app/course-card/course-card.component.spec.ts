@@ -13,7 +13,9 @@ import { Course } from '../interfaces/course.interface';
 import { By } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ButtonComponent } from '../shared/button/button.component';
-
+import { DurationFormatPipe } from '../shared/pipes/duration-format.pipe';
+import { CardBorderColorDirective } from '../directives/card-border-color.directive';
+import { CommonModule } from '@angular/common';
 @Component({
   template: `<app-course-card
     [courseItem]="course"
@@ -27,6 +29,7 @@ class TestHostComponent {
     description: 'Test Description',
     creationDate: '2021-09-10',
     duration: 120,
+    isTopRated: false,
   };
 
   deletedCourseId: string | undefined;
@@ -49,11 +52,12 @@ describe('CourseCardComponent (Test as a class)', () => {
 
   it('should have correct initial values', () => {
     expect(component.courseItem).toEqual({
-      id: 'Empty',
-      title: 'Empty',
-      description: 'Empty',
-      creationDate: 'Empty',
+      id: 'id',
+      title: 'title',
+      description: 'description',
+      creationDate: '2023-06-19',
       duration: 0,
+      isTopRated: false,
     });
     expect(component.faClock).toEqual(faClock);
     expect(component.faCalendar).toEqual(faCalendar);
@@ -74,8 +78,13 @@ describe('CourseCardComponent (Stand alone testing)', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [FontAwesomeModule],
-      declarations: [CourseCardComponent, ButtonComponent],
+      imports: [FontAwesomeModule, CommonModule],
+      declarations: [
+        CourseCardComponent,
+        ButtonComponent,
+        DurationFormatPipe,
+        CardBorderColorDirective,
+      ],
     });
     fixture = TestBed.createComponent(CourseCardComponent);
     component = fixture.componentInstance;
@@ -88,11 +97,12 @@ describe('CourseCardComponent (Stand alone testing)', () => {
 
   it('should have correct initial values', () => {
     expect(component.courseItem).toEqual({
-      id: 'Empty',
-      title: 'Empty',
-      description: 'Empty',
-      creationDate: 'Empty',
+      id: 'id',
+      title: 'title',
+      description: 'description',
+      creationDate: '2023-06-19',
       duration: 0,
+      isTopRated: false,
     });
     expect(component.faClock).toEqual(faClock);
     expect(component.faCalendar).toEqual(faCalendar);
@@ -105,6 +115,38 @@ describe('CourseCardComponent (Stand alone testing)', () => {
     component.deleteClick();
     fixture.detectChanges();
     expect(component.cardDeleteClick.emit).toHaveBeenCalled();
+  });
+
+  it('should have course-card__star--not-visible class when courseItem.isTopRated is false', () => {
+    component.courseItem = {
+      id: 'id',
+      title: 'title',
+      description: 'description',
+      creationDate: '2023-06-19',
+      duration: 0,
+      isTopRated: false,
+    };
+    fixture.detectChanges();
+
+    const starIcon = fixture.debugElement.query(By.css('.course-card__star'));
+
+    expect(starIcon.classes['course-card__star--not-visible']).toBe(true);
+  });
+
+  it('should not have course-card__star--not-visible class when courseItem.isTopRated is true', () => {
+    component.courseItem = {
+      id: 'id',
+      title: 'title',
+      description: 'description',
+      creationDate: '2023-06-19',
+      duration: 0,
+      isTopRated: true,
+    };
+    fixture.detectChanges();
+
+    const starIcon = fixture.debugElement.query(By.css('.course-card__star'));
+
+    expect(starIcon.classes['course-card__star--not-visible']).toBeUndefined();
   });
 });
 
