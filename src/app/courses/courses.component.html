@@ -1,5 +1,8 @@
 <div class="course-controls">
-  <app-search-bar></app-search-bar>
+  <app-search-bar
+     (searchValueChange)="handleValueChange($event)"
+     (buttonClick)="filterArray()"
+  ></app-search-bar>
   <app-button
     [buttonTypes]="'courses__button'"
     [buttonText]="'Add course'"
@@ -8,13 +11,20 @@
   ></app-button>
 </div>
 <app-course-card
-  *ngFor="let course of courseList; trackBy: trackByCourseId"
+  *ngFor="
+    let course of filteredCourseList | listSortByCreationDate;
+    trackBy: trackByCourseId
+  "
   [courseItem]="course"
   (cardDeleteClick)="showDeleteId($event)"
 ></app-course-card>
 <app-button
+  *ngIf="courseList.length > 0"
   [buttonTypes]="'load-more__button'"
   [buttonText]="'Load more'"
   (buttonClick)="handleClickLoadMore()"
 >
 </app-button>
+<div *ngIf="!courseList.length" class="course-nocourses">
+  No data, feel free to add new course
+</div>

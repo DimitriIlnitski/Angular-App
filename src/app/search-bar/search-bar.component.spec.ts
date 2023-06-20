@@ -25,25 +25,4 @@ describe('SearchBarComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should have inputValue empty by default', () => {
-    expect(component.inputValue).toBe('');
-  });
-
-  it('should update inputValue when handleValueChange is called', () => {
-    const testValue = 'test';
-    component.handleValueChange(testValue);
-    expect(component.inputValue).toBe(testValue);
-  });
-
-  it('should log inputValue when handleClick is called', () => {
-    const testValue = 'test';
-    const debugEl = el.query(By.directive(InputComponent));
-    const input = debugEl.componentInstance as InputComponent;
-    input.valueChange.emit(testValue);
-    spyOn(console, 'log');
-    component.handleClick();
-    expect(console.log).toHaveBeenCalledTimes(1);
-    expect(console.log).toHaveBeenCalledWith(testValue);
-  });
 });

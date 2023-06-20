@@ -5,6 +5,7 @@ import {
   faCalendar,
   faPen,
   faTrash,
+  faStar,
 } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -15,16 +16,18 @@ import {
 export class CourseCardComponent {
   @Input()
   courseItem: Course = {
-    id: 'Empty',
-    title: 'Empty',
-    description: 'Empty',
-    creationDate: 'Empty',
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    creationDate: '2023-06-19',
     duration: 0,
+    isTopRated: false,
   };
   faClock = faClock;
   faCalendar = faCalendar;
   faPen = faPen;
   faTrash = faTrash;
+  faStar = faStar;
 
   @Output()
   cardDeleteClick = new EventEmitter<string>();
