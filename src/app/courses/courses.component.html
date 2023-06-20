@@ -1,7 +1,7 @@
 <div class="course-controls">
   <app-search-bar
-    (searchValueChange)="setSearchTerm($event)"
-    (searchBarClick)="filterArray()"
+     (searchValueChange)="handleValueChange($event)"
+     (buttonClick)="filterArray()"
   ></app-search-bar>
   <app-button
     [buttonTypes]="'courses__button'"
@@ -25,6 +25,6 @@
   (buttonClick)="handleClickLoadMore()"
 >
 </app-button>
-<div *ngIf="courseList.length === 0" class="course-nocourses">
+<div *ngIf="!courseList.length" class="course-nocourses">
   No data, feel free to add new course
 </div>

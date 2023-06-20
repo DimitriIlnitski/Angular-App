@@ -1,10 +1,10 @@
 import { Directive, HostBinding, Input, OnInit } from '@angular/core';
+import { AppConstants } from '../shared/constants/constants';
 
 @Directive({
   selector: '[appCardBorderColor]',
 })
 export class CardBorderColorDirective implements OnInit {
-
   @Input('appCardBorderColor')
   courseDate = '';
 
@@ -16,13 +16,12 @@ export class CardBorderColorDirective implements OnInit {
     const creationDate = new Date(this.courseDate);
     if (
       creationDate < currentDate &&
-      creationDate.getTime() >= currentDate.getTime() - 14 * 24 * 60 * 60 * 1000
+      creationDate.getTime() >= currentDate.getTime() - AppConstants.TWO_WEEKS
     ) {
       return (this.elementClass = this.elementClass + ' ' + 'green-border');
     } else if (creationDate > currentDate) {
       return (this.elementClass = this.elementClass + ' ' + 'blue-border');
-    } else {
+    } 
       return;
-    }
   }
 }

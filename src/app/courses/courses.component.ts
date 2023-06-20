@@ -11,11 +11,14 @@ import { ListFilterCourseNamePipe } from '../shared/pipes/list-filter-course-nam
 export class CoursesComponent implements OnInit {
   constructor(private listFilterCourseNamePipe: ListFilterCourseNamePipe) {}
 
+  ngOnInit() {
+    this.filteredCourseList = this.courseList;
+  }
+
   @Input()
   courseList: Course[] = [];
-  searchTerm = '';
   filteredCourseList: Course[] = [];
-
+  searchTerm = '';
   faPlus = faPlus;
 
   trackByCourseId(index: number, course: Course): string {
@@ -30,8 +33,8 @@ export class CoursesComponent implements OnInit {
     console.log(id);
   }
 
-  setSearchTerm(searchTerm: string) {
-    this.searchTerm = searchTerm;
+  handleValueChange(value: string) {
+    this.searchTerm = value;
   }
 
   filterArray() {
@@ -39,9 +42,5 @@ export class CoursesComponent implements OnInit {
       this.courseList,
       this.searchTerm
     );
-  }
-
-  ngOnInit() {
-    this.filteredCourseList = this.courseList;
   }
 }

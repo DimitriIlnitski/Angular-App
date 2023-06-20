@@ -51,7 +51,7 @@ export class AppComponent
           'Sunt culpa officia minim commodo eiusmod irure sunt nostrud. Mollit aliquip id occaecat officia proident anim dolor officia qui voluptate consectetur laborum. Duis incididunt culpa aliqua mollit do fugiat ea dolor mollit irure Lorem tempor.',
         creationDate: '2023-06-10T02:02:36+00:00',
         duration: 207,
-        isTopRated: false,
+        isTopRated: true,
       },
       {
         id: '7935',

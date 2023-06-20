@@ -29,12 +29,6 @@ export class CourseCardComponent {
   faTrash = faTrash;
   faStar = faStar;
 
-  getRating() {
-    return {
-      'course-card__star--not-visible': !this.courseItem.isTopRated,
-    };
-  }
-
   @Output()
   cardDeleteClick = new EventEmitter<string>();
 

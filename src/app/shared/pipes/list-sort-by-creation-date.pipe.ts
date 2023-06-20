@@ -6,7 +6,8 @@ import { Course } from 'src/app/interfaces/course.interface';
 })
 export class ListSortByCreationDatePipe implements PipeTransform {
   transform(courseList: Course[]): Course[] {
-    return courseList.sort(
+    const sortedList: Course[] = [...courseList];
+    return sortedList.sort(
       (a, b) =>
         new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
     );
