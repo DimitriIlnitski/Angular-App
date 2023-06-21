@@ -16,7 +16,7 @@
     trackBy: trackByCourseId
   "
   [courseItem]="course"
-  (cardDeleteClick)="showDeleteId($event)"
+  (cardDeleteClick)="deleteCourse($event)"
 ></app-course-card>
 <app-button
   *ngIf="courseList.length > 0"

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Course } from '../interfaces/course.interface';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { ListFilterCourseNamePipe } from '../shared/pipes/list-filter-course-name.pipe';
+import { CourseLoaderService } from '../services/course-loader-service.service';
 
 @Component({
   selector: 'app-courses',
@@ -9,7 +10,10 @@ import { ListFilterCourseNamePipe } from '../shared/pipes/list-filter-course-nam
   styleUrls: ['./courses.component.css'],
 })
 export class CoursesComponent implements OnInit {
-  constructor(private listFilterCourseNamePipe: ListFilterCourseNamePipe) {}
+  constructor(
+    private listFilterCourseNamePipe: ListFilterCourseNamePipe,
+    private courseLoader: CourseLoaderService
+  ) {}
 
   ngOnInit() {
     this.filteredCourseList = this.courseList;
@@ -29,8 +33,17 @@ export class CoursesComponent implements OnInit {
     console.log('Load more');
   }
 
-  showDeleteId(id: string) {
-    console.log(id);
+  deleteCourse(id: string) {
+    const decision = window.confirm(
+      'Do you really want to delete this course?'
+    );
+    if (decision) {
+      this.courseLoader.removeItem(id);
+      this.courseList = this.courseList.filter((course) => course.id !== id);
+      this.filteredCourseList = this.filteredCourseList.filter(
+        (course) => course.id !== id
+      );
+    }
   }
 
   handleValueChange(value: string) {

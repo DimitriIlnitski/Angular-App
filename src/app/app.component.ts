@@ -10,6 +10,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { Course } from './interfaces/course.interface';
+import { CourseLoaderService } from './services/course-loader-service.service';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,7 @@ export class AppComponent
     AfterViewChecked,
     OnDestroy
 {
+  constructor(private courseLoader: CourseLoaderService) {}
   mockedArray: Course[] = [];
 
   ngOnChanges(): void {
@@ -34,35 +36,7 @@ export class AppComponent
   }
   ngOnInit(): void {
     console.log('ngOnInit');
-    this.mockedArray = [
-      {
-        id: '8693',
-        title: 'duis mollit reprehenderit ad',
-        description:
-          'Est minim ea aute sunt laborum minim eu excepteur. Culpa sint exercitation mollit enim ad culpa aliquip laborum cillum. Dolor officia culpa labore ex eiusmod ut est ea voluptate ea nostrud.',
-        creationDate: '2023-09-28T04:39:24+00:00',
-        duration: 157,
-        isTopRated: true,
-      },
-      {
-        id: '4980',
-        title: 'magna excepteur aute deserunt',
-        description:
-          'Sunt culpa officia minim commodo eiusmod irure sunt nostrud. Mollit aliquip id occaecat officia proident anim dolor officia qui voluptate consectetur laborum. Duis incididunt culpa aliqua mollit do fugiat ea dolor mollit irure Lorem tempor.',
-        creationDate: '2023-06-10T02:02:36+00:00',
-        duration: 207,
-        isTopRated: true,
-      },
-      {
-        id: '7935',
-        title: 'magna excepteur aute deserunt',
-        description:
-          'Sunt culpa officia minim commodo eiusmod irure sunt nostrud. Mollit aliquip id occaecat officia proident anim dolor officia qui voluptate consectetur laborum. Duis incididunt culpa aliqua mollit do fugiat ea dolor mollit irure Lorem tempor.',
-        creationDate: '2015-06-10T02:02:36+00:00',
-        duration: 117,
-        isTopRated: false,
-      },
-    ];
+    this.mockedArray = this.courseLoader.getList();
   }
   ngDoCheck(): void {
     console.log('ngDoCheck');
