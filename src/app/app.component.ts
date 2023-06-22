@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { Course } from './interfaces/course.interface';
 import { CourseLoaderService } from './services/course-loader-service.service';
-
+import { AuthService } from './services/auth.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -28,7 +28,7 @@ export class AppComponent
     AfterViewChecked,
     OnDestroy
 {
-  constructor(private courseLoader: CourseLoaderService) {}
+  constructor(private courseLoader: CourseLoaderService, public authService: AuthService) {}
   mockedArray: Course[] = [];
 
   ngOnChanges(): void {

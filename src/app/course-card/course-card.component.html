@@ -16,13 +16,13 @@
       {{ courseItem.creationDate | date: 'd MMM yyyy' }}
     </div>
     <app-button
-      [buttonTypes]="'course-card__button'"
+      [buttonClass]="'course-card__button'"
       [buttonText]="'Edit'"
       [toShow]="true"
       [iconType]="faPen"
     ></app-button>
     <app-button
-      [buttonTypes]="'course-card__button'"
+      [buttonClass]="'course-card__button'"
       [buttonText]="'Delete'"
       [toShow]="true"
       [iconType]="faTrash"

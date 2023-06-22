@@ -1,0 +1,39 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 28rem;
+  height: 28rem;
+  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  padding: 1.5rem;
+  box-sizing: border-box;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.login__title {
+  font-size: 1.3rem;
+  font-weight: bold;
+  border: 1px solid red;
+  align-self: flex-start;
+}
+.login__label {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem 0;
+}
+.login__input {
+  margin-top: 0.3rem;
+}
+
+.login__button {
+  margin-top: 1rem;
+}
+
+.login__link {
+  margin-top: 1.3rem;
+  font-size: 0.9rem;
+}
