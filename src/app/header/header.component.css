@@ -15,6 +15,7 @@
   align-items: center;
   justify-items: end;
   justify-content: end;
+  border: 1px solid red;
 }
 
 .header__user-name {

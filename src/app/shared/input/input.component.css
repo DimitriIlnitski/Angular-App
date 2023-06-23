@@ -1,9 +1,33 @@
-.input-warpper {
+.input-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
+
+.label {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.label__text {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.label__required-text {
+  display: flex;
+  justify-content: flex-end;
+  font-weight: normal;
+}
+
 .input-field {
   height: 1.7rem;
   width: 18rem;
+}
+
+.login__input {
+  width: 22rem;
+  margin-top: 0.5rem;
 }

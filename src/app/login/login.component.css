@@ -2,8 +2,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 28rem;
-  height: 28rem;
+  width: 26rem;
+  height: 22rem;
   box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.3);
   border-radius: 4px;
   padding: 1.5rem;
@@ -15,25 +15,26 @@
   transform: translate(-50%, -50%);
 }
 .login__title {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: bold;
-  border: 1px solid red;
   align-self: flex-start;
 }
 .login__label {
   display: flex;
   flex-direction: column;
-  margin: 0.5rem 0;
-}
-.login__input {
-  margin-top: 0.3rem;
-}
-
-.login__button {
-  margin-top: 1rem;
+  margin: 0.7rem 0;
 }
 
 .login__link {
   margin-top: 1.3rem;
   font-size: 0.9rem;
+  justify-self: start;
+}
+
+.login_button-container {
+  width: 22.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-items: end;
 }

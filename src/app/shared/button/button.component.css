@@ -11,6 +11,8 @@
   grid-column: 10;
   color: white;
   background: rgb(48, 50, 63);
+  justify-self: flex-end;
+  border: 1px solid green;
 }
 
 .search-bar__button {
@@ -34,4 +36,13 @@
 .courses__button {
   background: rgb(0, 158, 205);
   color: white;
+}
+
+.login__button {
+  background: lightgray;
+  color: grey;
+  margin-top: 1rem;
+  width: 6rem;
+  height: 3rem;
+  align-self: center;
 }

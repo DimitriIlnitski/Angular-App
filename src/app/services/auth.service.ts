@@ -5,7 +5,7 @@ import { User } from '../interfaces/user.interface';
   providedIn: 'root',
 })
 export class AuthService {
-  private token = ''; 
+  private token = '';
 
   constructor() {
     const user = localStorage.getItem('user');
@@ -14,8 +14,16 @@ export class AuthService {
     }
   }
 
-  login(user: User): void {
-    localStorage.setItem('user', JSON.stringify(user));
+  login(loginData: { email: string; password: string }): void {
+    if (loginData) {
+      const fakeUser: User = {
+        id: 1,
+        name: 'name',
+        lastName: 'lastName',
+        token: 'token',
+      };
+      localStorage.setItem('user', JSON.stringify(fakeUser));
+    }
   }
   logout(): void {
     localStorage.removeItem('user');
