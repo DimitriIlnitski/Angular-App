@@ -11,8 +11,6 @@
   grid-column: 10;
   color: white;
   background: rgb(48, 50, 63);
-  justify-self: flex-end;
-  border: 1px solid green;
 }
 
 .search-bar__button {

@@ -17,7 +17,6 @@ export class LoginComponent {
   }
 
   login() {
-    console.log('csscscscscscscscscsssssssssssssssssssssssssssssssssssss');
     this.authService.login(this.loginData);
     console.log('Logged in successfully');
   }

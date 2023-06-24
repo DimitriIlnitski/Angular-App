@@ -1,23 +1,23 @@
-import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { Directive, Input, OnChanges, TemplateRef, ViewContainerRef } from '@angular/core';
 
 @Directive({
   selector: '[appIfAuthenticated]',
 })
-export class IfAuthenticatedDirective {
+export class IfAuthenticatedDirective implements OnChanges {
   constructor(
     private templateRef: TemplateRef<any>,
-    private viewContainer: ViewContainerRef,
-    private authService: AuthService
-  ) {
-    this.showElementIfAuthenticated();
+    private viewContainer: ViewContainerRef
+  ) {}
+  @Input() appIfAuthenticated = false;
+
+  ngOnChanges(): void {
+    this.updateView();
   }
 
-  showElementIfAuthenticated() {
-    if (this.authService.isAuthenticated()) {
+  private updateView(): void {
+    this.viewContainer.clear();
+    if (this.appIfAuthenticated) {
       this.viewContainer.createEmbeddedView(this.templateRef);
-    } else {
-      this.viewContainer.clear();
     }
   }
 }

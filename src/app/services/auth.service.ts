@@ -23,6 +23,7 @@ export class AuthService {
         token: 'token',
       };
       localStorage.setItem('user', JSON.stringify(fakeUser));
+      this.token = fakeUser.token;
     }
   }
   logout(): void {

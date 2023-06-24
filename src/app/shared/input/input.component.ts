@@ -17,6 +17,8 @@ export class InputComponent {
   @Input()
   inputClass = '';
   @Input()
+  inputType="text";
+  @Input()
   idInput = '';
   @Input()
   value = '';
