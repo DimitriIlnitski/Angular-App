@@ -10,7 +10,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { Course } from './interfaces/course.interface';
-import { CourseLoaderService } from './services/course-loader-service.service';
+import { CourseService } from './services/course.service';
 import { AuthService } from './services/auth.service';
 @Component({
   selector: 'app-root',
@@ -28,7 +28,10 @@ export class AppComponent
     AfterViewChecked,
     OnDestroy
 {
-  constructor(private courseLoader: CourseLoaderService, public authService: AuthService) {}
+  constructor(
+    private courseService: CourseService,
+    public authService: AuthService
+  ) {}
   mockedArray: Course[] = [];
 
   ngOnChanges(): void {
@@ -36,7 +39,7 @@ export class AppComponent
   }
   ngOnInit(): void {
     console.log('ngOnInit');
-    this.mockedArray = this.courseLoader.getList();
+    this.mockedArray = this.courseService.getList();
   }
   ngDoCheck(): void {
     console.log('ngDoCheck');

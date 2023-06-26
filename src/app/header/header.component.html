@@ -1,7 +1,7 @@
 <header class="header">
   <div class="header_wrapper">
     <app-logo></app-logo>
-    <div class="header__user-name" *appIfAuthenticated="userAndBtnIsVisible()">
+    <div class="header__user-name" *appIfAuthenticated="isUserAndBtnVisible()">
       <fa-icon [icon]="faUser"></fa-icon> &nbsp;
       <div>User login</div>
     </div>
@@ -11,7 +11,7 @@
       [toShow]="true"
       [iconType]="faRightFromBracket"
       (buttonClick)="logoutHandle()"
-      *appIfAuthenticated="userAndBtnIsVisible()"
+      *appIfAuthenticated="isUserAndBtnVisible()"
     >
     </app-button>
   </div>

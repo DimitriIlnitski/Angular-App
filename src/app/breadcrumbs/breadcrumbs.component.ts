@@ -9,7 +9,7 @@ import { AuthService } from '../services/auth.service';
 export class BreadcrumbsComponent {
   constructor(private authService: AuthService) {}
 
-  breadcrumbsIsVisible(){
+  isBreadcrumbsVisible(): boolean {
     return this.authService.isAuthenticated();
   }
 }

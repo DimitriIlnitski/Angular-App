@@ -7,13 +7,15 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  constructor(private authService: AuthService) {}
   loginData = { email: '', password: '' };
+
+  constructor(private authService: AuthService) {}
+
   emailInputHandle(email: string) {
-    return (this.loginData.email = email);
+    this.loginData.email = email;
   }
   passwordInputHandle(password: string) {
-    return (this.loginData.password = password);
+    this.loginData.password = password;
   }
 
   login() {
