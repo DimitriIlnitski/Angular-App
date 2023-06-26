@@ -8,10 +8,8 @@ export class AuthService {
   private token = '';
 
   constructor() {
-    const user = localStorage.getItem('user');
-    if (user) {
-      this.token = JSON.parse(user).token;
-    }
+    const token = localStorage.getItem('token');
+    this.token = token ? JSON.parse(token) : null;
   }
 
   login(loginData: { email: string; password: string }): void {
@@ -20,25 +18,24 @@ export class AuthService {
         id: 1,
         name: 'name',
         lastName: 'lastName',
-        token: 'token',
       };
+      const fakeToken = 'fakeToken';
+      localStorage.setItem('token', JSON.stringify(fakeToken));
       localStorage.setItem('user', JSON.stringify(fakeUser));
-      this.token = fakeUser.token;
+      this.token = fakeToken;
     }
   }
   logout(): void {
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
     this.token = '';
     console.log(`User have been deleted`);
   }
   isAuthenticated(): boolean {
     return !!this.token;
   }
-  getUserInfo(): User | undefined {
+  getUserInfo(): User | null {
     const user = localStorage.getItem('user');
-    if (user) {
-      return JSON.parse(user);
-    }
-    return;
+    return user ? (JSON.parse(user) as User) : null;
   }
 }

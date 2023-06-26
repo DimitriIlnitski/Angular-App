@@ -4,14 +4,14 @@ import { Course } from '../interfaces/course.interface';
 @Injectable({
   providedIn: 'root',
 })
-export class CourseLoaderService {
+export class CourseService {
   mockedArray = [
     {
       id: '8693',
       title: 'duis mollit reprehenderit ad',
       description:
         'Est minim ea aute sunt laborum minim eu excepteur. Culpa sint exercitation mollit enim ad culpa aliquip laborum cillum. Dolor officia culpa labore ex eiusmod ut est ea voluptate ea nostrud.',
-      creationDate: '2023-09-28T04:39:24+00:00',
+      creationDate: '2023-06-26T04:39:24+00:00',
       duration: 157,
       isTopRated: true,
     },
@@ -29,7 +29,7 @@ export class CourseLoaderService {
       title: 'magna excepteur aute deserunt',
       description:
         'Sunt culpa officia minim commodo eiusmod irure sunt nostrud. Mollit aliquip id occaecat officia proident anim dolor officia qui voluptate consectetur laborum. Duis incididunt culpa aliqua mollit do fugiat ea dolor mollit irure Lorem tempor.',
-      creationDate: '2015-06-10T02:02:36+00:00',
+      creationDate: '2023-09-21T04:39:24+00:00',
       duration: 117,
       isTopRated: false,
     },

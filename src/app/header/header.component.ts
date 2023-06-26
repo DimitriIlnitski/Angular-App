@@ -16,7 +16,7 @@ export class HeaderComponent {
     this.authService.logout();
   }
 
-  userAndBtnIsVisible(){
+  isUserAndBtnVisible(): boolean{
     return this.authService.isAuthenticated();
   }
 }

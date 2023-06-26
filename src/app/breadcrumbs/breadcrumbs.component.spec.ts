@@ -29,7 +29,7 @@ describe('BreadcrumbsComponent', () => {
   it('should return true when authService.isAuthenticated returns true', () => {
     authServiceSpy.isAuthenticated.and.returnValue(true);
 
-    const result = component.breadcrumbsIsVisible();
+    const result = component.isBreadcrumbsVisible();
 
     expect(result).toBeTrue();
     expect(authServiceSpy.isAuthenticated).toHaveBeenCalled();
@@ -38,7 +38,7 @@ describe('BreadcrumbsComponent', () => {
   it('should return false when authService.isAuthenticated returns false', () => {
     authServiceSpy.isAuthenticated.and.returnValue(false);
 
-    const result = component.breadcrumbsIsVisible();
+    const result = component.isBreadcrumbsVisible();
 
     expect(result).toBeFalse();
     expect(authServiceSpy.isAuthenticated).toHaveBeenCalled();

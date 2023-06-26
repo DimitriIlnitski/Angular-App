@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Course } from '../interfaces/course.interface';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { ListFilterCourseNamePipe } from '../shared/pipes/list-filter-course-name.pipe';
-import { CourseLoaderService } from '../services/course-loader-service.service';
+import { CourseService } from '../services/course.service';
 
 @Component({
   selector: 'app-courses',
@@ -12,7 +12,7 @@ import { CourseLoaderService } from '../services/course-loader-service.service';
 export class CoursesComponent implements OnInit {
   constructor(
     private listFilterCourseNamePipe: ListFilterCourseNamePipe,
-    private courseLoader: CourseLoaderService
+    private courseService: CourseService
   ) {}
 
   ngOnInit() {
@@ -38,7 +38,7 @@ export class CoursesComponent implements OnInit {
       'Do you really want to delete this course?'
     );
     if (decision) {
-      this.courseLoader.removeItem(id);
+      this.courseService.removeItem(id);
       this.courseList = this.courseList.filter((course) => course.id !== id);
       this.filteredCourseList = this.filteredCourseList.filter(
         (course) => course.id !== id
