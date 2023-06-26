@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-
 @Component({
   selector: 'app-input',
   templateUrl: './input.component.html',
@@ -10,9 +9,15 @@ export class InputComponent {
   @Input()
   labelText = '';
   @Input()
+  requiredText = '';
+  @Input()
   labelClass = '';
   @Input()
   placeholderText = '';
+  @Input()
+  inputClass = '';
+  @Input()
+  inputType="text";
   @Input()
   idInput = '';
   @Input()

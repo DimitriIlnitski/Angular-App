@@ -67,12 +67,6 @@ describe('CoursesComponent', () => {
     expect(console.log).toHaveBeenCalledWith('Load more');
   });
 
-  it('should log id when showDeleteId is called', () => {
-    const fakeId = 'Fake';
-    spyOn(console, 'log');
-    component.showDeleteId(fakeId);
-    expect(console.log).toHaveBeenCalledWith(fakeId);
-  });
 
   it('should show list of courses', () => {
     fixture.detectChanges();

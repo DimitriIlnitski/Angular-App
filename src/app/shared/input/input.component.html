@@ -1,10 +1,16 @@
-<div class='input-warpper'>
-    <label [class]='labelClass' [for]='idInput'>
-        {{labelText}}
-    </label>
-    <input class="input-field" type='text' 
-    [(ngModel)]="value" [id]="idInput" 
-    [name]="idInput" [placeholder]="placeholderText"
+<div class="input-wrapper">
+  <label class="label" [for]="idInput">
+    <div class="label__text">{{ labelText }}</div>
+    <div class="label__required-text">{{ requiredText }}</div>
+  </label>
+  <input
+    class="input-field"
+    [class]="inputClass"
+    [type]="inputType"
+    [(ngModel)]="value"
+    [id]="idInput"
+    [name]="idInput"
+    [placeholder]="placeholderText"
     (input)="onValueChange()"
-    />
+  />
 </div>

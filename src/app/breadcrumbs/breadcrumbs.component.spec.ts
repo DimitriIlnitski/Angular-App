@@ -1,21 +1,46 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { BreadcrumbsComponent } from './breadcrumbs.component';
+import { AuthService } from '../services/auth.service';
 
 describe('BreadcrumbsComponent', () => {
   let component: BreadcrumbsComponent;
   let fixture: ComponentFixture<BreadcrumbsComponent>;
+  let authServiceSpy: jasmine.SpyObj<AuthService>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    const authServiceMock = jasmine.createSpyObj('AuthService', [
+      'isAuthenticated',
+    ]);
+
+    await TestBed.configureTestingModule({
       declarations: [BreadcrumbsComponent],
-    });
+      providers: [{ provide: AuthService, useValue: authServiceMock }],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(BreadcrumbsComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    authServiceSpy = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should return true when authService.isAuthenticated returns true', () => {
+    authServiceSpy.isAuthenticated.and.returnValue(true);
+
+    const result = component.breadcrumbsIsVisible();
+
+    expect(result).toBeTrue();
+    expect(authServiceSpy.isAuthenticated).toHaveBeenCalled();
+  });
+
+  it('should return false when authService.isAuthenticated returns false', () => {
+    authServiceSpy.isAuthenticated.and.returnValue(false);
+
+    const result = component.breadcrumbsIsVisible();
+
+    expect(result).toBeFalse();
+    expect(authServiceSpy.isAuthenticated).toHaveBeenCalled();
   });
 });

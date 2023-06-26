@@ -9,7 +9,7 @@ import { faQuestion } from '@fortawesome/free-solid-svg-icons';
 })
 export class ButtonComponent {
   @Input()
-  buttonTypes = '';
+  buttonClass = '';
   @Input()
   buttonText = 'Default Text';
   @Input()

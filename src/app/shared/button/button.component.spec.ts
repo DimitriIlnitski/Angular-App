@@ -23,7 +23,7 @@ describe('ButtonComponent', () => {
   });
 
   it('should have correct initial values', () => {
-    expect(component.buttonTypes).toEqual('');
+    expect(component.buttonClass).toEqual('');
     expect(component.buttonText).toEqual('Default Text');
     expect(component.iconType).toEqual(faQuestion);
     expect(component.iconClass).toEqual('');

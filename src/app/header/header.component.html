@@ -1,11 +1,18 @@
-<header class='header'>
-    <div class='header_wrapper'>
-        <app-logo></app-logo>
-        <div class='header__user-name'> 
-            <fa-icon [icon]="faUser"></fa-icon> &nbsp;
-            <div>User login</div></div>
-        <app-button [buttonTypes]="'header__button'" 
-        [buttonText]="'Logout'" [toShow]="true" [iconType]="faRightFromBracket">
-        </app-button>
+<header class="header">
+  <div class="header_wrapper">
+    <app-logo></app-logo>
+    <div class="header__user-name" *appIfAuthenticated="userAndBtnIsVisible()">
+      <fa-icon [icon]="faUser"></fa-icon> &nbsp;
+      <div>User login</div>
     </div>
+    <app-button
+      [buttonClass]="'header__button'"
+      [buttonText]="'Logout'"
+      [toShow]="true"
+      [iconType]="faRightFromBracket"
+      (buttonClick)="logoutHandle()"
+      *appIfAuthenticated="userAndBtnIsVisible()"
+    >
+    </app-button>
+  </div>
 </header>

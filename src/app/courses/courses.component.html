@@ -4,7 +4,7 @@
      (buttonClick)="filterArray()"
   ></app-search-bar>
   <app-button
-    [buttonTypes]="'courses__button'"
+    [buttonClass]="'courses__button'"
     [buttonText]="'Add course'"
     [toShow]="true"
     [iconType]="faPlus"
@@ -16,11 +16,11 @@
     trackBy: trackByCourseId
   "
   [courseItem]="course"
-  (cardDeleteClick)="showDeleteId($event)"
+  (cardDeleteClick)="deleteCourse($event)"
 ></app-course-card>
 <app-button
   *ngIf="courseList.length > 0"
-  [buttonTypes]="'load-more__button'"
+  [buttonClass]="'load-more__button'"
   [buttonText]="'Load more'"
   (buttonClick)="handleClickLoadMore()"
 >

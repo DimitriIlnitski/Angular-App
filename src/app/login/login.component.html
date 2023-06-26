@@ -1,0 +1,29 @@
+<form class="login">
+  <h1 class="login__title">Login</h1>
+  <app-input
+    [labelText]="'Email:'"
+    [requiredText]="'*required'"
+    [ngClass]="'login__label'"
+    [placeholderText]="'  Enter email'"
+    [inputClass]="'login__input'"
+    [inputType]="'email'"
+    (valueChange)="emailInputHandle($event)"
+  ></app-input>
+  <app-input
+    [labelText]="'Password:'"
+    [requiredText]="'*required'"
+    [ngClass]="'login__label'"
+    [placeholderText]="'  Enter password'"
+    [inputClass]="'login__input'"
+     [inputType]="'password'"
+    (valueChange)="passwordInputHandle($event)"
+  ></app-input>
+  <div class="login_button-container">
+    <div class="login__link"><a href="#">Forgot password?</a></div>
+    <app-button
+      [buttonClass]="'login__button'"
+      [buttonText]="'LOGIN'"
+      (buttonClick)="login()"
+    ></app-button>
+  </div>
+</form>

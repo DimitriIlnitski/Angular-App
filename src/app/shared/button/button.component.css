@@ -35,3 +35,12 @@
   background: rgb(0, 158, 205);
   color: white;
 }
+
+.login__button {
+  background: lightgray;
+  color: grey;
+  margin-top: 1rem;
+  width: 6rem;
+  height: 3rem;
+  align-self: center;
+}

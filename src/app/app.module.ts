@@ -17,6 +17,8 @@ import { CardBorderColorDirective } from './directives/card-border-color.directi
 import { DurationFormatPipe } from './shared/pipes/duration-format.pipe';
 import { ListSortByCreationDatePipe } from './shared/pipes/list-sort-by-creation-date.pipe';
 import { ListFilterCourseNamePipe } from './shared/pipes/list-filter-course-name.pipe';
+import { LoginComponent } from './login/login.component';
+import { IfAuthenticatedDirective } from './directives/if-authenticated.directive';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,8 @@ import { ListFilterCourseNamePipe } from './shared/pipes/list-filter-course-name
     CardBorderColorDirective,
     DurationFormatPipe,
     ListSortByCreationDatePipe,
+    LoginComponent,
+    IfAuthenticatedDirective,
   ],
   imports: [BrowserModule, FormsModule, FontAwesomeModule],
   providers: [ListFilterCourseNamePipe],
