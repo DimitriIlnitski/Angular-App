@@ -1,0 +1,75 @@
+<form class="create-course">
+  <h1 class="create-course__title">New Course</h1>
+  <div class="create-course__input-wrapper--long">
+    <label class="create-course__label" for="createTitle">
+      <div class="create-course__label-text">Title:</div>
+      <div class="create-course__required-text">*required</div>
+    </label>
+    <input
+      class="create-course_input-alternative"
+      type="text"
+      [(ngModel)]="titleValue"
+      id="createTitle"
+      name="createTitle"
+      placeholder="Text input"
+    />
+  </div>
+  <div class="create-course__input-wrapper--long">
+    <label class="create-course__label" for="createDescription">
+      <div class="create-course__label-text">Description:</div>
+      <div class="create-course__required-text">*required</div>
+    </label>
+    <textarea
+      class="create-course__description"
+      name="createDescription"
+      name="createDescription"
+      placeholder="  Add description"
+      required="true"
+      form="create-course"
+    ></textarea>
+  </div>
+  <div class="create-course__input-wrapper--short">
+    <app-input
+      [labelText]="'Duration:'"
+      [inputClass]="'create-course__input__duration'"
+      [requiredText]="'*required'"
+      [placeholderText]="
+        '
+      Minutes'
+      "
+      [inputType]="'number'"
+      (valueChange)="durationInputHandle($event)"
+    ></app-input>
+  </div>
+  <div class="create-course__input-wrapper--medium">
+    <app-input
+      [labelText]="'Date:'"
+      [inputClass]="'create-course__input__date'"
+      [requiredText]="'*required'"
+      [placeholderText]="
+        '
+      MM/DD/YYYY'
+      "
+      [inputType]="'date'"
+      (valueChange)="titleInputHandle($event)"
+    ></app-input>
+    <div class="create-course__formated-time" ></div>
+  </div>
+  <div class="create-course__input-wrapper--medium">
+    <app-input
+      [labelText]="'Authors:'"
+      [inputClass]="'create-course__input__authors'"
+      [requiredText]="'*required'"
+      [placeholderText]="
+        '
+      Start typing'
+      "
+      [inputType]="'text'"
+      (valueChange)="titleInputHandle($event)"
+    ></app-input>
+  </div>
+  <div>
+    <app-button></app-button>
+    <app-button></app-button>
+  </div>
+</form>

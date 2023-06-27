@@ -31,3 +31,16 @@
   width: 22rem;
   margin-top: 0.5rem;
 }
+
+.create-course__input__duration{
+  height: 1.7rem;
+  width: 96%;
+}
+.create-course__input__date{
+  height: 1.7rem;
+  width: 98%;
+}
+.create-course__input__authors{
+  height: 1.7rem;
+  width: 98%;
+}

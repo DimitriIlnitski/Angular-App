@@ -1,4 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { Course } from '../interfaces/course.interface';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { ListFilterCourseNamePipe } from '../shared/pipes/list-filter-course-name.pipe';
@@ -8,8 +13,15 @@ import { CourseService } from '../services/course.service';
   selector: 'app-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoursesComponent implements OnInit {
+  @Input()
+  courseList: Course[] = [];
+  filteredCourseList: Course[] = [];
+  searchTerm = '';
+  faPlus = faPlus;
+
   constructor(
     private listFilterCourseNamePipe: ListFilterCourseNamePipe,
     private courseService: CourseService
@@ -18,12 +30,6 @@ export class CoursesComponent implements OnInit {
   ngOnInit() {
     this.filteredCourseList = this.courseList;
   }
-
-  @Input()
-  courseList: Course[] = [];
-  filteredCourseList: Course[] = [];
-  searchTerm = '';
-  faPlus = faPlus;
 
   trackByCourseId(index: number, course: Course): string {
     return course.id;
