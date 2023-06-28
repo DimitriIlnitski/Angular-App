@@ -1,6 +1,6 @@
 <form class="create-course">
   <h1 class="create-course__title">New Course</h1>
-  <div class="create-course__input-wrapper--long">
+  <div class="create-course__input-wrapper-column">
     <label class="create-course__label" for="createTitle">
       <div class="create-course__label-text">Title:</div>
       <div class="create-course__required-text">*required</div>
@@ -11,65 +11,70 @@
       [(ngModel)]="titleValue"
       id="createTitle"
       name="createTitle"
-      placeholder="Text input"
+      placeholder=" Text input"
     />
   </div>
-  <div class="create-course__input-wrapper--long">
+  <div class="create-course__input-wrapper-column">
     <label class="create-course__label" for="createDescription">
       <div class="create-course__label-text">Description:</div>
       <div class="create-course__required-text">*required</div>
     </label>
     <textarea
       class="create-course__description"
+      [(ngModel)]="descriptionValue"
       name="createDescription"
-      name="createDescription"
-      placeholder="  Add description"
+      placeholder=" Add description"
       required="true"
       form="create-course"
     ></textarea>
   </div>
-  <div class="create-course__input-wrapper--short">
+  <div class="create-course__input-wrapper--row">
     <app-input
       [labelText]="'Duration:'"
-      [inputClass]="'create-course__input__duration'"
+      [labelClass]="'create-course__label--short'"
+      [inputClass]="'create-course__input--short'"
       [requiredText]="'*required'"
-      [placeholderText]="
-        '
-      Minutes'
-      "
+      [placeholderText]="' Minutes'"
       [inputType]="'number'"
-      (valueChange)="durationInputHandle($event)"
+      (valueChange)="durationInputHandler($event)"
     ></app-input>
+    <div class="create-course__formated-time">{{durationValue | durationFormat}}</div>
   </div>
-  <div class="create-course__input-wrapper--medium">
+  <div class="create-course__input-wrapper-column">
     <app-input
       [labelText]="'Date:'"
-      [inputClass]="'create-course__input__date'"
+      [labelClass]="'create-course__label--short'"
+      [inputClass]="'create-course__input--time-short'"
       [requiredText]="'*required'"
       [placeholderText]="
         '
       MM/DD/YYYY'
       "
       [inputType]="'date'"
-      (valueChange)="titleInputHandle($event)"
+      (valueChange)="dateInputHandler($event)"
     ></app-input>
-    <div class="create-course__formated-time" ></div>
   </div>
-  <div class="create-course__input-wrapper--medium">
+  <div class="create-course__input-wrapper--row">
     <app-input
       [labelText]="'Authors:'"
-      [inputClass]="'create-course__input__authors'"
+      [labelClass]="'create-course__label--medium'"
+      [inputClass]="'create-course__input--medium'"
       [requiredText]="'*required'"
-      [placeholderText]="
-        '
-      Start typing'
-      "
+      [placeholderText]="' Start typing'"
       [inputType]="'text'"
-      (valueChange)="titleInputHandle($event)"
+      (valueChange)="authorsInputHandler($event)"
     ></app-input>
   </div>
-  <div>
-    <app-button></app-button>
-    <app-button></app-button>
+  <div class="create-course__buttons">
+    <app-button
+      [buttonClass]="'create-course__cancel-button'"
+      [buttonText]="'Cancel'"
+      (buttonClick)="cancel()"
+    ></app-button>
+    <app-button
+      [buttonClass]="'search-bar__save-button'"
+      [buttonText]="'Save'"
+      (buttonClick)="save()"
+    ></app-button>
   </div>
 </form>

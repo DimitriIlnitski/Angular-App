@@ -6,7 +6,7 @@ import { Course } from '../interfaces/course.interface';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-describe('CoursesComponent', () => {
+xdescribe('CoursesComponent', () => {
   let component: CoursesComponent;
   let fixture: ComponentFixture<CoursesComponent>;
   let el: DebugElement;

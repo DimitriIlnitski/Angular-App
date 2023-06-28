@@ -7,11 +7,25 @@ import { Component } from '@angular/core';
 })
 export class CreateCourseComponent {
   titleValue = '';
+  descriptionValue = '';
+  durationValue = 0;
+  dateValue = '';
+  authorsValue = '';
 
-  titleInputHandle(title: string): string {
-    return title;
+  dateInputHandler(date: string): string {
+    return (this.dateValue = date);
   }
-  durationInputHandle(duration: string): number {
-    return parseInt(duration);
+  durationInputHandler(duration: string): number {
+    return (this.durationValue = parseInt(duration));
+  }
+  authorsInputHandler(authors: string): string {
+    return (this.authorsValue = authors);
+  }
+
+  cancel(): void {
+    console.log('Cancel');
+  }
+  save(): void {
+    console.log('Save');
   }
 }

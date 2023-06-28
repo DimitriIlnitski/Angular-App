@@ -20,6 +20,7 @@
   display: flex;
   justify-content: flex-end;
   font-weight: normal;
+  font-size: 0.9rem;
 }
 
 .input-field {
@@ -32,15 +33,19 @@
   margin-top: 0.5rem;
 }
 
-.create-course__input__duration{
-  height: 1.7rem;
-  width: 96%;
+.create-course__label--short {
+  width: 11.25rem;
 }
-.create-course__input__date{
-  height: 1.7rem;
-  width: 98%;
+.create-course__label--medium {
+  width: 21.3rem;
 }
-.create-course__input__authors{
-  height: 1.7rem;
-  width: 98%;
+
+.create-course__input--short {
+  width: 11rem;
+}
+.create-course__input--time-short {
+  width: 11.2rem;
+}
+.create-course__input--medium {
+  width: 21rem;
 }

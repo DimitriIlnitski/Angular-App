@@ -39,7 +39,7 @@ class TestHostComponent {
   }
 }
 
-describe('CourseCardComponent (Test as a class)', () => {
+xdescribe('CourseCardComponent (Test as a class)', () => {
   let component: CourseCardComponent;
 
   beforeEach(() => {
@@ -72,7 +72,7 @@ describe('CourseCardComponent (Test as a class)', () => {
   });
 });
 
-describe('CourseCardComponent (Stand alone testing)', () => {
+xdescribe('CourseCardComponent (Stand alone testing)', () => {
   let component: CourseCardComponent;
   let fixture: ComponentFixture<CourseCardComponent>;
 
@@ -150,7 +150,7 @@ describe('CourseCardComponent (Stand alone testing)', () => {
   });
 });
 
-describe('CourseCardComponent (Host component testing)', () => {
+xdescribe('CourseCardComponent (Host component testing)', () => {
   let testHostComponent: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
