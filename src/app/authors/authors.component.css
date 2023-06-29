@@ -1,0 +1,37 @@
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.label {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.label__text {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.label__required-text {
+  display: flex;
+  justify-content: flex-end;
+  font-weight: normal;
+  font-size: 0.9rem;
+}
+
+.input-field {
+  height: 1.7rem;
+  width: 18rem;
+}
+
+.authors__label--medium {
+  width: 21.3rem;
+}
+
+.authors__input--medium {
+  width: 21rem;
+}

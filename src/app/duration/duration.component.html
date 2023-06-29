@@ -1,0 +1,20 @@
+<div class="duration__input-wrapper--row">
+  <div class="input-wrapper">
+    <label class="label" [class]="labelClass" [for]="idInput">
+      <div class="label__text">{{ labelText }}</div>
+      <div class="label__required-text">{{ requiredText }}</div>
+    </label>
+    <input
+      class="input-field"
+      [class]="inputClass"
+      [type]="inputType"
+      [(ngModel)]="value"
+      [id]="idInput"
+      [name]="idInput"
+      [placeholder]="placeholderText"
+    />
+  </div>
+  <div class="duration__formated-time">
+    {{ +value | durationFormat }}
+  </div>
+</div>

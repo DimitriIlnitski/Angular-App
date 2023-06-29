@@ -29,22 +29,21 @@
     ></textarea>
   </div>
   <div class="create-course__input-wrapper--row">
-    <app-input
+    <app-duration
       [labelText]="'Duration:'"
-      [labelClass]="'create-course__label--short'"
-      [inputClass]="'create-course__input--short'"
+      [labelClass]="'duration__label--short'"
+      [inputClass]="'duration__input--short'"
       [requiredText]="'*required'"
       [placeholderText]="' Minutes'"
-      [inputType]="'number'"
+      [inputType]="'text'"
       (valueChange)="durationInputHandler($event)"
-    ></app-input>
-    <div class="create-course__formated-time">{{durationValue | durationFormat}}</div>
+    ></app-duration>
   </div>
   <div class="create-course__input-wrapper-column">
-    <app-input
+    <app-date
       [labelText]="'Date:'"
-      [labelClass]="'create-course__label--short'"
-      [inputClass]="'create-course__input--time-short'"
+      [labelClass]="'date__label--short'"
+      [inputClass]="'date__input--time-short'"
       [requiredText]="'*required'"
       [placeholderText]="
         '
@@ -52,18 +51,18 @@
       "
       [inputType]="'date'"
       (valueChange)="dateInputHandler($event)"
-    ></app-input>
+    ></app-date>
   </div>
   <div class="create-course__input-wrapper--row">
-    <app-input
+    <app-authors
       [labelText]="'Authors:'"
-      [labelClass]="'create-course__label--medium'"
-      [inputClass]="'create-course__input--medium'"
+      [labelClass]="'authors__label--medium'"
+      [inputClass]="'authors__input--medium'"
       [requiredText]="'*required'"
       [placeholderText]="' Start typing'"
       [inputType]="'text'"
       (valueChange)="authorsInputHandler($event)"
-    ></app-input>
+    ></app-authors>
   </div>
   <div class="create-course__buttons">
     <app-button
@@ -72,7 +71,7 @@
       (buttonClick)="cancel()"
     ></app-button>
     <app-button
-      [buttonClass]="'search-bar__save-button'"
+      [buttonClass]="'create-course__save-button'"
       [buttonText]="'Save'"
       (buttonClick)="save()"
     ></app-button>
