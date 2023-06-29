@@ -20,6 +20,7 @@
   display: flex;
   justify-content: flex-end;
   font-weight: normal;
+  font-size: 0.9rem;
 }
 
 .input-field {
@@ -30,4 +31,21 @@
 .login__input {
   width: 22rem;
   margin-top: 0.5rem;
+}
+
+.create-course__label--short {
+  width: 11.25rem;
+}
+.create-course__label--medium {
+  width: 21.3rem;
+}
+
+.create-course__input--short {
+  width: 11rem;
+}
+.create-course__input--time-short {
+  width: 11.2rem;
+}
+.create-course__input--medium {
+  width: 21rem;
 }

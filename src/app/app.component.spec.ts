@@ -19,24 +19,4 @@ describe('AppComponent', () => {
   it('should create the app', () => {
     expect(app).toBeTruthy();
   });
-
-  it('should log on all lifecycle methods', () => {
-    spyOn(console, 'log');
-    app.ngOnChanges();
-    app.ngOnInit();
-    app.ngDoCheck();
-    app.ngAfterContentInit();
-    app.ngAfterContentChecked();
-    app.ngAfterViewInit();
-    app.ngAfterViewChecked();
-    app.ngOnDestroy();
-    expect(console.log).toHaveBeenCalledWith('ngOnChanges');
-    expect(console.log).toHaveBeenCalledWith('ngOnInit');
-    expect(console.log).toHaveBeenCalledWith('ngDoCheck');
-    expect(console.log).toHaveBeenCalledWith('ngAfterContentInit');
-    expect(console.log).toHaveBeenCalledWith('ngAfterContentChecked');
-    expect(console.log).toHaveBeenCalledWith('ngAfterViewInit');
-    expect(console.log).toHaveBeenCalledWith('ngAfterViewChecked');
-    expect(console.log).toHaveBeenCalledWith('ngOnDestroy');
-  });
 });

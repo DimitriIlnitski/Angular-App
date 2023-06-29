@@ -44,3 +44,17 @@
   height: 3rem;
   align-self: center;
 }
+
+.create-course__cancel-button {
+  background: lightgray;
+  color: grey;
+  width: 5.5rem;
+  height: 2.5rem;
+}
+.search-bar__save-button {
+  background: rgb(102, 163, 0);
+  color: white;
+  width: 5.5rem;
+  height: 2.5rem;
+  margin-left: 0.7rem;
+}

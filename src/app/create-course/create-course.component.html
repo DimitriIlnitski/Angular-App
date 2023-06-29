@@ -1,0 +1,80 @@
+<form class="create-course">
+  <h1 class="create-course__title">New Course</h1>
+  <div class="create-course__input-wrapper-column">
+    <label class="create-course__label" for="createTitle">
+      <div class="create-course__label-text">Title:</div>
+      <div class="create-course__required-text">*required</div>
+    </label>
+    <input
+      class="create-course_input-alternative"
+      type="text"
+      [(ngModel)]="titleValue"
+      id="createTitle"
+      name="createTitle"
+      placeholder=" Text input"
+    />
+  </div>
+  <div class="create-course__input-wrapper-column">
+    <label class="create-course__label" for="createDescription">
+      <div class="create-course__label-text">Description:</div>
+      <div class="create-course__required-text">*required</div>
+    </label>
+    <textarea
+      class="create-course__description"
+      [(ngModel)]="descriptionValue"
+      name="createDescription"
+      placeholder=" Add description"
+      required="true"
+      form="create-course"
+    ></textarea>
+  </div>
+  <div class="create-course__input-wrapper--row">
+    <app-input
+      [labelText]="'Duration:'"
+      [labelClass]="'create-course__label--short'"
+      [inputClass]="'create-course__input--short'"
+      [requiredText]="'*required'"
+      [placeholderText]="' Minutes'"
+      [inputType]="'number'"
+      (valueChange)="durationInputHandler($event)"
+    ></app-input>
+    <div class="create-course__formated-time">{{durationValue | durationFormat}}</div>
+  </div>
+  <div class="create-course__input-wrapper-column">
+    <app-input
+      [labelText]="'Date:'"
+      [labelClass]="'create-course__label--short'"
+      [inputClass]="'create-course__input--time-short'"
+      [requiredText]="'*required'"
+      [placeholderText]="
+        '
+      MM/DD/YYYY'
+      "
+      [inputType]="'date'"
+      (valueChange)="dateInputHandler($event)"
+    ></app-input>
+  </div>
+  <div class="create-course__input-wrapper--row">
+    <app-input
+      [labelText]="'Authors:'"
+      [labelClass]="'create-course__label--medium'"
+      [inputClass]="'create-course__input--medium'"
+      [requiredText]="'*required'"
+      [placeholderText]="' Start typing'"
+      [inputType]="'text'"
+      (valueChange)="authorsInputHandler($event)"
+    ></app-input>
+  </div>
+  <div class="create-course__buttons">
+    <app-button
+      [buttonClass]="'create-course__cancel-button'"
+      [buttonText]="'Cancel'"
+      (buttonClick)="cancel()"
+    ></app-button>
+    <app-button
+      [buttonClass]="'search-bar__save-button'"
+      [buttonText]="'Save'"
+      (buttonClick)="save()"
+    ></app-button>
+  </div>
+</form>

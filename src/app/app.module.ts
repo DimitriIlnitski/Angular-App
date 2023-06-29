@@ -19,6 +19,7 @@ import { ListSortByCreationDatePipe } from './shared/pipes/list-sort-by-creation
 import { ListFilterCourseNamePipe } from './shared/pipes/list-filter-course-name.pipe';
 import { LoginComponent } from './login/login.component';
 import { IfAuthenticatedDirective } from './directives/if-authenticated.directive';
+import { CreateCourseComponent } from './create-course/create-course.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { IfAuthenticatedDirective } from './directives/if-authenticated.directiv
     ListSortByCreationDatePipe,
     LoginComponent,
     IfAuthenticatedDirective,
+    CreateCourseComponent,
   ],
   imports: [BrowserModule, FormsModule, FontAwesomeModule],
   providers: [ListFilterCourseNamePipe],
