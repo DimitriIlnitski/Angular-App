@@ -16,18 +16,12 @@
             "outputPath": "dist/angular-app",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.css"
-            ],
-            "scripts": []
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.css"],
+            "scripts": [],
+            "aot": true
           },
           "configurations": {
             "production": {
@@ -43,8 +37,7 @@
                   "maximumError": "4kb"
                 }
               ],
-              "outputHashing": "all",
-              "aot": true
+              "outputHashing": "all"
             },
             "development": {
               "buildOptimizer": false,
@@ -72,7 +65,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-app:build"
+            "browserTarget": "angular-app:build"          
           }
         },
         "test": {
@@ -89,18 +82,13 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
       }
     }
   },
   "cli": {
-    "schematicCollections": [
-      "@angular-eslint/schematics"
-    ]
+    "schematicCollections": ["@angular-eslint/schematics"]
   }
 }

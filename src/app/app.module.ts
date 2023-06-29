@@ -20,6 +20,9 @@ import { ListFilterCourseNamePipe } from './shared/pipes/list-filter-course-name
 import { LoginComponent } from './login/login.component';
 import { IfAuthenticatedDirective } from './directives/if-authenticated.directive';
 import { CreateCourseComponent } from './create-course/create-course.component';
+import { DateComponent } from './date/date.component';
+import { DurationComponent } from './duration/duration.component';
+import { AuthorsComponent } from './authors/authors.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +42,9 @@ import { CreateCourseComponent } from './create-course/create-course.component';
     LoginComponent,
     IfAuthenticatedDirective,
     CreateCourseComponent,
+    DateComponent,
+    DurationComponent,
+    AuthorsComponent,
   ],
   imports: [BrowserModule, FormsModule, FontAwesomeModule],
   providers: [ListFilterCourseNamePipe],
