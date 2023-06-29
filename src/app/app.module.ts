@@ -23,6 +23,8 @@ import { CreateCourseComponent } from './create-course/create-course.component';
 import { DateComponent } from './date/date.component';
 import { DurationComponent } from './duration/duration.component';
 import { AuthorsComponent } from './authors/authors.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -45,10 +47,10 @@ import { AuthorsComponent } from './authors/authors.component';
     DateComponent,
     DurationComponent,
     AuthorsComponent,
+    PageNotFoundComponent,
   ],
-  imports: [BrowserModule, FormsModule, FontAwesomeModule],
+  imports: [BrowserModule, FormsModule, FontAwesomeModule, AppRoutingModule],
   providers: [ListFilterCourseNamePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
-
