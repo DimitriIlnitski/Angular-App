@@ -7,6 +7,7 @@
     [placeholderText]="'  Enter email'"
     [inputClass]="'login__input'"
     [inputType]="'email'"
+    [idInput]="'loginEmail'"
     (valueChange)="emailInputHandle($event)"
   ></app-input>
   <app-input
@@ -15,7 +16,8 @@
     [ngClass]="'login__label'"
     [placeholderText]="'  Enter password'"
     [inputClass]="'login__input'"
-     [inputType]="'password'"
+    [inputType]="'password'"
+    [idInput]="'loginPassword'"
     (valueChange)="passwordInputHandle($event)"
   ></app-input>
   <div class="login_button-container">

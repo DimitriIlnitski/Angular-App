@@ -34,6 +34,5 @@ export class BreadcrumbsComponent implements AfterContentChecked {
         ? (this.breadcrumbsValue = `/ ${title}`)
         : (this.breadcrumbsValue = null);
     }
-      
   }
 }

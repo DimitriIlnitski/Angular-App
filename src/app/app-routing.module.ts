@@ -1,26 +1,44 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { CoursesComponent } from './courses/courses.component';
-import { LoginComponent } from './login/login.component';
-import { CreateCourseComponent } from './create-course/create-course.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { RouteReuseStrategy, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
+import { CustomRouteReuseStrategy } from './services/custom-route-reuse.strategy';
 
 const routes: Routes = [
   { path: '', redirectTo: 'courses', pathMatch: 'full' },
-  { path: 'courses', component: CoursesComponent, canActivate: [AuthGuard] },
+  {
+    path: 'courses',
+    loadChildren: () =>
+      import('./courses/courses.module').then((m) => m.CoursesModule),
+    canActivate: [AuthGuard],
+  },
   {
     path: 'courses/:id',
-    component: CreateCourseComponent,
+    loadChildren: () =>
+      import('./create-course/create-course.module').then(
+        (m) => m.CreateCourseModule
+      ),
     canActivate: [AuthGuard],
   },
-  { path: 'login', component: LoginComponent },
+  {
+    path: 'login',
+    loadChildren: () =>
+      import('./login/login.module').then((m) => m.LoginModule),
+  },
   {
     path: 'courses/new',
-    component: CreateCourseComponent,
+    loadChildren: () =>
+      import('./create-course/create-course.module').then(
+        (m) => m.CreateCourseModule
+      ),
     canActivate: [AuthGuard],
   },
-  { path: '**', component: PageNotFoundComponent },
+  {
+    path: '**',
+    loadChildren: () =>
+      import('./page-not-found/page-not-found.module').then(
+        (m) => m.PageNotFoundModule
+      ),
+  },
 ];
 
 @NgModule({

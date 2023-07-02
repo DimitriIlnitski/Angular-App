@@ -1,8 +1,4 @@
-import {
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Course } from '../interfaces/course.interface';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { ListFilterCourseNamePipe } from '../shared/pipes/list-filter-course-name.pipe';
@@ -23,19 +19,19 @@ export class CoursesComponent implements OnInit {
   constructor(
     private listFilterCourseNamePipe: ListFilterCourseNamePipe,
     private courseService: CourseService,
-    private router: Router) 
-  {}
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.courseList = this.courseService.getList();
-    this.filteredCourseList = this.courseList;
+    this.filteredCourseList = [...this.courseList];
   }
 
   trackByCourseId(index: number, course: Course): string {
     return course.id;
   }
 
-  addNewCourse():void{
+  addNewCourse(): void {
     this.router.navigate(['/courses/new']);
   }
 
@@ -61,9 +57,8 @@ export class CoursesComponent implements OnInit {
   }
 
   filterArray() {
-    this.filteredCourseList = this.listFilterCourseNamePipe.transform(
-      this.courseList,
-      this.searchTerm
-    );
+    this.filteredCourseList = this.listFilterCourseNamePipe
+      .transform(this.courseList, this.searchTerm)
+      .slice();
   }
 }
