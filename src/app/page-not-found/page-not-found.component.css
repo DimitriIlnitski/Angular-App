@@ -1,0 +1,7 @@
+.page-not-founded{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    font-size: 2rem;
+    font-weight: bold;
+    height: 10rem;
+}

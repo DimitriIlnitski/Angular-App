@@ -14,7 +14,7 @@ import { By } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ButtonComponent } from '../shared/button/button.component';
 import { DurationFormatPipe } from '../shared/pipes/duration-format.pipe';
-import { CardBorderColorDirective } from '../directives/card-border-color.directive';
+import { CardBorderColorDirective } from '../shared/directives/card-border-color.directive';
 import { CommonModule } from '@angular/common';
 @Component({
   template: `<app-course-card

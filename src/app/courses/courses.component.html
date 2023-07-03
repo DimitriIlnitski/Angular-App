@@ -1,13 +1,14 @@
 <div class="course-controls">
   <app-search-bar
-     (searchValueChange)="handleValueChange($event)"
-     (buttonClick)="filterArray()"
+    (searchValueChange)="handleValueChange($event)"
+    (buttonClick)="filterArray()"
   ></app-search-bar>
   <app-button
     [buttonClass]="'courses__button'"
     [buttonText]="'Add course'"
     [toShow]="true"
     [iconType]="faPlus"
+    (buttonClick)="addNewCourse()"
   ></app-button>
 </div>
 <app-course-card

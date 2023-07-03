@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Directive, Input, OnChanges, TemplateRef, ViewContainerRef } from '@angular/core';
 
 @Directive({

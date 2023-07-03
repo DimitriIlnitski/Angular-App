@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { Course } from '../interfaces/course.interface';
 import {
   faClock,
@@ -7,6 +13,7 @@ import {
   faTrash,
   faStar,
 } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-course-card',
@@ -29,9 +36,14 @@ export class CourseCardComponent {
   faPen = faPen;
   faTrash = faTrash;
   faStar = faStar;
+  constructor(private router: Router) {}
 
   @Output()
   cardDeleteClick = new EventEmitter<string>();
+
+  editClick() {
+    this.router.navigate([`courses`, this.courseItem.id]);
+  }
 
   deleteClick() {
     this.cardDeleteClick.emit(this.courseItem.id);
