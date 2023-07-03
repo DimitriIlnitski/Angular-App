@@ -1,4 +1,4 @@
-import { CanActivateFn } from '@angular/router';
+import { CanActivateFn, UrlTree } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
@@ -7,17 +7,15 @@ import { Injectable } from '@angular/core';
 export class AuthGuard {
   constructor(private authService: AuthService, private router: Router) {}
 
-  canActivate(): boolean {
+  canActivate(): boolean | UrlTree {
     if (!this.authService.isAuthenticated()) {
-      this.router.navigate(['/login']);
-      return false;
+      return this.router.createUrlTree(['login']);
     }
     return true;
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const authGuard: CanActivateFn = (route, state) => {
+export const authGuard: CanActivateFn = () => {
   const authService = new AuthService();
   const router = new Router();
   const guard = new AuthGuard(authService, router);

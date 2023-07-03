@@ -8,6 +8,7 @@ export class RouteParameterService {
 
   setData(data: string | null) {
     this.data = data;
+    console.log(this.data);
   }
 
   getData() {

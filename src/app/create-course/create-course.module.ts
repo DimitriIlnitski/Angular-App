@@ -7,7 +7,7 @@ import { DateComponent } from '../date/date.component';
 import { AuthorsComponent } from '../authors/authors.component';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
-import { DirectivesModule } from '../directives/directives.module';
+import { CreateCourseRoutingModule } from './create-course-routing.module';
 
 @NgModule({
   declarations: [
@@ -18,10 +18,10 @@ import { DirectivesModule } from '../directives/directives.module';
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild([{ path: '', component: CreateCourseComponent }]),
+    CreateCourseRoutingModule,
     FormsModule,
     SharedModule,
-    DirectivesModule,
+    CreateCourseRoutingModule,
   ],
 })
 export class CreateCourseModule {}

@@ -8,9 +8,8 @@ import { ListFilterCourseNamePipe } from './pipes/list-filter-course-name.pipe';
 import { ListSortByCreationDatePipe } from './pipes/list-sort-by-creation-date.pipe';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { CardBorderColorDirective } from '../directives/card-border-color.directive';
-import { IfAuthenticatedDirective } from '../directives/if-authenticated.directive';
-import { DirectivesModule } from '../directives/directives.module';
+import { CardBorderColorDirective } from './directives/card-border-color.directive';
+import { IfAuthenticatedDirective } from './directives/if-authenticated.directive';
 
 @NgModule({
   declarations: [
@@ -20,8 +19,10 @@ import { DirectivesModule } from '../directives/directives.module';
     DurationFormatPipe,
     ListFilterCourseNamePipe,
     ListSortByCreationDatePipe,
+    IfAuthenticatedDirective,
+    CardBorderColorDirective,
   ],
-  imports: [CommonModule, FormsModule, FontAwesomeModule, DirectivesModule],
+  imports: [CommonModule, FormsModule, FontAwesomeModule],
   exports: [
     ButtonComponent,
     InputComponent,
@@ -29,6 +30,8 @@ import { DirectivesModule } from '../directives/directives.module';
     DurationFormatPipe,
     ListFilterCourseNamePipe,
     ListSortByCreationDatePipe,
+    IfAuthenticatedDirective,
+    CardBorderColorDirective,
   ],
 })
 export class SharedModule {}

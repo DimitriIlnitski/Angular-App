@@ -24,10 +24,10 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const id = this.activatedRoute.snapshot.params['id'];
-    if (id != undefined) {
-      this.routeParameterService.setData(id.slice(1));
-      const course = this.courseService.getItemById(id.slice(1));
-      if (course != undefined) {
+    if (id) {
+      this.routeParameterService.setData(id);
+      const course = this.courseService.getItemById(id);
+      if (course) {
         this.titleValue = course.title;
         this.descriptionValue = course.description;
         this.durationValue = course.duration;

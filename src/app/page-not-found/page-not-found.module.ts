@@ -1,21 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { SharedModule } from '../shared/shared.module';
-import { CardBorderColorDirective } from '../directives/card-border-color.directive';
-import { IfAuthenticatedDirective } from '../directives/if-authenticated.directive';
-import { DirectivesModule } from '../directives/directives.module';
+import { PageNotFoundRoutingModule } from './page-not-found-routing.module';
 
 @NgModule({
-  declarations: [
-    PageNotFoundComponent,
-  ],
+  declarations: [PageNotFoundComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild([{ path: '', component: PageNotFoundComponent }]),
+    PageNotFoundRoutingModule,
     SharedModule,
-    DirectivesModule,
+    PageNotFoundRoutingModule,
   ],
 })
 export class PageNotFoundModule {}

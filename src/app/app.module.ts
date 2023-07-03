@@ -8,12 +8,7 @@ import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { FooterComponent } from './footer/footer.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppRoutingModule } from './app-routing.module';
-import { CoursesModule } from './courses/courses.module';
-import { CreateCourseModule } from './create-course/create-course.module';
-import { LoginModule } from './login/login.module';
-import { PageNotFoundModule } from './page-not-found/page-not-found.module';
 import { SharedModule } from './shared/shared.module';
-import { DirectivesModule } from './directives/directives.module';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './services/custom-route-reuse.strategy';
 
@@ -29,12 +24,7 @@ import { CustomRouteReuseStrategy } from './services/custom-route-reuse.strategy
     FormsModule,
     FontAwesomeModule,
     AppRoutingModule,
-    PageNotFoundModule,
-    LoginModule,
-    CreateCourseModule,
-    CoursesModule,
     SharedModule,
-    DirectivesModule,
   ],
   providers: [
     {
