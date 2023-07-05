@@ -7,15 +7,16 @@ import { SharedModule } from '../shared/shared.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ListFilterCourseNamePipe } from '../shared/pipes/list-filter-course-name.pipe';
 import { CoursesRoutingModule } from './courses-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [CoursesComponent, SearchBarComponent, CourseCardComponent],
   imports: [
     CommonModule,
     FontAwesomeModule,
-    CoursesRoutingModule,
     SharedModule,
     CoursesRoutingModule,
+    HttpClientModule,
   ],
   providers: [ListFilterCourseNamePipe],
 })

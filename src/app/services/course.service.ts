@@ -1,55 +1,76 @@
 import { Injectable } from '@angular/core';
 import { Course } from '../interfaces/course.interface';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CourseService {
-  mockedArray = [
-    {
-      id: '8693',
-      title: 'duis mollit reprehenderit ad',
-      description:
-        'Est minim ea aute sunt laborum minim eu excepteur. Culpa sint exercitation mollit enim ad culpa aliquip laborum cillum. Dolor officia culpa labore ex eiusmod ut est ea voluptate ea nostrud.',
-      creationDate: '2023-06-26T04:39:24+00:00',
-      duration: 157,
-      isTopRated: true,
-    },
-    {
-      id: '4980',
-      title: 'magna excepteur aute deserunt',
-      description:
-        'Sunt culpa officia minim commodo eiusmod irure sunt nostrud. Mollit aliquip id occaecat officia proident anim dolor officia qui voluptate consectetur laborum. Duis incididunt culpa aliqua mollit do fugiat ea dolor mollit irure Lorem tempor.',
-      creationDate: '2023-06-10T02:02:36+00:00',
-      duration: 207,
-      isTopRated: true,
-    },
-    {
-      id: '7935',
-      title: 'magna excepteur aute deserunt',
-      description:
-        'Sunt culpa officia minim commodo eiusmod irure sunt nostrud. Mollit aliquip id occaecat officia proident anim dolor officia qui voluptate consectetur laborum. Duis incididunt culpa aliqua mollit do fugiat ea dolor mollit irure Lorem tempor.',
-      creationDate: '2023-09-21T04:39:24+00:00',
-      duration: 117,
-      isTopRated: false,
-    },
-  ];
+  constructor(private http: HttpClient) {}
 
-  getList(): Course[] {
-    return this.mockedArray;
+  courses$!: Observable<Course[]>;
+  start = 0;
+
+  getList(textFragment?: string): Observable<Course[]> {
+    const params = new HttpParams()
+      .set('start', this.start)
+      .set('count', 5)
+      .set('sort', 'asc')
+      .set('textFragment', `${textFragment}`);
+    this.courses$ = this.http.get<Course[]>('http://localhost:3004/courses', {
+      params,
+    });
+    this.start = this.start + 5;
+    return this.courses$;
   }
-  createCourse(course: Course): void {
-    this.mockedArray.push(course);
+
+  createCourse(course: Course) {
+    this.http
+      .post('http://localhost:3004/courses', {
+        course: course,
+      })
+      .subscribe({
+        next: () => {
+          console.log(`Course #${course.id} have been added successfully`);
+          this.getList();
+        },
+        error: (e) => {
+          console.log(e);
+        },
+      });
   }
-  getItemById(id: string): Course | undefined {
-    return this.mockedArray.find((course) => course.id === id);
-  }
-  updateItem(id: string, filedsToUpdate: object) {
-    this.mockedArray = this.mockedArray.map((course) =>
-      course.id === id ? { ...course, ...filedsToUpdate } : course
+  getItemById(id: string): Observable<Course | undefined> {
+    return this.courses$?.pipe(
+      map((courses: Course[]) =>
+        courses.find((course) => course.id === Number(id))
+      )
     );
   }
+
+  updateItem(id: string, filedsToUpdate: object) {
+    this.http
+      .patch(`http://localhost:3004/courses/${id}`, filedsToUpdate)
+      .subscribe({
+        next: () => {
+          console.log(`Course #${id} have been updated successfully`);
+          this.getList();
+        },
+        error: (e) => {
+          console.log(e);
+        },
+      });
+  }
+
   removeItem(id: string): void {
-    this.mockedArray = this.mockedArray.filter((course) => course.id != id);
+    this.http.delete(`http://localhost:3004/courses/${id}`).subscribe({
+      next: () => {
+        console.log(`Course #${id} have been deleted`);
+        this.getList();
+      },
+      error: (e) => {
+        console.log(e);
+      },
+    });
   }
 }

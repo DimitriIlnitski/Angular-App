@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { faUser, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
@@ -8,17 +8,25 @@ import { Router } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
   faUser = faUser;
   faRightFromBracket = faRightFromBracket;
 
-  logoutHandle() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+  ngOnInit() {
+    console.log(this.userData());
   }
 
-  isUserAndBtnVisible(): boolean{
+  userData() {
+    this.authService.getUserInfo();
+  }
+
+  logoutHandle() {
+    this.authService.logout();
+    this.router.navigate(['login']);
+  }
+
+  isUserAndBtnVisible(): boolean {
     return this.authService.isAuthenticated();
   }
 }

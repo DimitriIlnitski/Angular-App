@@ -9,8 +9,10 @@ import { FooterComponent } from './footer/footer.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
-import { RouteReuseStrategy } from '@angular/router';
-import { CustomRouteReuseStrategy } from './services/custom-route-reuse.strategy';
+// import { RouteReuseStrategy } from '@angular/router';
+// import { CustomRouteReuseStrategy } from './services/custom-route-reuse.strategy';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptorService } from './services/auth-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -25,11 +27,17 @@ import { CustomRouteReuseStrategy } from './services/custom-route-reuse.strategy
     FontAwesomeModule,
     AppRoutingModule,
     SharedModule,
+    HttpClientModule,
   ],
   providers: [
+    // {
+    //   provide: RouteReuseStrategy,
+    //   useClass: CustomRouteReuseStrategy,
+    // },
     {
-      provide: RouteReuseStrategy,
-      useClass: CustomRouteReuseStrategy,
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
     },
   ],
   bootstrap: [AppComponent],

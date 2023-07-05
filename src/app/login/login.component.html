@@ -1,13 +1,13 @@
 <form class="login">
   <h1 class="login__title">Login</h1>
   <app-input
-    [labelText]="'Email:'"
+    [labelText]="'login:'"
     [requiredText]="'*required'"
     [ngClass]="'login__label'"
-    [placeholderText]="'  Enter email'"
+    [placeholderText]="'  Enter login'"
     [inputClass]="'login__input'"
-    [inputType]="'email'"
-    [idInput]="'loginEmail'"
+    [inputType]="'text'" 
+    [idInput]="'loginLogin'"
     (valueChange)="emailInputHandle($event)"
   ></app-input>
   <app-input

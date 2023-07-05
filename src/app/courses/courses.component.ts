@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Course } from '../interfaces/course.interface';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { ListFilterCourseNamePipe } from '../shared/pipes/list-filter-course-name.pipe';
 import { CourseService } from '../services/course.service';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-courses',
@@ -11,31 +11,35 @@ import { Router } from '@angular/router';
   styleUrls: ['./courses.component.css'],
 })
 export class CoursesComponent implements OnInit {
-  courseList: Course[] = [];
-  filteredCourseList: Course[] = [];
+  
+  courses$: Observable<Course[]> | null = null;
   searchTerm = '';
   faPlus = faPlus;
 
   constructor(
-    private listFilterCourseNamePipe: ListFilterCourseNamePipe,
     private courseService: CourseService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit() {
-    this.courseList = this.courseService.getList();
-    this.filteredCourseList = [...this.courseList];
+    alert('COurses =====================Init');
+    this.courses$ = this.courseService.courses$;
+  }
+  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
+  ngOnDestroy() {
+    alert('COurses =====================End');
   }
 
   trackByCourseId(index: number, course: Course): string {
-    return course.id;
+    return String(course.id);
   }
 
   addNewCourse(): void {
-    this.router.navigate(['/courses/new']);
+    this.router.navigate(['courses/new']);
   }
 
   handleClickLoadMore() {
+    this.courseService.getList();
     console.log('Load more');
   }
 
@@ -45,10 +49,6 @@ export class CoursesComponent implements OnInit {
     );
     if (decision) {
       this.courseService.removeItem(id);
-      this.courseList = this.courseList.filter((course) => course.id !== id);
-      this.filteredCourseList = this.filteredCourseList.filter(
-        (course) => course.id !== id
-      );
     }
   }
 
@@ -57,8 +57,13 @@ export class CoursesComponent implements OnInit {
   }
 
   filterArray() {
-    this.filteredCourseList = this.listFilterCourseNamePipe
-      .transform(this.courseList, this.searchTerm)
-      .slice();
+    this.courseService.courses$?.subscribe({
+      next: () => {
+        const filteredCourses$ = this.courseService.getList(this.searchTerm);
+        this.courses$ = filteredCourses$;
+      },
+      error: (e) =>
+        console.log('faild to fetch courses in Courses component' + e.message),
+    });
   }
 }

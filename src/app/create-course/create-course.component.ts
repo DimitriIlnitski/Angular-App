@@ -3,17 +3,22 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../services/course.service';
 import { RouteParameterService } from '../services/route-parameter.service';
 
+import { Course } from '../interfaces/course.interface';
+
 @Component({
   selector: 'app-create-course',
   templateUrl: './create-course.component.html',
   styleUrls: ['./create-course.component.css'],
 })
 export class CreateCourseComponent implements OnInit, OnDestroy {
-  titleValue = '';
+  nameValue = '';
   descriptionValue = '';
-  durationValue = 0;
+  lengthValue = 0;
   dateValue = '';
-  authorsValue = '';
+  authorsValue: any = '';
+  courseValue!: Course;
+
+  shouldEdit = false;
 
   constructor(
     private router: Router,
@@ -26,33 +31,71 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
     const id = this.activatedRoute.snapshot.params['id'];
     if (id) {
       this.routeParameterService.setData(id);
-      const course = this.courseService.getItemById(id);
-      if (course) {
-        this.titleValue = course.title;
-        this.descriptionValue = course.description;
-        this.durationValue = course.duration;
-        this.dateValue = course.creationDate;
-      }
+      this.courseService.getItemById(id).subscribe({
+        next: (course) => {
+          if (course) {
+            this.nameValue = course.name;
+            this.dateValue = course.date;
+            this.lengthValue = course.length;
+            this.descriptionValue = course.description;
+
+            this.shouldEdit = true;
+          }
+        },
+      });
     }
   }
+
   ngOnDestroy() {
     this.routeParameterService.setData(null);
   }
-  
+
   dateInputHandler(date: string): string {
     return (this.dateValue = date);
   }
   durationInputHandler(duration: string): number {
-    return (this.durationValue = parseInt(duration));
+    return (this.lengthValue = parseInt(duration));
   }
   authorsInputHandler(authors: string): string {
     return (this.authorsValue = authors);
   }
 
   cancel(): void {
-    this.router.navigate(['/courses']);
+    this.router.navigate(['courses']);
   }
+  
   save(): void {
-    this.router.navigate(['/courses']);
+    if (!this.shouldEdit) {
+      const newCourse: Course = {
+        id: Math.floor(Math.random() * (20000 - 1000 + 1)) + 1000,
+        name: this.nameValue,
+        date: new Date().toISOString(),
+        length: this.lengthValue,
+        description: this.descriptionValue,
+        authors: this.courseValue.authors,
+        isTopRated: this.courseValue.isTopRated,
+      };
+      this.courseService.createCourse(newCourse);
+      this.router.navigate(['courses']);
+      return;
+    }
+
+    const updatedCourse: Course = {
+      id: this.courseValue.id,
+      name: this.nameValue,
+      date: new Date().toISOString(),
+      length: this.lengthValue,
+      description: this.descriptionValue,
+      authors: [
+        {
+          id: '5b7a84624010db4d640e0099',
+          name: 'Vincent Doyle',
+        },
+      ],
+      isTopRated: false,
+    };
+    this.courseService.updateItem(String(updatedCourse.id), updatedCourse);
+    this.router.navigate(['courses']);
+    return;
   }
 }

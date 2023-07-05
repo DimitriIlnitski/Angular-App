@@ -27,12 +27,8 @@ export class BreadcrumbsComponent implements AfterContentChecked {
   ngAfterContentChecked(): void {
     const id = this.routeParameterService.getData();
     if (id) {
-      const title = this.courseService.getItemById(id)?.title;
-      title
-        ? (this.breadcrumbsValue = `/ ${title}`)
-        : (this.breadcrumbsValue = null);
+     this.courseService.getItemById(id).subscribe({next: course=>{if(course){this.breadcrumbsValue = `/ ${course.name}`}}}) ;
       return;
     }
-    this.breadcrumbsValue = null;
   }
 }
