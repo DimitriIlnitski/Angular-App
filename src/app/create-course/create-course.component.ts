@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../services/course.service';
 import { RouteParameterService } from '../services/route-parameter.service';
-
 import { Course } from '../interfaces/course.interface';
 
 @Component({
@@ -45,7 +44,6 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
       });
     }
   }
-
   ngOnDestroy() {
     this.routeParameterService.setData(null);
   }
@@ -61,41 +59,40 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
   }
 
   cancel(): void {
-    this.router.navigate(['courses']);
+    this.router.navigate(['/courses']);
   }
-  
   save(): void {
-    if (!this.shouldEdit) {
-      const newCourse: Course = {
-        id: Math.floor(Math.random() * (20000 - 1000 + 1)) + 1000,
-        name: this.nameValue,
-        date: new Date().toISOString(),
-        length: this.lengthValue,
-        description: this.descriptionValue,
-        authors: this.courseValue.authors,
-        isTopRated: this.courseValue.isTopRated,
-      };
-      this.courseService.createCourse(newCourse);
-      this.router.navigate(['courses']);
-      return;
-    }
+       if (!this.shouldEdit) {
+         const newCourse: Course = {
+           id: Math.floor(Math.random() * (20000 - 1000 + 1)) + 1000,
+           name: this.nameValue,
+           date: new Date().toISOString(),
+           length: this.lengthValue,
+           description: this.descriptionValue,
+           authors: this.courseValue.authors,
+           isTopRated: this.courseValue.isTopRated,
+         };
+         this.courseService.createCourse(newCourse);
+         this.router.navigate(['courses']);
+         return;
+       }
 
-    const updatedCourse: Course = {
-      id: this.courseValue.id,
-      name: this.nameValue,
-      date: new Date().toISOString(),
-      length: this.lengthValue,
-      description: this.descriptionValue,
-      authors: [
-        {
-          id: '5b7a84624010db4d640e0099',
-          name: 'Vincent Doyle',
-        },
-      ],
-      isTopRated: false,
-    };
-    this.courseService.updateItem(String(updatedCourse.id), updatedCourse);
-    this.router.navigate(['courses']);
-    return;
+       const updatedCourse: Course = {
+         id: this.courseValue.id,
+         name: this.nameValue,
+         date: new Date().toISOString(),
+         length: this.lengthValue,
+         description: this.descriptionValue,
+         authors: [
+           {
+             id: '5b7a84624010db4d640e0099',
+             name: 'Vincent Doyle',
+           },
+         ],
+         isTopRated: false,
+       };
+       this.courseService.updateItem(String(updatedCourse.id), updatedCourse);
+       this.router.navigate(['courses']);
+       return;
   }
 }

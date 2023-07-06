@@ -1,13 +1,12 @@
 <form class="login">
   <h1 class="login__title">Login</h1>
   <app-input
-    [labelText]="'login:'"
+    [labelText]="'Email:'"
     [requiredText]="'*required'"
     [ngClass]="'login__label'"
-    [placeholderText]="'  Enter login'"
+    [placeholderText]="'  Enter email'"
     [inputClass]="'login__input'"
-    [inputType]="'text'" 
-    [idInput]="'loginLogin'"
+    [inputType]="'email'"
     (valueChange)="emailInputHandle($event)"
   ></app-input>
   <app-input
@@ -16,8 +15,7 @@
     [ngClass]="'login__label'"
     [placeholderText]="'  Enter password'"
     [inputClass]="'login__input'"
-    [inputType]="'password'"
-    [idInput]="'loginPassword'"
+     [inputType]="'password'"
     (valueChange)="passwordInputHandle($event)"
   ></app-input>
   <div class="login_button-container">

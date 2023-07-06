@@ -9,21 +9,31 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  constructor(private authService: AuthService, private router: Router) {}
+  userDetails ='';
   faUser = faUser;
   faRightFromBracket = faRightFromBracket;
 
+  constructor(private authService: AuthService, private router: Router) {}
+
   ngOnInit() {
-    console.log(this.userData());
+    this.userData();
   }
 
   userData() {
-    this.authService.getUserInfo();
+    this.authService.getUserInfo().subscribe({
+      next: (user) => {
+        localStorage.setItem('user', JSON.stringify(user));
+        this.userDetails = `${user.name.first}`;
+      },
+      error: (e) => {
+        console.log(e);
+      },
+    });
   }
 
   logoutHandle() {
     this.authService.logout();
-    this.router.navigate(['login']);
+    this.router.navigate(['/login']);
   }
 
   isUserAndBtnVisible(): boolean {

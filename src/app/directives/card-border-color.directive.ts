@@ -1,5 +1,5 @@
 import { Directive, HostBinding, Input, OnInit } from '@angular/core';
-import { AppConstants } from '../constants/constants';
+import { AppConstants } from '../shared/constants/constants';
 
 @Directive({
   selector: '[appCardBorderColor]',
@@ -21,7 +21,7 @@ export class CardBorderColorDirective implements OnInit {
       return (this.elementClass = this.elementClass + ' ' + 'green-border');
     } else if (creationDate > currentDate) {
       return (this.elementClass = this.elementClass + ' ' + 'blue-border');
-    }
-    return;
+    } 
+      return;
   }
 }

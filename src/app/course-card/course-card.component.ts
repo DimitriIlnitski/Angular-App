@@ -43,7 +43,7 @@ export class CourseCardComponent {
   cardDeleteClick = new EventEmitter<string>();
 
   editClick() {
-    this.router.navigate([`courses`, this.courseItem.id]); 
+    this.router.navigate([`courses`, this.courseItem.id]);
   }
 
   deleteClick() {

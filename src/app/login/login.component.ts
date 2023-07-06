@@ -12,15 +12,6 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
-  ngOnInit() {
-    alert('Login-------------Initiate');
-  }
-  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
-  ngOnDestroy() {
-    alert('Login------Destroy');
-  }
-
   emailInputHandle(login: string) {
     this.loginData.login = login;
   }
@@ -31,10 +22,8 @@ export class LoginComponent {
   login() {
     this.authService.login(this.loginData).subscribe({
       next: () => {
-        alert('Navigateeeeeeeeeeeeeeeeee---------------start');
         this.router.navigate(['courses']);
         console.log('Logged in successfully');
-        alert('Navigateeeeeeeeeeeeeeeeee---------------end');
       },
     });
   }

@@ -1,36 +1,30 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+import { CoursesComponent } from './courses/courses.component';
+import { LoginComponent } from './login/login.component';
+import { CreateCourseComponent } from './create-course/create-course.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'courses', pathMatch: 'full' },
+  { path: 'courses', component: CoursesComponent, canActivate: [AuthGuard] },
   {
-    path: 'courses',
-    loadChildren: () =>
-      import('./courses/courses.module').then((m) => m.CoursesModule),
+    path: 'courses/:id',
+    component: CreateCourseComponent,
     canActivate: [AuthGuard],
   },
+  { path: 'login', component: LoginComponent },
   {
-    path: 'login',
-    loadChildren: () =>
-      import('./login/login.module').then((m) => m.LoginModule),
+    path: 'courses/new',
+    component: CreateCourseComponent,
+    canActivate: [AuthGuard],
   },
-  {
-    path: '**',
-    loadChildren: () =>
-      import('./page-not-found/page-not-found.module').then(
-        (m) => m.PageNotFoundModule
-      ),
-  },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, {
-      preloadingStrategy: PreloadAllModules,
-      enableTracing: true,
-    }),
-  ],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

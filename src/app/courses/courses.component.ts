@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Course } from '../interfaces/course.interface';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { ListFilterCourseNamePipe } from '../shared/pipes/list-filter-course-name.pipe';
 import { CourseService } from '../services/course.service';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, concat, concatAll, from, toArray } from 'rxjs';
 
 @Component({
   selector: 'app-courses',
@@ -11,23 +12,20 @@ import { Observable } from 'rxjs';
   styleUrls: ['./courses.component.css'],
 })
 export class CoursesComponent implements OnInit {
-  
-  courses$: Observable<Course[]> | null = null;
+  courses$: Observable<Course[]> = from([]);
   searchTerm = '';
   faPlus = faPlus;
 
   constructor(
+    private listFilterCourseNamePipe: ListFilterCourseNamePipe,
     private courseService: CourseService,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    alert('COurses =====================Init');
-    this.courses$ = this.courseService.courses$;
-  }
-  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
-  ngOnDestroy() {
-    alert('COurses =====================End');
+    this.courses$ = this.courseService.getList();
+    this.courseService.courses$ = this.courses$;
+    // this.courses$.subscribe(course=>course.forEach(value=>console.log(value.id)))
   }
 
   trackByCourseId(index: number, course: Course): string {
@@ -35,12 +33,15 @@ export class CoursesComponent implements OnInit {
   }
 
   addNewCourse(): void {
-    this.router.navigate(['courses/new']);
+    this.router.navigate(['/courses/new']);
   }
 
   handleClickLoadMore() {
-    this.courseService.getList();
-    console.log('Load more');
+    this.courses$ = concat(this.courses$, this.courseService.getList()).pipe(
+      concatAll(),
+      toArray()
+    );
+    this.courseService.courses$ = this.courses$;
   }
 
   deleteCourse(id: string) {
@@ -48,7 +49,16 @@ export class CoursesComponent implements OnInit {
       'Do you really want to delete this course?'
     );
     if (decision) {
-      this.courseService.removeItem(id);
+      this.courseService.removeItem(id).subscribe({
+        next: () => {
+          console.log(`Course #${id} have been deleted`);
+          this.courseService.start = 0;
+          this.courses$ = this.courseService.getList();
+        },
+        error: (e) => {
+          console.log(e);
+        },
+      });
     }
   }
 
@@ -57,13 +67,7 @@ export class CoursesComponent implements OnInit {
   }
 
   filterArray() {
-    this.courseService.courses$?.subscribe({
-      next: () => {
-        const filteredCourses$ = this.courseService.getList(this.searchTerm);
-        this.courses$ = filteredCourses$;
-      },
-      error: (e) =>
-        console.log('faild to fetch courses in Courses component' + e.message),
-    });
+    this.courses$ = this.courseService.getList(this.searchTerm);
+    this.courseService.courses$ = this.courses$;
   }
 }
