@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../services/course.service';
-import { RouteParameterService } from '../services/route-parameter.service';
 import { Course } from '../interfaces/course.interface';
 
 @Component({
@@ -9,11 +8,12 @@ import { Course } from '../interfaces/course.interface';
   templateUrl: './create-course.component.html',
   styleUrls: ['./create-course.component.css'],
 })
-export class CreateCourseComponent implements OnInit, OnDestroy {
+export class CreateCourseComponent implements OnInit {
   nameValue = '';
   descriptionValue = '';
-  lengthValue = 0;
+  lengthValue = '';
   dateValue = '';
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   authorsValue: any = '';
   courseValue!: Course;
 
@@ -23,36 +23,32 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private courseService: CourseService,
-    private routeParameterService: RouteParameterService
   ) {}
 
   ngOnInit(): void {
     const id = this.activatedRoute.snapshot.params['id'];
-    if (id) {
-      this.routeParameterService.setData(id);
-      this.courseService.getItemById(id).subscribe({
-        next: (course) => {
-          if (course) {
-            this.nameValue = course.name;
-            this.dateValue = course.date;
-            this.lengthValue = course.length;
-            this.descriptionValue = course.description;
 
-            this.shouldEdit = true;
-          }
-        },
-      });
+    if (id) {
+      const course = this.courseService.getItemById(id);
+      console.log(course);
+      if (course) {
+        this.nameValue = course.name;
+        this.dateValue = course.date;
+        this.lengthValue = String(course.length);
+        this.descriptionValue = course.description;
+        this.courseValue = course;
+        this.shouldEdit = true;
+      }
     }
-  }
-  ngOnDestroy() {
-    this.routeParameterService.setData(null);
   }
 
   dateInputHandler(date: string): string {
+    console.log(date);
     return (this.dateValue = date);
   }
   durationInputHandler(duration: string): number {
-    return (this.lengthValue = parseInt(duration));
+    console.log(parseInt(duration));
+    return Number((this.lengthValue = duration));
   }
   authorsInputHandler(authors: string): string {
     return (this.authorsValue = authors);
@@ -62,37 +58,65 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
     this.router.navigate(['/courses']);
   }
   save(): void {
-       if (!this.shouldEdit) {
-         const newCourse: Course = {
-           id: Math.floor(Math.random() * (20000 - 1000 + 1)) + 1000,
-           name: this.nameValue,
-           date: new Date().toISOString(),
-           length: this.lengthValue,
-           description: this.descriptionValue,
-           authors: this.courseValue.authors,
-           isTopRated: this.courseValue.isTopRated,
-         };
-         this.courseService.createCourse(newCourse);
-         this.router.navigate(['courses']);
-         return;
-       }
+    if (!this.shouldEdit) {
+      const newCourse: Course = {
+        id: Math.floor(Math.random() * (20000 - 1000 + 1)) + 1000,
+        name: this.nameValue,
+        date: new Date().toISOString(),
+        length: Number(this.lengthValue),
+        description: this.descriptionValue,
+        authors: [
+          {
+            id: 5653,
+            name: 'Leblanc',
+          },
+        ],
+        isTopRated: true,
+      };
 
-       const updatedCourse: Course = {
-         id: this.courseValue.id,
-         name: this.nameValue,
-         date: new Date().toISOString(),
-         length: this.lengthValue,
-         description: this.descriptionValue,
-         authors: [
-           {
-             id: '5b7a84624010db4d640e0099',
-             name: 'Vincent Doyle',
-           },
-         ],
-         isTopRated: false,
-       };
-       this.courseService.updateItem(String(updatedCourse.id), updatedCourse);
-       this.router.navigate(['courses']);
-       return;
+      this.courseService.createCourse(newCourse).subscribe({
+        next: () => {
+          this.courseService.courses.unshift(newCourse);
+          console.log(`Course #${newCourse.id} have been added successfully`);
+          this.courseService.start = 0;
+          this.router.navigate(['courses']);
+        },
+        error: (e) => {
+          console.log(e);
+        },
+      });
+
+      return;
+    }
+
+    const updatedCourse: Course = {
+      id: this.courseValue.id,
+      name: this.nameValue,
+      date: new Date().toISOString(),
+      length: Number(this.lengthValue),
+      description: this.descriptionValue,
+      authors: [
+        {
+          id: 5653,
+          name: 'Leblanc',
+        },
+      ],
+      isTopRated: false,
+    };
+    this.courseService
+      .updateItem(String(updatedCourse.id), updatedCourse)
+      .subscribe({
+        next: () => {
+          console.log(
+            `Course #${updatedCourse.id} have been updated successfully`
+          );
+          this.courseService.start = 0;
+          this.router.navigate(['courses']);
+        },
+        error: (e) => {
+          console.log(e);
+        },
+      });
+    return;
   }
 }

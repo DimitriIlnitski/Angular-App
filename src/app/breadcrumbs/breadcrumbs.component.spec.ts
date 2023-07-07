@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BreadcrumbsComponent } from './breadcrumbs.component';
 import { AuthService } from '../services/auth.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('BreadcrumbsComponent', () => {
   let component: BreadcrumbsComponent;
@@ -15,6 +16,7 @@ describe('BreadcrumbsComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [BreadcrumbsComponent],
       providers: [{ provide: AuthService, useValue: authServiceMock }],
+      imports: [HttpClientTestingModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(BreadcrumbsComponent);

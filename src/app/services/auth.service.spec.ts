@@ -1,12 +1,29 @@
 import { TestBed } from '@angular/core/testing';
-import { AuthService } from './auth.service';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 
-xdescribe('AuthService', () => {
+import { AuthService } from './auth.service';
+import { Token } from '../interfaces/token.interface';
+import { LoginRequest } from '../interfaces/login-request.interface';
+import { User } from '../interfaces/user.interface';
+
+describe('AuthService', () => {
   let service: AuthService;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [AuthService],
+    });
     service = TestBed.inject(AuthService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
     localStorage.clear();
   });
 
@@ -14,72 +31,32 @@ xdescribe('AuthService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should set user item in localStorage and assign token on login', () => {
-    const loginData = { email: 'test@example.com', password: 'password' };
-    const fakeUser = {
-      id: 1,
-      name: 'name',
-      lastName: 'lastName',
-      token: 'token',
-    };
 
-    service.login(loginData);
+  describe('logout', () => {
+    it('should remove user and token from local storage', () => {
+      localStorage.setItem('user', 'fake-user');
+      localStorage.setItem('token', 'fake-token');
 
-    const storedUser = localStorage.getItem('user');
-    expect(storedUser).toBeTruthy();
+      service.logout();
 
-    if (storedUser !== null) {
-      const parsedUser = JSON.parse(storedUser);
-      expect(parsedUser).toEqual(fakeUser);
-
-      expect(service['token']).toEqual(fakeUser.token);
-    } else {
-      fail('storedUser should not be null');
-    }
+      expect(localStorage.getItem('user')).toBeFalsy();
+      expect(localStorage.getItem('token')).toBeFalsy();
+    });
   });
 
-  it('should remove user item from localStorage and reset token on logout', () => {
-    localStorage.setItem('user', JSON.stringify({ token: 'fake-token' }));
-
-    service.logout();
-
-    expect(localStorage.getItem('user')).toBeFalsy();
-    expect(service['token']).toEqual('');
+  describe('isAuthenticated', () => {
+    it('should return true if the token exists', () => {
+      service['token'] = 'fake-token';
+      const isAuthenticated = service.isAuthenticated();
+      expect(isAuthenticated).toBe(true);
+    });
   });
 
-  it('should return true when token is not empty in isAuthenticated', () => {
-    service['token'] = 'fake-token';
-
-    const result = service.isAuthenticated();
-
-    expect(result).toBeTrue();
-  });
-
-  it('should return false when token is empty in isAuthenticated', () => {
-    service['token'] = '';
-
-    const result = service.isAuthenticated();
-
-    expect(result).toBeFalse();
-  });
-
-  it('should return user object from localStorage in getUserInfo', () => {
-    const fakeUser = {
-      id: 1,
-      name: 'name',
-      lastName: 'lastName',
-      token: 'token',
-    };
-    localStorage.setItem('user', JSON.stringify(fakeUser));
-
-    const result = service.getUserInfo();
-
-    expect(result).toEqual(fakeUser);
-  });
-
-  it('should return undefined from getUserInfo when user does not exist in localStorage', () => {
-    const result = service.getUserInfo();
-
-    expect(result).toBeUndefined();
+  describe('getToken', () => {
+    it('should return the stored token', () => {
+      service['token'] = 'fake-token';
+      const token = service.getToken();
+      expect(token).toBe('fake-token');
+    });
   });
 });

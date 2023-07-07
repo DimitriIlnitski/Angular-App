@@ -23,7 +23,6 @@ import { CreateCourseComponent } from './create-course/create-course.component';
 import { DateComponent } from './date/date.component';
 import { DurationComponent } from './duration/duration.component';
 import { AuthorsComponent } from './authors/authors.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
@@ -49,7 +48,6 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
     DateComponent,
     DurationComponent,
     AuthorsComponent,
-    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,

@@ -16,6 +16,7 @@ import { ButtonComponent } from '../shared/button/button.component';
 import { DurationFormatPipe } from '../shared/pipes/duration-format.pipe';
 import { CardBorderColorDirective } from '../directives/card-border-color.directive';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 @Component({
   template: `<app-course-card
     [courseItem]="course"
@@ -24,11 +25,12 @@ import { CommonModule } from '@angular/common';
 })
 class TestHostComponent {
   course: Course = {
-    id: '1',
-    title: 'Test Course',
+    id: 1,
+    name: 'Test Course',
     description: 'Test Description',
-    creationDate: '2021-09-10',
-    duration: 120,
+    date: '2021-09-10',
+    length: 120,
+    authors: [],
     isTopRated: false,
   };
 
@@ -43,7 +45,7 @@ xdescribe('CourseCardComponent (Test as a class)', () => {
   let component: CourseCardComponent;
 
   beforeEach(() => {
-    component = new CourseCardComponent();
+    component = new CourseCardComponent(new Router());
   });
 
   it('should create', () => {
@@ -52,11 +54,12 @@ xdescribe('CourseCardComponent (Test as a class)', () => {
 
   it('should have correct initial values', () => {
     expect(component.courseItem).toEqual({
-      id: 'id',
-      title: 'title',
-      description: 'description',
-      creationDate: '2023-06-19',
-      duration: 0,
+      id: 1,
+      name: 'Test Course',
+      description: 'Test Description',
+      date: '2021-09-10',
+      length: 120,
+      authors: [],
       isTopRated: false,
     });
     expect(component.faClock).toEqual(faClock);
@@ -97,11 +100,12 @@ xdescribe('CourseCardComponent (Stand alone testing)', () => {
 
   it('should have correct initial values', () => {
     expect(component.courseItem).toEqual({
-      id: 'id',
-      title: 'title',
-      description: 'description',
-      creationDate: '2023-06-19',
-      duration: 0,
+      id: 1,
+      name: 'Test Course',
+      description: 'Test Description',
+      date: '2021-09-10',
+      length: 120,
+      authors: [],
       isTopRated: false,
     });
     expect(component.faClock).toEqual(faClock);
@@ -119,11 +123,12 @@ xdescribe('CourseCardComponent (Stand alone testing)', () => {
 
   it('should have course-card__star--not-visible class when courseItem.isTopRated is false', () => {
     component.courseItem = {
-      id: 'id',
-      title: 'title',
-      description: 'description',
-      creationDate: '2023-06-19',
-      duration: 0,
+      id: 1,
+      name: 'Test Course',
+      description: 'Test Description',
+      date: '2021-09-10',
+      length: 120,
+      authors: [],
       isTopRated: false,
     };
     fixture.detectChanges();
@@ -135,12 +140,13 @@ xdescribe('CourseCardComponent (Stand alone testing)', () => {
 
   it('should not have course-card__star--not-visible class when courseItem.isTopRated is true', () => {
     component.courseItem = {
-      id: 'id',
-      title: 'title',
-      description: 'description',
-      creationDate: '2023-06-19',
-      duration: 0,
-      isTopRated: true,
+      id: 1,
+      name: 'Test Course',
+      description: 'Test Description',
+      date: '2021-09-10',
+      length: 120,
+      authors: [],
+      isTopRated: false,
     };
     fixture.detectChanges();
 
@@ -176,7 +182,7 @@ xdescribe('CourseCardComponent (Host component testing)', () => {
     courseCardComponent.deleteClick();
 
     expect(testHostComponent.onCardDeleteClick).toHaveBeenCalledWith(
-      testHostComponent.course.id
+      String(testHostComponent.course.id)
     );
   });
 });

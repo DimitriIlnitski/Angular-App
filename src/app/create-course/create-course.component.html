@@ -36,6 +36,7 @@
       [requiredText]="'*required'"
       [placeholderText]="' Minutes'"
       [inputType]="'text'"
+      [value]="lengthValue"
       (valueChange)="durationInputHandler($event)"
     ></app-duration>
   </div>
@@ -50,6 +51,7 @@
       MM/DD/YYYY'
       "
       [inputType]="'date'"
+      [value]="dateValue"
       (valueChange)="dateInputHandler($event)"
     ></app-date>
   </div>

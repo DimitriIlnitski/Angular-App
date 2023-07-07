@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { CoursesComponent } from './courses/courses.component';
 import { LoginComponent } from './login/login.component';
 import { CreateCourseComponent } from './create-course/create-course.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -20,7 +19,13 @@ const routes: Routes = [
     component: CreateCourseComponent,
     canActivate: [AuthGuard],
   },
-  { path: '**', component: PageNotFoundComponent },
+  {
+    path: '**',
+    loadChildren: () =>
+      import('./page-not-found/page-not-found.module').then(
+        (m) => m.PageNotFoundModule
+      ),
+  },
 ];
 
 @NgModule({

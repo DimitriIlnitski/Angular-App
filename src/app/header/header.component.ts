@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { faUser, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
@@ -8,28 +8,11 @@ import { Router } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent implements OnInit {
-  userDetails ='';
+export class HeaderComponent {
   faUser = faUser;
   faRightFromBracket = faRightFromBracket;
 
-  constructor(private authService: AuthService, private router: Router) {}
-
-  ngOnInit() {
-    this.userData();
-  }
-
-  userData() {
-    this.authService.getUserInfo().subscribe({
-      next: (user) => {
-        localStorage.setItem('user', JSON.stringify(user));
-        this.userDetails = `${user.name.first}`;
-      },
-      error: (e) => {
-        console.log(e);
-      },
-    });
-  }
+  constructor(public authService: AuthService, private router: Router) {}
 
   logoutHandle() {
     this.authService.logout();

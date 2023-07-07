@@ -14,59 +14,65 @@ describe('ListFilterCourseNamePipe', () => {
   it('should return the filtered course list when searchTerm is not empty', () => {
     const courseList: Course[] = [
       {
-        id: '1',
-        title: 'Angular',
+        id: 1,
+        name: 'Angular',
         description: 'Description',
-        creationDate: '2023-01-10',
-        duration: 120,
+        date: '2023-01-10',
+        length: 120,
+        authors: [],
         isTopRated: false,
       },
       {
-        id: '2',
-        title: 'React',
+        id: 2,
+        name: 'React',
         description: 'Description',
-        creationDate: '2023-02-10',
-        duration: 120,
+        date: '2023-02-10',
+        length: 120,
+        authors: [],
         isTopRated: false,
       },
       {
-        id: '3',
-        title: 'JavaScript',
+        id: 3,
+        name: 'JavaScript',
         description: 'Description',
-        creationDate: '2023-03-10',
-        duration: 120,
+        date: '2023-03-10',
+        length: 120,
+        authors: [],
         isTopRated: false,
       },
     ];
     const filteredCourseList = pipe.transform(courseList, 'angular');
     expect(filteredCourseList.length).toBe(1);
-    expect(filteredCourseList[0].id).toBe('1');
+    expect(filteredCourseList[0].id).toBe(1);
   });
 
   it('should return the original course list when searchTerm is empty', () => {
     const courseList: Course[] = [
       {
-        id: '1',
-        title: 'Angular',
+        id: 1,
+        name: 'Angular',
         description: 'Description',
-        creationDate: '2023-01-10',
-        duration: 120,
+        date: '2023-01-10',
+        length: 120,
+        authors: [],
         isTopRated: false,
       },
       {
-        id: '2',
-        title: 'React',
+        id: 2,
+        name: 'React',
         description: 'Description',
-        creationDate: '2023-02-10',
-        duration: 120,
+        date: '2023-02-10',
+        length: 120,
+        authors: [],
         isTopRated: false,
       },
       {
-        id: '3',
-        title: 'JavaScript',
+        id: 3,
+        name: 'JavaScript',
         description: 'Description',
-        creationDate: '2023-03-10',
-        duration: 120,
+        date: '2023-03-10',
+        length: 120,
+        authors: [],
         isTopRated: false,
       },
     ];

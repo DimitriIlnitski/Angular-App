@@ -10,10 +10,14 @@ import { LoginRequest } from '../interfaces/login-request.interface';
 })
 export class AuthService {
   private token = '';
+  public userDetails = '';
 
   constructor(private http: HttpClient) {
     const token = localStorage.getItem('token');
-    this.token = token ? JSON.parse(token) : null;
+    this.token = token ? JSON.parse(token) : '';
+    const userJson = localStorage.getItem('user');
+    const user = userJson ? JSON.parse(userJson) : null;
+    this.userDetails = user.name.first;
   }
 
   login(loginData: LoginRequest): Observable<Token> {
@@ -24,6 +28,7 @@ export class AuthService {
           this.token = response.token;
           localStorage.setItem('token', JSON.stringify(response.token));
           console.log('Login successful');
+          this.getUserInfo();
         })
       );
   }
@@ -41,8 +46,18 @@ export class AuthService {
 
   getUserInfo() {
     return this.http
-      .post<User>('http://localhost:3004/auth/userinfo', { token: this.token })
-      
+      .post<User>('http://localhost:3004/auth/userinfo', {
+        token: this.token,
+      })
+      .subscribe({
+        next: (user) => {
+          localStorage.setItem('user', JSON.stringify(user));
+          this.userDetails = `${user.name.first}`;
+        },
+        error: (e) => {
+          console.log(e);
+        },
+      });
   }
 
   getToken(): string {
