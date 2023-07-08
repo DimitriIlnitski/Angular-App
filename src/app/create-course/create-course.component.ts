@@ -22,7 +22,7 @@ export class CreateCourseComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private courseService: CourseService,
+    private courseService: CourseService
   ) {}
 
   ngOnInit(): void {
@@ -30,7 +30,6 @@ export class CreateCourseComponent implements OnInit {
 
     if (id) {
       const course = this.courseService.getItemById(id);
-      console.log(course);
       if (course) {
         this.nameValue = course.name;
         this.dateValue = course.date;
@@ -42,20 +41,24 @@ export class CreateCourseComponent implements OnInit {
     }
   }
 
-  dateInputHandler(date: string): string {
-    console.log(date);
-    return (this.dateValue = date);
+  dateInputHandler(date: string): void {
+    this.dateValue = date;
   }
-  durationInputHandler(duration: string): number {
-    console.log(parseInt(duration));
-    return Number((this.lengthValue = duration));
+  durationInputHandler(length: string) {
+    this.lengthValue = length;
   }
-  authorsInputHandler(authors: string): string {
-    return (this.authorsValue = authors);
+  authorsInputHandler(authors: string) {
+    this.authorsValue = authors;
   }
 
   cancel(): void {
-    this.router.navigate(['/courses']);
+    this.courseService.courses = [];
+    this.courseService.start = 0;
+    this.courseService.getList().subscribe((fetchedData) => {
+      this.courseService.courses.push(...fetchedData);
+      this.courseService.start += 3;
+      this.router.navigate(['courses']);
+    });
   }
   save(): void {
     if (!this.shouldEdit) {
@@ -73,13 +76,16 @@ export class CreateCourseComponent implements OnInit {
         ],
         isTopRated: true,
       };
-
       this.courseService.createCourse(newCourse).subscribe({
         next: () => {
-          this.courseService.courses.unshift(newCourse);
           console.log(`Course #${newCourse.id} have been added successfully`);
+          this.courseService.courses = [];
           this.courseService.start = 0;
-          this.router.navigate(['courses']);
+          this.courseService.getList().subscribe((fetchedData) => {
+            this.courseService.courses.push(...fetchedData);
+            this.courseService.start += 3;
+            this.router.navigate(['courses']);
+          });
         },
         error: (e) => {
           console.log(e);
@@ -103,20 +109,27 @@ export class CreateCourseComponent implements OnInit {
       ],
       isTopRated: false,
     };
-    this.courseService
-      .updateItem(String(updatedCourse.id), updatedCourse)
-      .subscribe({
-        next: () => {
-          console.log(
-            `Course #${updatedCourse.id} have been updated successfully`
-          );
-          this.courseService.start = 0;
-          this.router.navigate(['courses']);
-        },
-        error: (e) => {
-          console.log(e);
-        },
-      });
+    this.courseService.updateItem(updatedCourse).subscribe({
+      next: (respond) => {
+        this.courseService.courses.map((course) => {
+          if (course.id === respond.id) {
+            course.name = respond.name;
+            course.date = respond.date;
+            course.length = respond.length;
+            course.description = respond.description;
+            course.authors = respond.authors;
+            course.isTopRated = respond.isTopRated;
+          }
+        });
+        console.log(
+          `Course #${updatedCourse.id} have been updated successfully`
+        );
+        this.router.navigate(['courses']);
+      },
+      error: (e) => {
+        console.log(e);
+      },
+    });
     return;
   }
 }

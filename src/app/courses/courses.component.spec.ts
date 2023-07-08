@@ -5,15 +5,17 @@ import { AppModule } from '../app.module';
 import { Course } from '../interfaces/course.interface';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-xdescribe('CoursesComponent', () => {
+describe('CoursesComponent', () => {
   let component: CoursesComponent;
   let fixture: ComponentFixture<CoursesComponent>;
   let el: DebugElement;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, CommonModule, FormsModule],
       declarations: [CoursesComponent],
     });
     fixture = TestBed.createComponent(CoursesComponent);
@@ -24,7 +26,7 @@ xdescribe('CoursesComponent', () => {
         id: 1,
         name: 'Empty',
         description: 'Empty',
-        date: 'Empty',
+        date: 'July 8, 2023',
         length: 0,
         authors: [],
         isTopRated: false,
@@ -33,7 +35,7 @@ xdescribe('CoursesComponent', () => {
         id: 1,
         name: 'Empty',
         description: 'Empty',
-        date: 'Empty',
+        date: 'July 8, 2023',
         length: 0,
         authors: [],
         isTopRated: false,
@@ -51,22 +53,15 @@ xdescribe('CoursesComponent', () => {
       id: 1,
       name: 'Empty',
       description: 'Empty',
-      date: 'Empty',
+      date: 'July 8, 2023',
       length: 0,
       authors: [],
       isTopRated: false,
     };
 
-    expect(component.trackByCourseId(1, fakeCourse)).toEqual('A');
+    expect(component.trackByCourseId(1, fakeCourse)).toEqual('1');
   });
 
-  it('should log when handleClickLoadMore is called', () => {
-    const btn = el.query(By.css('.load-more__button')).nativeElement;
-    spyOn(console, 'log');
-    btn.click();
-    fixture.detectChanges();
-    expect(console.log).toHaveBeenCalledWith('Load more');
-  });
 
 
   it('should show list of courses', () => {

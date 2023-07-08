@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Token } from '../interfaces/token.interface';
 import { Observable, tap } from 'rxjs';
 import { LoginRequest } from '../interfaces/login-request.interface';
+import { CourseService } from './course.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,12 +13,12 @@ export class AuthService {
   private token = '';
   public userDetails = '';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private courseService: CourseService) {
     const token = localStorage.getItem('token');
     this.token = token ? JSON.parse(token) : '';
     const userJson = localStorage.getItem('user');
     const user = userJson ? JSON.parse(userJson) : null;
-    this.userDetails = user.name.first;
+    this.userDetails = user?.name.first ? user.name.first : '';
   }
 
   login(loginData: LoginRequest): Observable<Token> {
@@ -37,6 +38,9 @@ export class AuthService {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     this.token = '';
+    this.courseService.courses = [];
+    this.courseService.start = 0;
+    this.courseService.searchTerm = '';
     console.log(`User have been deleted`);
   }
 
@@ -53,6 +57,7 @@ export class AuthService {
         next: (user) => {
           localStorage.setItem('user', JSON.stringify(user));
           this.userDetails = `${user.name.first}`;
+          console.log('User details received successfully');
         },
         error: (e) => {
           console.log(e);

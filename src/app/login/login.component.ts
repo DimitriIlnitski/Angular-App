@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { CourseService } from '../services/course.service';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,11 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   loginData = { login: '', password: '' };
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    public courseService: CourseService
+  ) {}
 
   emailInputHandle(login: string) {
     this.loginData.login = login;
@@ -22,8 +27,12 @@ export class LoginComponent {
   login() {
     this.authService.login(this.loginData).subscribe({
       next: () => {
-        this.router.navigate(['courses']);
-        console.log('Logged in successfully');
+        this.courseService.getList().subscribe((fetchedData) => {
+          this.courseService.courses.push(...fetchedData);
+          this.courseService.start += 3;
+          this.router.navigate(['courses']);
+          console.log('Logged in successfully');
+        });
       },
     });
   }

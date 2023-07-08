@@ -31,23 +31,21 @@ export class CourseService {
   }
 
   createCourse(course: Course) {
-    return this.http.post('http://localhost:3004/courses', {
-      course: course,
-    });
+    return this.http.post<Course>('http://localhost:3004/courses', course);
   }
 
   getItemById(id: string): Course | undefined {
     return this.courses.find((course) => course.id === Number(id));
   }
 
-  updateItem(id: string, filedsToUpdate: object) {
-    return this.http.patch(
-      `http://localhost:3004/courses/${id}`,
-      filedsToUpdate
+  updateItem(updatedCourse:Course) {
+    return this.http.patch<Course>(
+      `http://localhost:3004/courses/${updatedCourse.id}`,
+      updatedCourse
     );
   }
 
   removeItem(id: string) {
-    return this.http.delete(`http://localhost:3004/courses/${id}`);
+    return this.http.delete<void>(`http://localhost:3004/courses/${id}`);
   }
 }

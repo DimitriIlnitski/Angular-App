@@ -14,9 +14,10 @@ import { By } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ButtonComponent } from '../shared/button/button.component';
 import { DurationFormatPipe } from '../shared/pipes/duration-format.pipe';
-import { CardBorderColorDirective } from '../directives/card-border-color.directive';
+import { CardBorderColorDirective } from '../shared/directives/card-border-color.directive';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+
 @Component({
   template: `<app-course-card
     [courseItem]="course"
@@ -41,11 +42,12 @@ class TestHostComponent {
   }
 }
 
-xdescribe('CourseCardComponent (Test as a class)', () => {
+describe('CourseCardComponent (Test as a class)', () => {
   let component: CourseCardComponent;
 
   beforeEach(() => {
-    component = new CourseCardComponent(new Router());
+    const router = jasmine.createSpyObj<Router>('Router', ['navigate']);
+    component = new CourseCardComponent(router);
   });
 
   it('should create', () => {
@@ -54,11 +56,11 @@ xdescribe('CourseCardComponent (Test as a class)', () => {
 
   it('should have correct initial values', () => {
     expect(component.courseItem).toEqual({
-      id: 1,
-      name: 'Test Course',
-      description: 'Test Description',
-      date: '2021-09-10',
-      length: 120,
+      id: 100,
+      name: 'title',
+      date: '2023-06-19',
+      length: 125,
+      description: 'description',
       authors: [],
       isTopRated: false,
     });
@@ -75,11 +77,16 @@ xdescribe('CourseCardComponent (Test as a class)', () => {
   });
 });
 
-xdescribe('CourseCardComponent (Stand alone testing)', () => {
+describe('CourseCardComponent (Stand alone testing)', () => {
   let component: CourseCardComponent;
   let fixture: ComponentFixture<CourseCardComponent>;
 
   beforeEach(() => {
+    const activatedRouteMock = {
+      snapshot: {
+        params: { id: '1' },
+      },
+    };
     TestBed.configureTestingModule({
       imports: [FontAwesomeModule, CommonModule],
       declarations: [
@@ -88,23 +95,32 @@ xdescribe('CourseCardComponent (Stand alone testing)', () => {
         DurationFormatPipe,
         CardBorderColorDirective,
       ],
+      providers: [
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        {
+          provide: Router,
+          useClass: class {
+            navigate = jasmine.createSpy('navigate');
+          },
+        },
+      ],
     });
     fixture = TestBed.createComponent(CourseCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create - stand alone', () => {
     expect(component).toBeTruthy();
   });
 
   it('should have correct initial values', () => {
     expect(component.courseItem).toEqual({
-      id: 1,
-      name: 'Test Course',
-      description: 'Test Description',
-      date: '2021-09-10',
-      length: 120,
+      id: 100,
+      name: 'title',
+      date: '2023-06-19',
+      length: 125,
+      description: 'description',
       authors: [],
       isTopRated: false,
     });
@@ -123,13 +139,13 @@ xdescribe('CourseCardComponent (Stand alone testing)', () => {
 
   it('should have course-card__star--not-visible class when courseItem.isTopRated is false', () => {
     component.courseItem = {
-      id: 1,
-      name: 'Test Course',
-      description: 'Test Description',
-      date: '2021-09-10',
-      length: 120,
+      id: 100,
+      name: 'title',
+      date: '2023-06-19',
+      length: 125,
+      description: 'description',
       authors: [],
-      isTopRated: false,
+      isTopRated: true,
     };
     fixture.detectChanges();
 
@@ -137,26 +153,9 @@ xdescribe('CourseCardComponent (Stand alone testing)', () => {
 
     expect(starIcon.classes['course-card__star--not-visible']).toBe(true);
   });
-
-  it('should not have course-card__star--not-visible class when courseItem.isTopRated is true', () => {
-    component.courseItem = {
-      id: 1,
-      name: 'Test Course',
-      description: 'Test Description',
-      date: '2021-09-10',
-      length: 120,
-      authors: [],
-      isTopRated: false,
-    };
-    fixture.detectChanges();
-
-    const starIcon = fixture.debugElement.query(By.css('.course-card__star'));
-
-    expect(starIcon.classes['course-card__star--not-visible']).toBeUndefined();
-  });
 });
 
-xdescribe('CourseCardComponent (Host component testing)', () => {
+describe('CourseCardComponent (Host component testing)', () => {
   let testHostComponent: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 

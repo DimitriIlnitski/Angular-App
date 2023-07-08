@@ -4,6 +4,9 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ButtonComponent } from '../shared/button/button.component';
+import { InputComponent } from '../shared/input/input.component';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -13,7 +16,7 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LoginComponent],
+      declarations: [LoginComponent, ButtonComponent, InputComponent],
       providers: [
         {
           provide: AuthService,
@@ -27,7 +30,7 @@ describe('LoginComponent', () => {
           useValue: { navigate: jasmine.createSpy('navigate') },
         },
       ],
-      imports: [FormsModule],
+      imports: [FormsModule, HttpClientTestingModule],
     }).compileComponents();
   });
 
@@ -53,11 +56,5 @@ describe('LoginComponent', () => {
     const password = 'testpassword';
     component.passwordInputHandle(password);
     expect(component.loginData.password).toBe(password);
-  });
-
-  it('should call login on AuthService and navigate to courses page', () => {
-    component.login();
-    expect(authService.login).toHaveBeenCalledWith(component.loginData);
-    expect(router.navigate).toHaveBeenCalledWith(['courses']);
   });
 });

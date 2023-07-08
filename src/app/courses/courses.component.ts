@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Course } from '../interfaces/course.interface';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { CourseService } from '../services/course.service';
@@ -9,23 +9,10 @@ import { Router } from '@angular/router';
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.css'],
 })
-export class CoursesComponent implements OnInit {
+export class CoursesComponent {
   faPlus = faPlus;
 
-  constructor(
-    public courseService: CourseService,
-    private router: Router
-  ) {}
-
-  ngOnInit() {
-    this.courseService.getList().subscribe((fetchedData) => {
-      this.courseService.courses = [
-        ...this.courseService.courses,
-        ...fetchedData,
-      ];
-      this.courseService.start + 3;
-    });
-  }
+  constructor(public courseService: CourseService, private router: Router) {}
 
   trackByCourseId(index: number, course: Course): string {
     return String(course.id);
@@ -37,11 +24,8 @@ export class CoursesComponent implements OnInit {
 
   handleClickLoadMore() {
     this.courseService.getList().subscribe((fetchedData) => {
-      this.courseService.courses = [
-        ...this.courseService.courses,
-        ...fetchedData,
-      ];
-      this.courseService.start + 3;
+      this.courseService.courses.push(...fetchedData);
+      this.courseService.start += 3;
     });
   }
 
@@ -56,7 +40,6 @@ export class CoursesComponent implements OnInit {
           this.courseService.courses = this.courseService.courses.filter(
             (course) => course.id !== Number(id)
           );
-          this.courseService.start = 0;
         },
         error: (e) => {
           console.log(e);
@@ -70,10 +53,10 @@ export class CoursesComponent implements OnInit {
   }
 
   filterArray() {
-    this.courseService.start=0;
+    this.courseService.start = 0;
     this.courseService.getList().subscribe((fetchedData) => {
       this.courseService.courses = [...fetchedData];
-      this.courseService.start + 3;
+      this.courseService.start += 3;
     });
   }
 }

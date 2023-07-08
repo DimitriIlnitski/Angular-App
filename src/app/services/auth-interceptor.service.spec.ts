@@ -4,12 +4,11 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-
-import { AuthInterceptorService } from './auth-interceptor.service';
 import { AuthService } from './auth.service';
+import { AuthInterceptorService } from './auth-interceptor.service';
 
 describe('AuthInterceptorService', () => {
-  let service: AuthInterceptorService;
+  let authService: AuthService;
   let httpMock: HttpTestingController;
   let httpClient: HttpClient;
 
@@ -18,7 +17,6 @@ describe('AuthInterceptorService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         AuthService,
-        AuthInterceptorService,
         {
           provide: HTTP_INTERCEPTORS,
           useClass: AuthInterceptorService,
@@ -26,7 +24,8 @@ describe('AuthInterceptorService', () => {
         },
       ],
     });
-    service = TestBed.inject(AuthInterceptorService);
+
+    authService = TestBed.inject(AuthService);
     httpMock = TestBed.inject(HttpTestingController);
     httpClient = TestBed.inject(HttpClient);
   });
@@ -35,41 +34,23 @@ describe('AuthInterceptorService', () => {
     httpMock.verify();
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+  it('should add Authorization header with token if token is available', () => {
+    const token = 'dummy-token';
+    spyOn(authService, 'getToken').and.returnValue(token);
 
-  it('should add Authorization header if token exists', () => {
-    const token = 'token';
-    spyOn(service['authService'], 'getToken').and.returnValue(token);
+    httpClient.get('/api/data').subscribe();
 
-    const fakeUrl = 'https://example.com/api';
-    const fakeResponse = { data: 'response' };
-
-    httpClient.get(fakeUrl).subscribe((response) => {
-      expect(response).toEqual(fakeResponse);
-    });
-
-    const httpRequest = httpMock.expectOne(fakeUrl);
+    const httpRequest = httpMock.expectOne('/api/data');
     expect(httpRequest.request.headers.has('Authorization')).toBe(true);
     expect(httpRequest.request.headers.get('Authorization')).toBe(token);
-    httpRequest.flush(fakeResponse);
   });
 
-  it('should pass through the request if token exists', () => {
-    const token = 'token';
-    spyOn(service['authService'], 'getToken').and.returnValue(token);
+  it('should not add Authorization header if token is not available', () => {
+    spyOn(authService, 'getToken').and.returnValue('');
 
-    const fakeUrl = 'https://example.com/api';
-    const fakeResponse = { data: 'response' };
+    httpClient.get('/api/data').subscribe();
 
-    httpClient.get(fakeUrl).subscribe((response) => {
-      expect(response).toEqual(fakeResponse);
-    });
-
-    const httpRequest = httpMock.expectOne(fakeUrl);
-    expect(httpRequest.request.headers.has('Authorization')).toBe(true);
-    expect(httpRequest.request.headers.get('Authorization')).toBe(token);
-    httpRequest.flush(fakeResponse);
+    const httpRequest = httpMock.expectOne('/api/data');
+    expect(httpRequest.request.headers.has('Authorization')).toBe(false);
   });
 });

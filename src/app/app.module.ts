@@ -9,45 +9,25 @@ import { InputComponent } from './shared/input/input.component';
 import { ButtonComponent } from './shared/button/button.component';
 import { LogoComponent } from './shared/logo/logo.component';
 import { FooterComponent } from './footer/footer.component';
-import { CoursesComponent } from './courses/courses.component';
-import { SearchBarComponent } from './search-bar/search-bar.component';
-import { CourseCardComponent } from './course-card/course-card.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { CardBorderColorDirective } from './directives/card-border-color.directive';
-import { DurationFormatPipe } from './shared/pipes/duration-format.pipe';
-import { ListSortByCreationDatePipe } from './shared/pipes/list-sort-by-creation-date.pipe';
+import { CardBorderColorDirective } from './shared/directives/card-border-color.directive';
 import { ListFilterCourseNamePipe } from './shared/pipes/list-filter-course-name.pipe';
 import { LoginComponent } from './login/login.component';
-import { IfAuthenticatedDirective } from './directives/if-authenticated.directive';
-import { CreateCourseComponent } from './create-course/create-course.component';
-import { DateComponent } from './date/date.component';
-import { DurationComponent } from './duration/duration.component';
-import { AuthorsComponent } from './authors/authors.component';
+import { IfAuthenticatedDirective } from './shared/directives/if-authenticated.directive';
 import { AppRoutingModule } from './app-routing.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
+import { RouteReuseStrategy } from '@angular/router';
+import { CustomRouteReuseStrategy } from './services/custom-route-reuse.strategy';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     BreadcrumbsComponent,
-    InputComponent,
-    ButtonComponent,
     FooterComponent,
-    CoursesComponent,
-    LogoComponent,
-    SearchBarComponent,
-    CourseCardComponent,
-    CardBorderColorDirective,
-    DurationFormatPipe,
-    ListSortByCreationDatePipe,
     LoginComponent,
-    IfAuthenticatedDirective,
-    CreateCourseComponent,
-    DateComponent,
-    DurationComponent,
-    AuthorsComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,9 +35,14 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
     FontAwesomeModule,
     AppRoutingModule,
     HttpClientModule,
+    SharedModule,
   ],
   providers: [
     ListFilterCourseNamePipe,
+    {
+      provide: RouteReuseStrategy,
+      useClass: CustomRouteReuseStrategy,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,

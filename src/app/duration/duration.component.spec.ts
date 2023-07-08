@@ -21,4 +21,13 @@ describe('DurationComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('should emit value when onValueChange is called', () => {
+    const value = '90';
+    const valueChangeSpy = spyOn(component.valueChange, 'emit');
+
+    component.value = value;
+    component.onValueChange();
+
+    expect(valueChangeSpy).toHaveBeenCalledWith(value);
+  });
 });

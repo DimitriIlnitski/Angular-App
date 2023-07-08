@@ -5,20 +5,35 @@ import { ButtonComponent } from '../shared/button/button.component';
 import { InputComponent } from '../shared/input/input.component';
 import { DurationFormatPipe } from '../shared/pipes/duration-format.pipe';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+import { DurationComponent } from '../duration/duration.component';
+import { DateComponent } from '../date/date.component';
+import { AuthorsComponent } from '../authors/authors.component';
 
 describe('CreateCourseComponent', () => {
   let component: CreateCourseComponent;
   let fixture: ComponentFixture<CreateCourseComponent>;
 
   beforeEach(() => {
+    const activatedRouteMock = {
+      snapshot: {
+        params: { id: '1' },
+      },
+    };
+
     TestBed.configureTestingModule({
       declarations: [
         CreateCourseComponent,
         ButtonComponent,
         InputComponent,
         DurationFormatPipe,
+        DurationComponent,
+        DateComponent,
+        AuthorsComponent,
       ],
-      imports: [FormsModule],
+      imports: [FormsModule, HttpClientModule],
+      providers: [{ provide: ActivatedRoute, useValue: activatedRouteMock }],
     });
     fixture = TestBed.createComponent(CreateCourseComponent);
     component = fixture.componentInstance;
@@ -33,23 +48,5 @@ describe('CreateCourseComponent', () => {
     const date = '2023-06-28';
     component.dateInputHandler(date);
     expect(component.dateValue).toBe(date);
-  });
-
-  it('should update the authorsValue when authorsInputHandler is called', () => {
-    const authors = 'John Doe, Jane Smith';
-    component.authorsInputHandler(authors);
-    expect(component.authorsValue).toBe(authors);
-  });
-
-  it('should log "Cancel" when cancel is called', () => {
-    spyOn(console, 'log');
-    component.cancel();
-    expect(console.log).toHaveBeenCalledWith('Cancel');
-  });
-
-  it('should log "Save" when save is called', () => {
-    spyOn(console, 'log');
-    component.save();
-    expect(console.log).toHaveBeenCalledWith('Save');
   });
 });

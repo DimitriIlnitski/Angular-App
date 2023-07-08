@@ -23,7 +23,10 @@ export class BreadcrumbsComponent implements OnInit {
 
   ngOnInit() {
     this.router.events.subscribe(() => {
-      const id = this.router.routerState.snapshot.root.firstChild?.params['id'];
+      const id =
+        this.router.routerState.snapshot.root.firstChild?.firstChild?.params[
+          'id'
+        ];
       if (!id) {
         this.breadcrumbsValue = '';
       }
