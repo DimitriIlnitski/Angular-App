@@ -5,37 +5,39 @@ import { AppModule } from '../app.module';
 import { Course } from '../interfaces/course.interface';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-xdescribe('CoursesComponent', () => {
+describe('CoursesComponent', () => {
   let component: CoursesComponent;
   let fixture: ComponentFixture<CoursesComponent>;
   let el: DebugElement;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, CommonModule, FormsModule],
       declarations: [CoursesComponent],
     });
     fixture = TestBed.createComponent(CoursesComponent);
     component = fixture.componentInstance;
     el = fixture.debugElement;
-    component.courseList = [
+    component.courseService.courses = [
       {
-        id: '8693',
-        title: 'duis mollit reprehenderit ad',
-        description:
-          'Est minim ea aute sunt laborum minim eu excepteur. Culpa sint exercitation mollit enim ad culpa aliquip laborum cillum. Dolor officia culpa labore ex eiusmod ut est ea voluptate ea nostrud.',
-        creationDate: '2023-09-28T04:39:24+00:00',
-        duration: 157,
-        isTopRated: true,
+        id: 1,
+        name: 'Empty',
+        description: 'Empty',
+        date: 'July 8, 2023',
+        length: 0,
+        authors: [],
+        isTopRated: false,
       },
       {
-        id: '4980',
-        title: 'magna excepteur aute deserunt',
-        description:
-          'Sunt culpa officia minim commodo eiusmod irure sunt nostrud. Mollit aliquip id occaecat officia proident anim dolor officia qui voluptate consectetur laborum. Duis incididunt culpa aliqua mollit do fugiat ea dolor mollit irure Lorem tempor.',
-        creationDate: '2023-06-10T02:02:36+00:00',
-        duration: 207,
+        id: 1,
+        name: 'Empty',
+        description: 'Empty',
+        date: 'July 8, 2023',
+        length: 0,
+        authors: [],
         isTopRated: false,
       },
     ];
@@ -48,24 +50,18 @@ xdescribe('CoursesComponent', () => {
 
   it('should return correct id when trackByCourseId is called', () => {
     const fakeCourse: Course = {
-      id: 'A',
-      title: 'Empty',
+      id: 1,
+      name: 'Empty',
       description: 'Empty',
-      creationDate: 'Empty',
-      duration: 0,
+      date: 'July 8, 2023',
+      length: 0,
+      authors: [],
       isTopRated: false,
     };
 
-    expect(component.trackByCourseId(1, fakeCourse)).toEqual('A');
+    expect(component.trackByCourseId(1, fakeCourse)).toEqual('1');
   });
 
-  it('should log when handleClickLoadMore is called', () => {
-    const btn = el.query(By.css('.load-more__button')).nativeElement;
-    spyOn(console, 'log');
-    btn.click();
-    fixture.detectChanges();
-    expect(console.log).toHaveBeenCalledWith('Load more');
-  });
 
 
   it('should show list of courses', () => {
@@ -75,13 +71,14 @@ xdescribe('CoursesComponent', () => {
   });
 
   it('should show "Load more" button if courseList is not empty', () => {
-    component.courseList = [
+    component.courseService.courses = [
       {
-        id: '1',
-        title: 'Test Course',
+        id: 1,
+        name: 'Test Course',
         description: 'This is a test course.',
-        creationDate: '2023-01-01',
-        duration: 60,
+        date: '2023-01-01',
+        length: 60,
+        authors: [],
         isTopRated: false,
       },
     ];
@@ -92,7 +89,7 @@ xdescribe('CoursesComponent', () => {
   });
 
   it('should show "No data" message if courseList is empty', () => {
-    component.courseList = [];
+    component.courseService.courses = [];
     fixture.detectChanges();
     const noCoursesDiv =
       fixture.nativeElement.querySelector('.course-nocourses');

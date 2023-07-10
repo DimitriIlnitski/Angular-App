@@ -1,85 +1,81 @@
 import { TestBed } from '@angular/core/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { AuthService } from './auth.service';
+import { HttpClient } from '@angular/common/http';
+import { Token } from '../interfaces/token.interface';
+import { LoginRequest } from '../interfaces/login-request.interface';
+import { CourseService } from './course.service';
 
-xdescribe('AuthService', () => {
-  let service: AuthService;
+describe('AuthService', () => {
+  let authService: AuthService;
+  let httpMock: HttpTestingController;
+  let httpClient: HttpClient;
+  let courseService: CourseService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(AuthService);
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [AuthService, CourseService],
+    });
+
+    authService = TestBed.inject(AuthService);
+    httpMock = TestBed.inject(HttpTestingController);
+    httpClient = TestBed.inject(HttpClient);
+    courseService = TestBed.inject(CourseService);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
     localStorage.clear();
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
-  it('should set user item in localStorage and assign token on login', () => {
-    const loginData = { email: 'test@example.com', password: 'password' };
-    const fakeUser = {
+  it('should login and set token and user details', () => {
+    const loginData: LoginRequest = { login: 'test', password: 'password' };
+    const tokenResponse: Token = { token: 'fakeToken' };
+    const userResponse = {
       id: 1,
-      name: 'name',
-      lastName: 'lastName',
-      token: 'token',
+      token: 'fakeToken',
+      name: { first: 'John', last: 'Doe' },
+      login: 'test',
+      password: 'password',
     };
 
-    service.login(loginData);
+    authService.login(loginData).subscribe();
 
-    const storedUser = localStorage.getItem('user');
-    expect(storedUser).toBeTruthy();
+    const loginRequest = httpMock.expectOne('http://localhost:3004/auth/login');
+    expect(loginRequest.request.method).toBe('POST');
+    loginRequest.flush(tokenResponse);
 
-    if (storedUser !== null) {
-      const parsedUser = JSON.parse(storedUser);
-      expect(parsedUser).toEqual(fakeUser);
+    const userInfoRequest = httpMock.expectOne(
+      'http://localhost:3004/auth/userinfo'
+    );
+    expect(userInfoRequest.request.method).toBe('POST');
+    userInfoRequest.flush(userResponse);
 
-      expect(service['token']).toEqual(fakeUser.token);
-    } else {
-      fail('storedUser should not be null');
-    }
+    expect(authService.getToken()).toBe(tokenResponse.token);
+    expect(localStorage.getItem('token')).toBe(
+      JSON.stringify(tokenResponse.token)
+    );
+    expect(authService.userDetails).toBe(userResponse.name.first);
+    expect(localStorage.getItem('user')).toBe(JSON.stringify(userResponse));
   });
 
-  it('should remove user item from localStorage and reset token on logout', () => {
-    localStorage.setItem('user', JSON.stringify({ token: 'fake-token' }));
+  it('should logout and clear user details and token', () => {
+    authService.logout();
 
-    service.logout();
-
-    expect(localStorage.getItem('user')).toBeFalsy();
-    expect(service['token']).toEqual('');
+    expect(authService.getToken()).toBe('');
+    expect(localStorage.getItem('token')).toBeNull();
+    expect(authService.userDetails).toBe('');
+    expect(localStorage.getItem('user')).toBeNull();
+    expect(courseService.courses).toEqual([]);
+    expect(courseService.start).toBe(0);
+    expect(courseService.searchTerm).toBe('');
   });
 
-  it('should return true when token is not empty in isAuthenticated', () => {
-    service['token'] = 'fake-token';
-
-    const result = service.isAuthenticated();
-
-    expect(result).toBeTrue();
-  });
-
-  it('should return false when token is empty in isAuthenticated', () => {
-    service['token'] = '';
-
-    const result = service.isAuthenticated();
-
-    expect(result).toBeFalse();
-  });
-
-  it('should return user object from localStorage in getUserInfo', () => {
-    const fakeUser = {
-      id: 1,
-      name: 'name',
-      lastName: 'lastName',
-      token: 'token',
-    };
-    localStorage.setItem('user', JSON.stringify(fakeUser));
-
-    const result = service.getUserInfo();
-
-    expect(result).toEqual(fakeUser);
-  });
-
-  it('should return undefined from getUserInfo when user does not exist in localStorage', () => {
-    const result = service.getUserInfo();
-
-    expect(result).toBeUndefined();
+  it('should return false if token is not available', () => {
+    expect(authService.isAuthenticated()).toBe(false);
   });
 });

@@ -1,31 +1,30 @@
-<div class="course-controls">
-  <app-search-bar
-    (searchValueChange)="handleValueChange($event)"
-    (buttonClick)="filterArray()"
-  ></app-search-bar>
+<div class="courses">
+  <div class="course-controls">
+    <app-search-bar
+      (searchValueChange)="handleValueChange($event)"
+      (buttonClick)="filterArray()"
+    ></app-search-bar>
+    <app-button
+      [buttonClass]="'courses__button'"
+      [buttonText]="'Add course'"
+      [toShow]="true"
+      [iconType]="faPlus"
+      (buttonClick)="addNewCourse()"
+    ></app-button>
+  </div>
+  <app-course-card
+    *ngFor="let course of courseService.courses ?? []; trackBy: trackByCourseId"
+    [courseItem]="course"
+    (cardDeleteClick)="deleteCourse($event)"
+  ></app-course-card>
   <app-button
-    [buttonClass]="'courses__button'"
-    [buttonText]="'Add course'"
-    [toShow]="true"
-    [iconType]="faPlus"
-    (buttonClick)="addNewCourse()"
-  ></app-button>
-</div>
-<app-course-card
-  *ngFor="
-    let course of filteredCourseList | listSortByCreationDate;
-    trackBy: trackByCourseId
-  "
-  [courseItem]="course"
-  (cardDeleteClick)="deleteCourse($event)"
-></app-course-card>
-<app-button
-  *ngIf="courseList.length > 0"
-  [buttonClass]="'load-more__button'"
-  [buttonText]="'Load more'"
-  (buttonClick)="handleClickLoadMore()"
->
-</app-button>
-<div *ngIf="!courseList.length" class="course-nocourses">
-  No data, feel free to add new course
+    *ngIf="courseService.courses?.length !== 0"
+    [buttonClass]="'load-more__button'"
+    [buttonText]="'Load more'"
+    (buttonClick)="handleClickLoadMore()"
+  >
+  </app-button>
+  <div *ngIf="courseService.courses?.length === 0" class="course-nocourses">
+    No data, feel free to add new course
+  </div>
 </div>

@@ -1,3 +1,7 @@
+.courses {
+  width: 95vw;
+}
+
 .course-controls {
   display: grid;
   grid-template-columns: 1fr 1fr;

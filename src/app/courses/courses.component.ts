@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Course } from '../interfaces/course.interface';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { ListFilterCourseNamePipe } from '../shared/pipes/list-filter-course-name.pipe';
 import { CourseService } from '../services/course.service';
 import { Router } from '@angular/router';
 
@@ -10,25 +9,13 @@ import { Router } from '@angular/router';
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.css'],
 })
-export class CoursesComponent implements OnInit {
-  courseList: Course[] = [];
-  filteredCourseList: Course[] = [];
-  searchTerm = '';
+export class CoursesComponent {
   faPlus = faPlus;
 
-  constructor(
-    private listFilterCourseNamePipe: ListFilterCourseNamePipe,
-    private courseService: CourseService,
-    private router: Router
-  ) {}
-
-  ngOnInit() {
-    this.courseList = this.courseService.getList();
-    this.filteredCourseList = [...this.courseList];
-  }
+  constructor(public courseService: CourseService, private router: Router) {}
 
   trackByCourseId(index: number, course: Course): string {
-    return course.id;
+    return String(course.id);
   }
 
   addNewCourse(): void {
@@ -36,7 +23,10 @@ export class CoursesComponent implements OnInit {
   }
 
   handleClickLoadMore() {
-    console.log('Load more');
+    this.courseService.getList().subscribe((fetchedData) => {
+      this.courseService.courses.push(...fetchedData);
+      this.courseService.start += 3;
+    });
   }
 
   deleteCourse(id: string) {
@@ -44,21 +34,29 @@ export class CoursesComponent implements OnInit {
       'Do you really want to delete this course?'
     );
     if (decision) {
-      this.courseService.removeItem(id);
-      this.courseList = this.courseList.filter((course) => course.id !== id);
-      this.filteredCourseList = this.filteredCourseList.filter(
-        (course) => course.id !== id
-      );
+      this.courseService.removeItem(id).subscribe({
+        next: () => {
+          console.log(`Course #${id} have been deleted`);
+          this.courseService.courses = this.courseService.courses.filter(
+            (course) => course.id !== Number(id)
+          );
+        },
+        error: (e) => {
+          console.log(e);
+        },
+      });
     }
   }
 
   handleValueChange(value: string) {
-    this.searchTerm = value;
+    this.courseService.searchTerm = value;
   }
 
   filterArray() {
-    this.filteredCourseList = this.listFilterCourseNamePipe
-      .transform(this.courseList, this.searchTerm)
-      .slice();
+    this.courseService.start = 0;
+    this.courseService.getList().subscribe((fetchedData) => {
+      this.courseService.courses = [...fetchedData];
+      this.courseService.start += 3;
+    });
   }
 }

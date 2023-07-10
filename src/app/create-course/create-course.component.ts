@@ -1,58 +1,135 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../services/course.service';
-import { RouteParameterService } from '../services/route-parameter.service';
+import { Course } from '../interfaces/course.interface';
 
 @Component({
   selector: 'app-create-course',
   templateUrl: './create-course.component.html',
   styleUrls: ['./create-course.component.css'],
 })
-export class CreateCourseComponent implements OnInit, OnDestroy {
-  titleValue = '';
+export class CreateCourseComponent implements OnInit {
+  nameValue = '';
   descriptionValue = '';
-  durationValue = 0;
+  lengthValue = '';
   dateValue = '';
-  authorsValue = '';
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  authorsValue: any = '';
+  courseValue!: Course;
+
+  shouldEdit = false;
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private courseService: CourseService,
-    private routeParameterService: RouteParameterService
+    private courseService: CourseService
   ) {}
 
   ngOnInit(): void {
     const id = this.activatedRoute.snapshot.params['id'];
+
     if (id) {
-      this.routeParameterService.setData(id);
       const course = this.courseService.getItemById(id);
       if (course) {
-        this.titleValue = course.title;
+        this.nameValue = course.name;
+        this.dateValue = course.date;
+        this.lengthValue = String(course.length);
         this.descriptionValue = course.description;
-        this.durationValue = course.duration;
-        this.dateValue = course.creationDate;
+        this.courseValue = course;
+        this.shouldEdit = true;
       }
     }
   }
-  ngOnDestroy() {
-    this.routeParameterService.setData(null);
+
+  dateInputHandler(date: string): void {
+    this.dateValue = date;
   }
-  
-  dateInputHandler(date: string): string {
-    return (this.dateValue = date);
+  durationInputHandler(length: string) {
+    this.lengthValue = length;
   }
-  durationInputHandler(duration: string): number {
-    return (this.durationValue = parseInt(duration));
-  }
-  authorsInputHandler(authors: string): string {
-    return (this.authorsValue = authors);
+  authorsInputHandler(authors: string) {
+    this.authorsValue = authors;
   }
 
   cancel(): void {
-    this.router.navigate(['/courses']);
+    this.courseService.courses = [];
+    this.courseService.start = 0;
+    this.courseService.getList().subscribe((fetchedData) => {
+      this.courseService.courses.push(...fetchedData);
+      this.courseService.start += 3;
+      this.router.navigate(['courses']);
+    });
   }
   save(): void {
-    this.router.navigate(['/courses']);
+    if (!this.shouldEdit) {
+      const newCourse: Course = {
+        id: Math.floor(Math.random() * (20000 - 1000 + 1)) + 1000,
+        name: this.nameValue,
+        date: new Date().toISOString(),
+        length: Number(this.lengthValue),
+        description: this.descriptionValue,
+        authors: [
+          {
+            id: 5653,
+            name: 'Leblanc',
+          },
+        ],
+        isTopRated: true,
+      };
+      this.courseService.createCourse(newCourse).subscribe({
+        next: () => {
+          console.log(`Course #${newCourse.id} have been added successfully`);
+          this.courseService.courses = [];
+          this.courseService.start = 0;
+          this.courseService.getList().subscribe((fetchedData) => {
+            this.courseService.courses.push(...fetchedData);
+            this.courseService.start += 3;
+            this.router.navigate(['courses']);
+          });
+        },
+        error: (e) => {
+          console.log(e);
+        },
+      });
+
+      return;
+    }
+
+    const updatedCourse: Course = {
+      id: this.courseValue.id,
+      name: this.nameValue,
+      date: new Date().toISOString(),
+      length: Number(this.lengthValue),
+      description: this.descriptionValue,
+      authors: [
+        {
+          id: 5653,
+          name: 'Leblanc',
+        },
+      ],
+      isTopRated: false,
+    };
+    this.courseService.updateItem(updatedCourse).subscribe({
+      next: (respond) => {
+        this.courseService.courses.map((course) => {
+          if (course.id === respond.id) {
+            course.name = respond.name;
+            course.date = respond.date;
+            course.length = respond.length;
+            course.description = respond.description;
+            course.authors = respond.authors;
+            course.isTopRated = respond.isTopRated;
+          }
+        });
+        console.log(
+          `Course #${updatedCourse.id} have been updated successfully`
+        );
+        this.router.navigate(['courses']);
+      },
+      error: (e) => {
+        console.log(e);
+      },
+    });
+    return;
   }
 }

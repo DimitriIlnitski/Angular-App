@@ -9,16 +9,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
-  constructor(private authService: AuthService, private router: Router) {}
   faUser = faUser;
   faRightFromBracket = faRightFromBracket;
+
+  constructor(public authService: AuthService, private router: Router) {}
 
   logoutHandle() {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
 
-  isUserAndBtnVisible(): boolean{
+  isUserAndBtnVisible(): boolean {
     return this.authService.isAuthenticated();
   }
 }

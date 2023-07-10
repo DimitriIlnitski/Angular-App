@@ -11,7 +11,7 @@ export class ListFilterCourseNamePipe implements PipeTransform {
     }
 
     return courseList.filter((course: Course) =>
-      course.title.toLowerCase().includes(searchTerm.toLowerCase())
+      course.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }
 }
