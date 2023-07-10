@@ -5,16 +5,14 @@ import { AuthGuard } from '../guards/auth.guard';
 import { CoursesComponent } from './courses.component';
 
 const routes: Routes = [
-  { path: '', component: CoursesComponent, canActivate: [AuthGuard] },
+  { path: '', component: CoursesComponent},
   {
     path: ':id',
     component: CreateCourseComponent,
-    canActivate: [AuthGuard],
   },
   {
     path: 'new',
     component: CreateCourseComponent,
-    canActivate: [AuthGuard],
   },
 ];
 

@@ -5,6 +5,7 @@ import { Router, UrlTree } from '@angular/router';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from '../services/auth.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Observable, of } from 'rxjs';
 
 describe('AuthGuard', () => {
   let guard: AuthGuard;
@@ -27,17 +28,19 @@ describe('AuthGuard', () => {
 
   it('should return true if the user is authenticated', () => {
     spyOn(authService, 'isAuthenticated').and.returnValue(true);
-    const canActivate = guard.canActivate();
-    expect(canActivate).toBe(true);
+
+    guard.canActivate().subscribe((result) => {
+      expect(result).toBe(true);
+    });
   });
 
   it('should redirect to login page if the user is not authenticated', () => {
     spyOn(authService, 'isAuthenticated').and.returnValue(false);
     const navigateSpy = spyOn(router, 'createUrlTree').and.callThrough();
 
-    const canActivate = guard.canActivate();
-
-    expect(canActivate instanceof UrlTree).toBe(true);
-    expect(navigateSpy).toHaveBeenCalledWith(['login']);
+    guard.canActivate().subscribe((result) => {
+      expect(result instanceof UrlTree).toBe(true);
+      expect(navigateSpy).toHaveBeenCalledWith(['login']);
+    });
   });
 });

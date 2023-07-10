@@ -107,9 +107,13 @@ describe('CourseService', () => {
 
     const courseId = '1';
 
-    const retrievedCourse = courseService.getItemById(courseId);
+    courseService.getItemById(courseId).subscribe((retrievedCourse) => {
+      expect(retrievedCourse).toEqual(mockCourses[0]);
+    });
 
-    expect(retrievedCourse).toEqual(mockCourses[0]);
+    const req = httpMock.expectOne(`http://localhost:3004/courses/${courseId}`);
+    expect(req.request.method).toBe('GET');
+    req.flush(mockCourses[0]);
   });
 
   it('should update a course', () => {

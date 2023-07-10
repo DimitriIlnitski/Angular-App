@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {CardBorderColorDirective} from './directives/card-border-color.directive'
 import {IfAuthenticatedDirective} from './directives/if-authenticated.directive'
+import { CourseService } from '../services/course.service';
 @NgModule({
   declarations: [
     ButtonComponent,
@@ -22,6 +23,7 @@ import {IfAuthenticatedDirective} from './directives/if-authenticated.directive'
     IfAuthenticatedDirective,
   ],
   imports: [CommonModule, FormsModule, FontAwesomeModule],
+  providers: [CourseService],
   exports: [
     ButtonComponent,
     InputComponent,

@@ -5,7 +5,7 @@ import {
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
-import { AuthService } from './auth.service';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root',

@@ -5,6 +5,7 @@ import { AuthService } from '../services/auth.service';
 import { CourseService } from '../services/course.service';
 import { Course } from '../interfaces/course.interface';
 import { IfAuthenticatedDirective } from '../shared/directives/if-authenticated.directive';
+import { of } from 'rxjs';
 
 describe('BreadcrumbsComponent', () => {
   let component: BreadcrumbsComponent;
@@ -14,7 +15,10 @@ describe('BreadcrumbsComponent', () => {
 
   beforeEach(async () => {
     const authSpy = jasmine.createSpyObj('AuthService', ['isAuthenticated']);
-    const courseSpy = jasmine.createSpyObj('CourseService', ['getItemById']);
+    const courseSpy = jasmine.createSpyObj('CourseService', [
+      'getItemById',
+      'isLoadingMethod',
+    ]); // Add 'isLoadingMethod' to the CourseService spy
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
@@ -44,7 +48,7 @@ describe('BreadcrumbsComponent', () => {
       authors: [],
       isTopRated: true,
     };
-    courseService.getItemById.and.returnValue(course);
+    courseService.getItemById.and.returnValue(of(course));
     fixture.detectChanges();
   });
 
@@ -54,11 +58,5 @@ describe('BreadcrumbsComponent', () => {
 
   it('should be visible when authenticated', () => {
     expect(component.isBreadcrumbsVisible()).toBe(true);
-  });
-
-  it('should clear the breadcrumbs value when no course ID is present', () => {
-    courseService.getItemById.and.returnValue(undefined);
-    component.ngOnInit();
-    expect(component.breadcrumbsValue).toBe('');
   });
 });

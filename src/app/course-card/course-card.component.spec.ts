@@ -17,6 +17,8 @@ import { DurationFormatPipe } from '../shared/pipes/duration-format.pipe';
 import { CardBorderColorDirective } from '../shared/directives/card-border-color.directive';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { SharedModule } from '../shared/shared.module';
 
 @Component({
   template: `<app-course-card
@@ -88,7 +90,7 @@ describe('CourseCardComponent (Stand alone testing)', () => {
       },
     };
     TestBed.configureTestingModule({
-      imports: [FontAwesomeModule, CommonModule],
+      imports: [FontAwesomeModule, CommonModule, HttpClientTestingModule],
       declarations: [
         CourseCardComponent,
         ButtonComponent,
@@ -161,7 +163,7 @@ describe('CourseCardComponent (Host component testing)', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, FontAwesomeModule, SharedModule],
       declarations: [CourseCardComponent, TestHostComponent],
     });
     fixture = TestBed.createComponent(TestHostComponent);

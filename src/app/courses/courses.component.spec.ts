@@ -7,6 +7,10 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { SearchBarComponent } from '../search-bar/search-bar.component';
+import { SharedModule } from '../shared/shared.module';
+import { CourseCardComponent } from '../course-card/course-card.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 describe('CoursesComponent', () => {
   let component: CoursesComponent;
@@ -15,8 +19,8 @@ describe('CoursesComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [AppModule, CommonModule, FormsModule],
-      declarations: [CoursesComponent],
+      imports: [AppModule, CommonModule, FormsModule, SharedModule, FontAwesomeModule],
+      declarations: [CoursesComponent, SearchBarComponent, CourseCardComponent],
     });
     fixture = TestBed.createComponent(CoursesComponent);
     component = fixture.componentInstance;
@@ -59,7 +63,7 @@ describe('CoursesComponent', () => {
       isTopRated: false,
     };
 
-    expect(component.trackByCourseId(1, fakeCourse)).toEqual('1');
+    expect(component.trackByCourseId(1, fakeCourse)).toEqual(1);
   });
 
 

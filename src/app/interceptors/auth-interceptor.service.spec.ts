@@ -4,7 +4,7 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-import { AuthService } from './auth.service';
+import { AuthService } from '../services/auth.service';
 import { AuthInterceptorService } from './auth-interceptor.service';
 
 describe('AuthInterceptorService', () => {

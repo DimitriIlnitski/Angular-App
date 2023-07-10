@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../services/course.service';
 import { Course } from '../interfaces/course.interface';
+import { LoadingBlockService } from '../services/loading-block.service';
 
 @Component({
   selector: 'app-create-course',
@@ -22,22 +23,22 @@ export class CreateCourseComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private courseService: CourseService
+    private courseService: CourseService,
+    private loadingBlockService: LoadingBlockService
   ) {}
 
   ngOnInit(): void {
     const id = this.activatedRoute.snapshot.params['id'];
 
     if (id) {
-      const course = this.courseService.getItemById(id);
-      if (course) {
+      this.courseService.getItemById(id).subscribe((course) => {
         this.nameValue = course.name;
         this.dateValue = course.date;
         this.lengthValue = String(course.length);
         this.descriptionValue = course.description;
         this.courseValue = course;
         this.shouldEdit = true;
-      }
+      });
     }
   }
 
@@ -54,10 +55,18 @@ export class CreateCourseComponent implements OnInit {
   cancel(): void {
     this.courseService.courses = [];
     this.courseService.start = 0;
-    this.courseService.getList().subscribe((fetchedData) => {
-      this.courseService.courses.push(...fetchedData);
-      this.courseService.start += 3;
-      this.router.navigate(['courses']);
+
+    this.courseService.getList().subscribe({
+      next: (fetchedData) => {
+        this.courseService.courses.push(...fetchedData);
+        this.courseService.start += 3;
+        this.loadingBlockService.isLoading = false;
+        this.router.navigate(['courses']);
+      },
+      error: (e) => {
+        this.loadingBlockService.isLoading = false;
+        console.log(e);
+      },
     });
   }
   save(): void {
@@ -84,10 +93,12 @@ export class CreateCourseComponent implements OnInit {
           this.courseService.getList().subscribe((fetchedData) => {
             this.courseService.courses.push(...fetchedData);
             this.courseService.start += 3;
+            this.loadingBlockService.isLoading = false;
             this.router.navigate(['courses']);
           });
         },
         error: (e) => {
+          this.loadingBlockService.isLoading = false;
           console.log(e);
         },
       });
@@ -124,9 +135,11 @@ export class CreateCourseComponent implements OnInit {
         console.log(
           `Course #${updatedCourse.id} have been updated successfully`
         );
+     this.loadingBlockService.isLoading = false;
         this.router.navigate(['courses']);
       },
       error: (e) => {
+        this.loadingBlockService.isLoading = false;
         console.log(e);
       },
     });
