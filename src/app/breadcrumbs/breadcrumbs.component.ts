@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { CourseService } from '../services/course.service';
 import { Course } from '../interfaces/course.interface';
-import { Observable, filter, of } from 'rxjs';
+import { Observable, filter, map, of, switchMap } from 'rxjs';
 import { LoadingBlockService } from '../services/loading-block.service';
 
 @Component({
@@ -27,19 +27,25 @@ export class BreadcrumbsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => {
+    this.breadcrumbsValue$ = this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      map(() => {
         const id =
           this.activatedRoute.firstChild?.firstChild?.snapshot.params['id'];
+        console.log(id);
+        return id;
+      }),
+      switchMap((id) => {
         if (id) {
-          this.courseService.getItemById(id).subscribe((course: Course) => {
-            const updatedValue = course.name ? `/ ${course.name}` : '';
-            this.breadcrumbsValue$ = of(updatedValue);
-          });
+          return this.courseService
+            .getItemById(id)
+            .pipe(
+              map((course: Course) => (course.name ? ` / ${course.name}` : ''))
+            );
         } else {
-          this.breadcrumbsValue$ = of('');
+          return of('');
         }
-      });
+      })
+    );
   }
 }
