@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { faUser, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
@@ -8,18 +8,11 @@ import { Router } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent implements OnInit {
-  userDetails='';
+export class HeaderComponent{
   faUser = faUser;
   faRightFromBracket = faRightFromBracket;
 
   constructor(public authService: AuthService, private router: Router) {}
-
-  ngOnInit() {
-    this.authService.userDetails.subscribe(
-      (userDetails) => (this.userDetails = userDetails)
-    );
-  }
 
   logoutHandle() {
     this.authService.logout();

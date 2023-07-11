@@ -5,7 +5,7 @@ import { Token } from '../interfaces/token.interface';
 import { Observable, of, tap } from 'rxjs';
 import { LoginRequest } from '../interfaces/login-request.interface';
 import { CourseService } from './course.service';
-import { environment } from '../environments/environments';
+import { environment } from '../../environments/environment.development';
 import { LoadingBlockService } from './loading-block.service';
 
 @Injectable({
@@ -15,7 +15,7 @@ export class AuthService {
   private token = '';
   apiUrl = '';
 
-  userDetails: Observable<string> = of('');
+  userDetails$!: Observable<string>;
 
   constructor(
     private http: HttpClient,
@@ -26,7 +26,7 @@ export class AuthService {
     this.token = token ? JSON.parse(token) : '';
     const userJson = localStorage.getItem('user');
     const user = userJson ? JSON.parse(userJson) : null;
-    this.userDetails = of(user?.name?.first ?? 'Unknown');
+    this.userDetails$ = of(user?.name?.first ?? 'Unknown');
     this.apiUrl = environment.apiUrl;
   }
 
@@ -47,7 +47,7 @@ export class AuthService {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     this.token = '';
-    this.userDetails = of('');
+    this.userDetails$ = of('');
     this.courseService.courses = [];
     this.courseService.start = 0;
     this.courseService.searchTerm = '';
@@ -67,7 +67,7 @@ export class AuthService {
       .subscribe({
         next: (user) => {
           localStorage.setItem('user', JSON.stringify(user));
-          this.userDetails = of(user.name?.first ?? 'Unknown');
+          this.userDetails$ = of(user.name?.first ?? 'Unknown');
           this.loadingBlockService.isLoading = false;
           console.log('User details received successfully');
         },

@@ -3,7 +3,7 @@ import { Course } from '../interfaces/course.interface';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { CourseService } from '../services/course.service';
 import { Router } from '@angular/router';
-import { debounceTime, filter } from 'rxjs';
+import { debounceTime, filter, of, switchMap, tap } from 'rxjs';
 import { LoadingBlockService } from '../services/loading-block.service';
 
 @Component({
@@ -40,25 +40,28 @@ export class CoursesComponent implements OnInit {
 
     this.courseService.SearchCourses.pipe(
       filter((str: string) => str.length > 3 || str.length === 0),
-      debounceTime(300)
-    ).subscribe({
-      next: (str: string) => {
+      debounceTime(300),
+      tap((str: string) => {
         this.courseService.searchTerm = str;
+      }),
+      switchMap((str: string) => {
         if (str.length === 0 || str.length >= 3) {
           this.courseService.start = 0;
-          this.courseService.getList().subscribe({
-            next: (fetchedData) => {
-              this.courseService.courses = [];
-              this.courseService.courses.push(...fetchedData);
-              this.courseService.start += 3;
-              this.loadingBlockService.isLoading = false;
-            },
-            error: (e) => {
-              this.loadingBlockService.isLoading = false;
-              console.log(e);
-            },
-          });
+          return this.courseService.getList();
+        } else {
+          return of([]); 
         }
+      })
+    ).subscribe({
+      next: (fetchedData) => {
+        this.courseService.courses = [];
+        this.courseService.courses.push(...fetchedData);
+        this.courseService.start += 3;
+        this.loadingBlockService.isLoading = false;
+      },
+      error: (e) => {
+        this.loadingBlockService.isLoading = false;
+        console.log(e);
       },
     });
   }
@@ -99,7 +102,7 @@ export class CoursesComponent implements OnInit {
           this.loadingBlockService.isLoading = false;
         },
         error: (e) => {
-         this.loadingBlockService.isLoading = false;
+          this.loadingBlockService.isLoading = false;
           console.log(e);
         },
       });

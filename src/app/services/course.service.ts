@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Course } from '../interfaces/course.interface';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs';
-import { environment } from '../environments/environments';
+import { environment } from '../../environments/environment.development';
 import { LoadingBlockService } from './loading-block.service';
 
 @Injectable({

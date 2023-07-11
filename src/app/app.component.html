@@ -7,5 +7,5 @@
     </div>
   </section>
   <app-footer></app-footer>
-  <app-loading-block></app-loading-block>
+  <app-loading-block  *ngIf="loadingBlockService.isLoadingMethod()"></app-loading-block>
 </div>

@@ -3,7 +3,7 @@
     <app-logo></app-logo>
     <div class="header__user-name" *appIfAuthenticated="isUserAndBtnVisible()">
       <fa-icon [icon]="faUser"></fa-icon> &nbsp;
-      <div>&nbsp;{{ userDetails }}</div>
+      <div>&nbsp;{{ authService.userDetails$ | async }}</div>
     </div>
     <app-button
       [buttonClass]="'header__button'"
