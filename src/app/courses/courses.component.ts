@@ -1,21 +1,73 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Course } from '../interfaces/course.interface';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { CourseService } from '../services/course.service';
 import { Router } from '@angular/router';
+import { debounceTime, filter, of, switchMap, tap } from 'rxjs';
+import { LoadingBlockService } from '../services/loading-block.service';
 
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.css'],
 })
-export class CoursesComponent {
+export class CoursesComponent implements OnInit {
   faPlus = faPlus;
 
-  constructor(public courseService: CourseService, private router: Router) {}
+  constructor(
+    public courseService: CourseService,
+    private router: Router,
+    private loadingBlockService: LoadingBlockService
+  ) {}
 
-  trackByCourseId(index: number, course: Course): string {
-    return String(course.id);
+  ngOnInit() {
+    if (
+      this.courseService.courses.length === 0 &&
+      this.courseService.start === 0
+    ) {
+      this.courseService.getList().subscribe({
+        next: (fetchedData) => {
+          this.courseService.courses.push(...fetchedData);
+          this.courseService.start += 3;
+          this.loadingBlockService.isLoading = false;
+        },
+        error: (e) => {
+          this.loadingBlockService.isLoading = false;
+          console.log(e);
+        },
+      });
+    }
+
+    this.courseService.SearchCourses.pipe(
+      filter((str: string) => str.length > 3 || str.length === 0),
+      debounceTime(300),
+      tap((str: string) => {
+        this.courseService.searchTerm = str;
+      }),
+      switchMap((str: string) => {
+        if (str.length === 0 || str.length >= 3) {
+          this.courseService.start = 0;
+          return this.courseService.getList();
+        } else {
+          return of([]); 
+        }
+      })
+    ).subscribe({
+      next: (fetchedData) => {
+        this.courseService.courses = [];
+        this.courseService.courses.push(...fetchedData);
+        this.courseService.start += 3;
+        this.loadingBlockService.isLoading = false;
+      },
+      error: (e) => {
+        this.loadingBlockService.isLoading = false;
+        console.log(e);
+      },
+    });
+  }
+
+  trackByCourseId(index: number, course: Course): number {
+    return course.id;
   }
 
   addNewCourse(): void {
@@ -23,9 +75,16 @@ export class CoursesComponent {
   }
 
   handleClickLoadMore() {
-    this.courseService.getList().subscribe((fetchedData) => {
-      this.courseService.courses.push(...fetchedData);
-      this.courseService.start += 3;
+    this.courseService.getList().subscribe({
+      next: (fetchedData) => {
+        this.courseService.courses.push(...fetchedData);
+        this.loadingBlockService.isLoading = false;
+        this.courseService.start += 3;
+      },
+      error: (e) => {
+        this.loadingBlockService.isLoading = false;
+        console.log(e);
+      },
     });
   }
 
@@ -40,23 +99,13 @@ export class CoursesComponent {
           this.courseService.courses = this.courseService.courses.filter(
             (course) => course.id !== Number(id)
           );
+          this.loadingBlockService.isLoading = false;
         },
         error: (e) => {
+          this.loadingBlockService.isLoading = false;
           console.log(e);
         },
       });
     }
-  }
-
-  handleValueChange(value: string) {
-    this.courseService.searchTerm = value;
-  }
-
-  filterArray() {
-    this.courseService.start = 0;
-    this.courseService.getList().subscribe((fetchedData) => {
-      this.courseService.courses = [...fetchedData];
-      this.courseService.start += 3;
-    });
   }
 }

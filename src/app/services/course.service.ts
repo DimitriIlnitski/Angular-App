@@ -1,17 +1,30 @@
 import { Injectable } from '@angular/core';
 import { Course } from '../interfaces/course.interface';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Subject } from 'rxjs';
+import { environment } from '../../environments/environment.development';
+import { LoadingBlockService } from './loading-block.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CourseService {
-  constructor(private http: HttpClient) {}
+  SearchCourses: Subject<string> = new Subject<string>();
+
   courses: Course[] = [];
   start = 0;
   searchTerm = '';
+  apiUrl = '';
+
+  constructor(
+    private http: HttpClient,
+    private loadingBlockService: LoadingBlockService
+  ) {
+    this.apiUrl = environment.apiUrl;
+  }
 
   getList() {
+    this.loadingBlockService.isLoading = true;
     let params: HttpParams;
     if (this.searchTerm) {
       params = new HttpParams()
@@ -25,27 +38,31 @@ export class CourseService {
         .set('count', 3)
         .set('sort', 'date');
     }
-    return this.http.get<Course[]>('http://localhost:3004/courses', {
+    return this.http.get<Course[]>(`${this.apiUrl}/courses`, {
       params,
     });
   }
 
   createCourse(course: Course) {
-    return this.http.post<Course>('http://localhost:3004/courses', course);
+    this.loadingBlockService.isLoading = true;
+    return this.http.post<Course>(`${this.apiUrl}/courses`, course);
   }
 
-  getItemById(id: string): Course | undefined {
-    return this.courses.find((course) => course.id === Number(id));
+  getItemById(id: string) {
+    return this.http.get<Course>(`${this.apiUrl}/courses/${id}`);
   }
 
-  updateItem(updatedCourse:Course) {
+  updateItem(updatedCourse: Course) {
+    this.loadingBlockService.isLoading = true;
     return this.http.patch<Course>(
-      `http://localhost:3004/courses/${updatedCourse.id}`,
+      `${this.apiUrl}/courses/${updatedCourse.id}`,
       updatedCourse
     );
   }
 
   removeItem(id: string) {
-    return this.http.delete<void>(`http://localhost:3004/courses/${id}`);
+    this.loadingBlockService.isLoading = true;
+    return this.http.delete<void>(`${this.apiUrl}/courses/${id}`);
   }
+
 }

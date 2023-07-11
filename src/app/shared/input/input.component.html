@@ -6,11 +6,13 @@
   <input
     class="input-field"
     [class]="inputClass"
+    [ngClass]="{ disabled: !loadingBlockService.isLoadingMethod() }"
     [type]="inputType"
     [(ngModel)]="value"
     [id]="idInput"
     [name]="idInput"
     [placeholder]="placeholderText"
     (input)="onValueChange()"
+    (keyup)="onSearch()"
   />
 </div>

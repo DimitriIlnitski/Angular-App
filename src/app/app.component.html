@@ -6,6 +6,6 @@
       <router-outlet></router-outlet>
     </div>
   </section>
-
   <app-footer></app-footer>
+  <app-loading-block  *ngIf="loadingBlockService.isLoadingMethod()"></app-loading-block>
 </div>

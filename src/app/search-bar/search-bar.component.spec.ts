@@ -3,6 +3,7 @@ import { SearchBarComponent } from './search-bar.component';
 import { InputComponent } from '../shared/input/input.component';
 import { ButtonComponent } from '../shared/button/button.component';
 import { FormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('SearchBarComponent', () => {
   let component: SearchBarComponent;
@@ -11,7 +12,7 @@ describe('SearchBarComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SearchBarComponent, InputComponent, ButtonComponent],
-      imports: [FormsModule],
+      imports: [FormsModule, HttpClientTestingModule],
     }).compileComponents();
   });
 
@@ -23,18 +24,5 @@ describe('SearchBarComponent', () => {
 
   it('should create the component', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should emit search value change event', () => {
-    const value = 'angular';
-    spyOn(component.searchValueChange, 'emit');
-    component.handleInputValueChange(value);
-    expect(component.searchValueChange.emit).toHaveBeenCalledWith(value);
-  });
-
-  it('should emit button click event', () => {
-    spyOn(component.buttonClick, 'emit');
-    component.handleButtonClick();
-    expect(component.buttonClick.emit).toHaveBeenCalled();
   });
 });

@@ -59,16 +59,20 @@ describe('AuthService', () => {
     expect(localStorage.getItem('token')).toBe(
       JSON.stringify(tokenResponse.token)
     );
-    expect(authService.userDetails).toBe(userResponse.name.first);
+    authService.userDetails.subscribe((userDetails) => {
+      expect(userDetails).toBe(userResponse.name.first);
+    });
     expect(localStorage.getItem('user')).toBe(JSON.stringify(userResponse));
   });
 
   it('should logout and clear user details and token', () => {
     authService.logout();
+    authService.userDetails.subscribe((userDetails) => {
+      expect(userDetails).toBe('');
+    });
 
     expect(authService.getToken()).toBe('');
     expect(localStorage.getItem('token')).toBeNull();
-    expect(authService.userDetails).toBe('');
     expect(localStorage.getItem('user')).toBeNull();
     expect(courseService.courses).toEqual([]);
     expect(courseService.start).toBe(0);

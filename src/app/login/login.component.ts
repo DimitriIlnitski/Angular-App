@@ -27,12 +27,8 @@ export class LoginComponent {
   login() {
     this.authService.login(this.loginData).subscribe({
       next: () => {
-        this.courseService.getList().subscribe((fetchedData) => {
-          this.courseService.courses.push(...fetchedData);
-          this.courseService.start += 3;
-          this.router.navigate(['courses']);
-          console.log('Logged in successfully');
-        });
+        this.router.navigate(['courses']);
+        console.log('Logged in successfully');
       },
     });
   }

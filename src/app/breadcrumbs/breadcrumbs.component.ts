@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { CourseService } from '../services/course.service';
+import { Course } from '../interfaces/course.interface';
+import { Observable, filter, map, of, switchMap } from 'rxjs';
+import { LoadingBlockService } from '../services/loading-block.service';
 
 @Component({
   selector: 'app-breadcrumbs',
@@ -9,12 +12,14 @@ import { CourseService } from '../services/course.service';
   styleUrls: ['./breadcrumbs.component.css'],
 })
 export class BreadcrumbsComponent implements OnInit {
-  breadcrumbsValue: string | undefined = '';
+  breadcrumbsValue$!: Observable<string>;
 
   constructor(
     private authService: AuthService,
     private courseService: CourseService,
-    private router: Router
+    public loadingBlockService: LoadingBlockService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   isBreadcrumbsVisible(): boolean {
@@ -22,16 +27,25 @@ export class BreadcrumbsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.router.events.subscribe(() => {
-      const id =
-        this.router.routerState.snapshot.root.firstChild?.firstChild?.params[
-          'id'
-        ];
-      if (!id) {
-        this.breadcrumbsValue = '';
-      }
-      const name = this.courseService.getItemById(id)?.name;
-      name ? (this.breadcrumbsValue = `/ ${name}`) : '';
-    });
+    this.breadcrumbsValue$ = this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      map(() => {
+        const id =
+          this.activatedRoute.firstChild?.firstChild?.snapshot.params['id'];
+        console.log(id);
+        return id;
+      }),
+      switchMap((id) => {
+        if (id) {
+          return this.courseService
+            .getItemById(id)
+            .pipe(
+              map((course: Course) => (course.name ? ` / ${course.name}` : ''))
+            );
+        } else {
+          return of('');
+        }
+      })
+    );
   }
 }

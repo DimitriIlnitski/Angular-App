@@ -1,3 +1,10 @@
-<button class="button" [ngClass]="buttonClass" type='submit' (click)="clickHandler()">
-  <fa-icon *ngIf="toShow"[class]="iconClass" [icon]="iconType"></fa-icon>  {{buttonText}} 
+<button
+  class="button"
+  [class]="buttonClass"
+  [ngClass]="{ disabled: ! loadingBlockService.isLoadingMethod() }"
+  type="submit"
+  (click)="clickHandler()"
+>
+  <fa-icon *ngIf="toShow" [class]="iconClass" [icon]="iconType"></fa-icon>
+  {{ buttonText }}
 </button>
