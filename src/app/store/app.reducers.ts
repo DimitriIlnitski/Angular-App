@@ -1,6 +1,7 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import * as AppActions from './app.actions';
 import { AppState } from 'src/app/interfaces/app-state.interface';
+import { Subject } from 'rxjs';
 
 const storedToken = localStorage.getItem('token');
 const storedUser = localStorage.getItem('user');
@@ -56,6 +57,10 @@ const _appReducer = createReducer(
       start: state.start + 3,
     })
   ),
+  on(
+    AppActions.setStartZeroAndDirectToGetList,
+    (state): AppState => ({ ...state, start: 0 })
+  ),
   //---------------------------------------------
   on(
     AppActions.createCourse,
@@ -71,9 +76,10 @@ const _appReducer = createReducer(
     AppActions.removeCourse,
     (state): AppState => ({ ...state, isLoading: true })
   ),
+  //----------------------------------------------
   on(
-    AppActions.setStartAndDirectToGetList,
-    (state, { value }): AppState => ({ ...state, start: value })
+    AppActions.setSearchTerm,
+    (state, { value }): AppState => ({ ...state, searchTerm: value })
   )
 );
 

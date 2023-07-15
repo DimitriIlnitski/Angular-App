@@ -1,19 +1,22 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CourseService } from 'src/app/services/course.service';
-import { LoadingBlockService } from 'src/app/services/loading-block.service';
-
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  OnDestroy,
+} from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
+import { setSearchTerm } from 'src/app/store/app.actions';
+import { selectIsLoading } from 'src/app/store/app.selector';
 
 @Component({
   selector: 'app-input',
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.css'],
 })
-export class InputComponent {
-  constructor(
-    public courseService: CourseService,
-    public loadingBlockService: LoadingBlockService
-  ) {}
-
+export class InputComponent implements OnInit, OnDestroy {
   @Input()
   labelText = '';
   @Input()
@@ -30,6 +33,22 @@ export class InputComponent {
   idInput = '';
   @Input()
   value = '';
+  isLoadingValue = false;
+  isLoadingValue$!: Observable<boolean>;
+  subscription!: Subscription;
+
+  constructor(public store: Store) {}
+
+  ngOnInit() {
+    this.isLoadingValue$ = this.store.select(selectIsLoading);
+    this.subscription = this.isLoadingValue$.subscribe(
+      (value) => (this.isLoadingValue = value)
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
   @Output()
   valueChange = new EventEmitter<string>();
@@ -39,6 +58,10 @@ export class InputComponent {
   }
 
   onSearch() {
-    this.courseService.SearchCourses.next(this.value);
+    this.store.dispatch(setSearchTerm({ value: this.value }));
+  }
+
+  isLoading() {
+    return this.isLoadingValue;
   }
 }

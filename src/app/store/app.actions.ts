@@ -18,8 +18,10 @@ export const logout = createAction('[Auth] Logout');
 export const logoutSuccess = createAction('[Auth] Logout Success');
 //----------------------------------
 
-export const getUserInfo = createAction('[Auth] Get User Info', 
-  props<{ token: string }>());
+export const getUserInfo = createAction(
+  '[Auth] Get User Info',
+  props<{ token: string }>()
+);
 
 export const getUserInfoSuccess = createAction(
   '[Auth] Get User Info Success',
@@ -70,7 +72,11 @@ export const removeCourse = createAction(
 
 //----------------------------------------
 
-export const setStartAndDirectToGetList = createAction(
-  '[Courses] Set Start And Direct To Get List',
-  props<{ value: number }>()
+export const setStartZeroAndDirectToGetList = createAction(
+  '[Courses] Set Start And Direct To Get List'
+);
+
+export const setSearchTerm = createAction(
+  '[Courses] Set Search Term',
+  props<{ value: string }>()
 );

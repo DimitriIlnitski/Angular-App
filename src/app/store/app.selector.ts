@@ -53,3 +53,10 @@ export const selectFetchParams = createSelector(
   })
 );
  
+export const selectCourseAndStart = createSelector(
+  selectAppState,
+  (state: AppState) => ({
+    start: state.start,
+    courses: state.courses,
+  })
+);

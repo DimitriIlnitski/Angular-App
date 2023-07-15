@@ -8,9 +8,8 @@ import { ListFilterCourseNamePipe } from './pipes/list-filter-course-name.pipe';
 import { ListSortByCreationDatePipe } from './pipes/list-sort-by-creation-date.pipe';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {CardBorderColorDirective} from './directives/card-border-color.directive'
-import {IfAuthenticatedDirective} from './directives/if-authenticated.directive'
-import { CourseService } from '../services/course.service';
+import { CardBorderColorDirective } from './directives/card-border-color.directive';
+import { IfAuthenticatedDirective } from './directives/if-authenticated.directive';
 @NgModule({
   declarations: [
     ButtonComponent,
@@ -23,7 +22,6 @@ import { CourseService } from '../services/course.service';
     IfAuthenticatedDirective,
   ],
   imports: [CommonModule, FormsModule, FontAwesomeModule],
-  providers: [CourseService],
   exports: [
     ButtonComponent,
     InputComponent,

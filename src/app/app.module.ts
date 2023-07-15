@@ -19,7 +19,7 @@ import { SharedModule } from './shared/shared.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoadingBlockComponent } from './loading-block/loading-block.component';
 import { EffectsModule } from '@ngrx/effects';
-import { AppReducer } from './store/reducers/app.reducer';
+import { AppReducer } from './store/app.reducers';
 import { AppEffects } from './store/app.effects';
 
 @NgModule({

@@ -1,30 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { CourseService } from '../services/course.service';
 import { Course } from '../interfaces/course.interface';
-import { Observable, filter, map, of, switchMap } from 'rxjs';
-import { LoadingBlockService } from '../services/loading-block.service';
+import { Observable, Subscription, filter, map, of, switchMap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectIsLoading, selectItemById, selectToken } from '../store/app.selector';
 
 @Component({
   selector: 'app-breadcrumbs',
   templateUrl: './breadcrumbs.component.html',
   styleUrls: ['./breadcrumbs.component.css'],
 })
-export class BreadcrumbsComponent implements OnInit {
+export class BreadcrumbsComponent implements OnInit, OnDestroy {
   breadcrumbsValue$!: Observable<string>;
 
+  isLoadingValue = false;
+  isLoadingValue$!: Observable<boolean>;
+  subscriptionIsLoading!: Subscription;
+
+  isAuthenticated = false;
+  isAuthenticated$!: Observable<string>;
+  subscriptionIsAuthenticated!: Subscription;
+
   constructor(
-    private authService: AuthService,
-    private courseService: CourseService,
-    public loadingBlockService: LoadingBlockService,
+    private store: Store,
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {}
-
-  isBreadcrumbsVisible(): boolean {
-    return this.authService.isAuthenticated();
-  }
 
   ngOnInit() {
     this.breadcrumbsValue$ = this.router.events.pipe(
@@ -32,20 +33,42 @@ export class BreadcrumbsComponent implements OnInit {
       map(() => {
         const id =
           this.activatedRoute.firstChild?.firstChild?.snapshot.params['id'];
-        console.log(id);
         return id;
       }),
       switchMap((id) => {
         if (id) {
-          return this.courseService
-            .getItemById(id)
-            .pipe(
-              map((course: Course) => (course.name ? ` / ${course.name}` : ''))
-            );
+          return this.store.select(selectItemById(id)).pipe(
+            // eslint-disable-next-line @ngrx/avoid-mapping-selectors
+            map((course: Course | undefined) =>
+              course?.name ? ` / ${course.name}` : ''
+            )
+          );
         } else {
           return of('');
         }
       })
     );
+    this.isLoadingValue$ = this.store.select(selectIsLoading);
+    this.subscriptionIsLoading = this.isLoadingValue$.subscribe(
+      (value) => (this.isLoadingValue = value)
+    );
+
+    this.isAuthenticated$ = this.store.select(selectToken);
+    this.subscriptionIsAuthenticated = this.isAuthenticated$.subscribe(
+      (value) => (this.isAuthenticated = !!value)
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscriptionIsLoading.unsubscribe();
+    this.subscriptionIsAuthenticated.unsubscribe();
+  }
+
+  isLoading() {
+    return this.isLoadingValue;
+  }
+
+  isBreadcrumbsVisible(): boolean {
+    return this.isAuthenticated;
   }
 }

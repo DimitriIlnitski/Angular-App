@@ -1,7 +1,7 @@
 <button
   class="button"
   [class]="buttonClass"
-  [ngClass]="{ disabled: ! loadingBlockService.isLoadingMethod() }"
+  [ngClass]="{ disabled: !isLoading() }"
   type="submit"
   (click)="clickHandler()"
 >

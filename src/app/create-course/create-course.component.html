@@ -8,7 +8,7 @@
     <input
       class="create-course_input-alternative"
       type="text"
-      [(ngModel)]="nameValue"
+      [(ngModel)]="course.name"
       id="createTitle"
       name="createTitle"
       placeholder=" Text input"
@@ -21,8 +21,8 @@
     </label>
     <textarea
       class="create-course__description"
-      [(ngModel)]="descriptionValue"
       name="createDescription"
+       [(ngModel)]="course.description"
       placeholder=" Add description"
       required="true"
       form="create-course"
@@ -36,7 +36,7 @@
       [requiredText]="'*required'"
       [placeholderText]="' Minutes'"
       [inputType]="'text'"
-      [value]="lengthValue"
+      [value]="course.length"
       (valueChange)="durationInputHandler($event)"
     ></app-duration>
   </div>
@@ -51,7 +51,7 @@
       MM/DD/YYYY'
       "
       [inputType]="'date'"
-      [value]="dateValue"
+      [value]="course.date"
       (valueChange)="dateInputHandler($event)"
     ></app-date>
   </div>

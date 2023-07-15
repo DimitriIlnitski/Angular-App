@@ -1,9 +1,12 @@
 <header class="header">
   <div class="header_wrapper">
     <app-logo></app-logo>
-    <div class="header__user-name" *appIfAuthenticated="isUserAndBtnVisible()">
+    <div
+      class="header__user-name"
+      *appIfAuthenticated="!!(isUserAndBtnVisible() | async)"
+    >
       <fa-icon [icon]="faUser"></fa-icon> &nbsp;
-      <div>&nbsp;{{ authService.userDetails$ | async }}</div>
+      <div>&nbsp;{{ getUserName() | async }}</div>
     </div>
     <app-button
       [buttonClass]="'header__button'"
@@ -11,7 +14,7 @@
       [toShow]="true"
       [iconType]="faRightFromBracket"
       (buttonClick)="logoutHandle()"
-      *appIfAuthenticated="isUserAndBtnVisible()"
+      *appIfAuthenticated="!!(isUserAndBtnVisible() | async)"
     >
     </app-button>
   </div>
