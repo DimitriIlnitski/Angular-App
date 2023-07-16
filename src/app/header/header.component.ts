@@ -12,9 +12,10 @@ import { Observable, of } from 'rxjs';
 })
 export class HeaderComponent {
   faUser = faUser;
-  faRightFromBracket = faRightFromBracket;
+  faRightFromBracket = faRightFromBracket;  
 
-  constructor( private store: Store) {}
+  constructor(private store: Store) {
+  }
 
   logoutHandle() {
     this.store.dispatch(logout());

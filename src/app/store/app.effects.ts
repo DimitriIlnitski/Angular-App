@@ -1,6 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType, concatLatestFrom } from '@ngrx/effects';
-import { mergeMap, tap, concatMap, map, catchError, throwError } from 'rxjs';
+import {
+  mergeMap,
+  tap,
+  map,
+  catchError,
+  throwError,
+  switchMap,
+  filter,
+  debounceTime,
+  exhaustMap,
+} from 'rxjs';
 import * as AppActions from './app.actions';
 
 import { Store } from '@ngrx/store';
@@ -20,38 +30,49 @@ export class AppEffects {
   login$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AppActions.login),
-      mergeMap(({ login, password }) =>
+      exhaustMap(({ login, password }) =>
         this.dataService.loginPost({ login, password }).pipe(
           tap((response) => {
             const token: string = response.token;
             localStorage.setItem('token', JSON.stringify(token));
             console.log('Login successful');
           }),
-          concatMap((response) => {
+          map((response) => {
             const token: string = response.token;
-            return [
-              AppActions.loginSuccess({ token }),
-              AppActions.getUserInfo({ token }),
-            ];
+            console.log('Login completed');
+            return AppActions.loginSuccess({ token });
           })
         )
       )
     );
   });
 
+  loginSuccess$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AppActions.loginSuccess),
+      map(({ token }) => {
+        console.log('Login was successfull');
+        return AppActions.getUserInfo({ token });
+      })
+    );
+  });
+
   getUserInfo$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AppActions.getUserInfo),
-      mergeMap(({ token }) =>
-        this.dataService.getUserInfo(token).pipe(
-          map((user) => AppActions.getUserInfoSuccess({ user })),
-          tap(({user}) => {
+      exhaustMap(({ token }) => {
+        return this.dataService.getUserInfo(token).pipe(
+          tap((user) => {
             localStorage.setItem('user', JSON.stringify(user));
             console.log('User details received successfully');
             this.router.navigate(['courses']);
+          }),
+          map((user) => AppActions.getUserInfoSuccess({ user })),
+          tap(() => {
+            this.router.navigate(['courses']);
           })
-        )
-      )
+        );
+      })
     );
   });
 
@@ -62,8 +83,8 @@ export class AppEffects {
       tap(() => {
         localStorage.removeItem('user');
         localStorage.removeItem('token');
-        console.log(`User have been deleted`);
-        this.router.navigate(['/login']);
+        console.log(`User have been logout`);
+        this.router.navigate(['login']);
       })
     );
   });
@@ -72,7 +93,7 @@ export class AppEffects {
     return this.actions$.pipe(
       ofType(AppActions.getList),
       concatLatestFrom(() => this.store.select(selectFetchParams)),
-      mergeMap(([, { start, searchTerm }]) =>
+      switchMap(([, { start, searchTerm }]) =>
         this.dataService.getList(start, searchTerm).pipe(
           map((courses) => AppActions.getListSuccess({ courses })),
           catchError((error) => {
@@ -125,10 +146,20 @@ export class AppEffects {
     );
   });
 
+  setSearchTerm$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AppActions.setSearchTerm),
+      filter(({ value }) => value.length > 3 || value.length === 0),
+      debounceTime(300),
+      map(() => AppActions.setStartZeroAndDirectToGetList())
+    );
+  });
+
   setStartZero$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AppActions.setStartZeroAndDirectToGetList),
-      map(() => AppActions.getList())
+      map(() => AppActions.getList()),
+      tap(() => this.router.navigate(['courses']))
     );
   });
 }

@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-search-bar',
@@ -6,4 +6,10 @@ import { Component} from '@angular/core';
   styleUrls: ['./search-bar.component.css'],
 })
 export class SearchBarComponent {
+  @Output()
+  valueChangeKeyUp = new EventEmitter<string>();
+
+  onValueChangeKeyUp(value: string) {
+    return this.valueChangeKeyUp.emit(value);
+  }
 }

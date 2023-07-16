@@ -7,5 +7,5 @@
     </div>
   </section>
   <app-footer></app-footer>
-  <app-loading-block  *ngIf="isLoading()"></app-loading-block>
+  <app-loading-block *ngIf="isLoadingValue$ | async"></app-loading-block>
 </div>

@@ -10,6 +10,7 @@ export class AuthGuard implements CanActivate {
   constructor(private router: Router, private store: Store) {}
 
   canActivate(): Observable<boolean | UrlTree> {
+    alert('Auth Guard');
     return this.store.select(selectToken).pipe(
       map((token) => {
         if (!token) {

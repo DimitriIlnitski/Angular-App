@@ -1,7 +1,6 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import * as AppActions from './app.actions';
 import { AppState } from 'src/app/interfaces/app-state.interface';
-import { Subject } from 'rxjs';
 
 const storedToken = localStorage.getItem('token');
 const storedUser = localStorage.getItem('user');
@@ -35,9 +34,6 @@ const _appReducer = createReducer(
     (state, { token }): AppState => ({ ...state, token, isLoading: false })
   ),
   //---------------------------------------------
-  on(AppActions.logout, (state): AppState => ({ ...state, isLoading: true })),
-  on(AppActions.logoutSuccess, (): AppState => ({ ...initialState })),
-  //---------------------------------------------
   on(
     AppActions.getUserInfo,
     (state): AppState => ({ ...state, isLoading: true })
@@ -45,6 +41,12 @@ const _appReducer = createReducer(
   on(
     AppActions.getUserInfoSuccess,
     (state, { user }): AppState => ({ ...state, user, isLoading: false })
+  ),
+  //---------------------------------------------
+  on(AppActions.logout, (state): AppState => ({ ...state, isLoading: true })),
+  on(
+    AppActions.logoutSuccess,
+    (state): AppState => ({ ...state, ...initialState })
   ),
   //---------------------------------------------
   on(AppActions.getList, (state): AppState => ({ ...state, isLoading: true })),
@@ -86,3 +88,7 @@ const _appReducer = createReducer(
 export function AppReducer(state: AppState | undefined, action: Action) {
   return _appReducer(state, action);
 }
+
+
+
+

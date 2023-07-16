@@ -7,7 +7,7 @@ import {
   updateCourse,
 } from '../store/app.actions';
 import { selectItemById } from '../store/app.selector';
-import { map } from 'rxjs';
+import { map, tap } from 'rxjs';
 
 @Component({
   selector: 'app-create-course',
@@ -30,9 +30,11 @@ export class CreateCourseComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private store: Store) {}
 
   ngOnInit(): void {
+    alert('Create component init');
     const id = this.activatedRoute.snapshot.params['id'];
     if (id) {
       this.store.select(selectItemById(id)).pipe(
+        tap((course)=>alert(course)),
         map((course) => {
           if (course) {
             this.course.id = course.id;

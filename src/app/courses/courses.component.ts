@@ -2,14 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { Course } from '../interfaces/course.interface';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
-import { debounceTime, filter, map, of, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { selectCourseAndStart, selectCourses, selectSearchTerm } from '../store/app.selector';
+import {
+  selectCourses,
+} from '../store/app.selector';
 import {
   getList,
   removeCourse,
-  setStartZeroAndDirectToGetList,
+  setSearchTerm,
 } from '../store/app.actions';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-courses',
@@ -18,31 +20,22 @@ import {
 })
 export class CoursesComponent implements OnInit {
   faPlus = faPlus;
+  selectedCourses$!: Observable<Course[]>;
 
-  constructor(public store: Store, private router: Router) {}
+  constructor(public store: Store, private router: Router) {
+    this.store.dispatch(getList());
+  }
 
   ngOnInit() {
-    this.store.select(selectCourseAndStart).pipe(
-      filter(({ start, courses }) => courses.length === 0 && start === 0),
-      switchMap(() => {
-        this.store.dispatch(setStartZeroAndDirectToGetList());
-        return of(null);
-      })
-    );
-
-    this.store.select(selectSearchTerm).pipe(
-      filter((str: string) => str.length > 3 || str.length === 0),
-      debounceTime(300),
-      map((str: string) => {
-        if (str.length === 0 || str.length >= 3) {
-          this.store.dispatch(setStartZeroAndDirectToGetList());
-        }
-      })
-    );
+    this.selectedCourses$ = this.store.select(selectCourses);
   }
 
   trackByCourseId(index: number, course: Course): number {
     return course.id;
+  }
+
+  onValueChangeKeyUp(value: string) {
+    this.store.dispatch(setSearchTerm({ value: value }));
   }
 
   addNewCourse(): void {
@@ -60,9 +53,5 @@ export class CoursesComponent implements OnInit {
     if (decision) {
       this.store.dispatch(removeCourse({ id: id }));
     }
-  }
-
-  getCourses(){
-    return this.store.select(selectCourses);
   }
 }

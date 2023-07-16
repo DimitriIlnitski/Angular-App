@@ -1,13 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Token } from '../interfaces/token.interface';
 import { Injectable } from '@angular/core';
-import { Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { LoginRequest } from '../interfaces/login-request.interface';
 import { User } from '../interfaces/user.interface';
 import { Store } from '@ngrx/store';
 import { Course } from '../interfaces/course.interface';
-
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +23,7 @@ export class DataService {
     return this.http.post<Token>(`${this.apiUrl}/auth/login`, loginData);
   }
 
-  getUserInfo(token: string) {
+  getUserInfo(token: string): Observable<User> {
     return this.http.post<User>(`${this.apiUrl}/auth/userinfo`, {
       token: token,
     });
@@ -32,7 +31,7 @@ export class DataService {
 
   //Courses
 
-  getList(start: number, searchTerm: string) {
+  getList(start: number, searchTerm: string): Observable<Course[]> {
     let params: HttpParams;
     if (searchTerm) {
       params = new HttpParams()

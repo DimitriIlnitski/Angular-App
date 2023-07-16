@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { setSearchTerm } from 'src/app/store/app.actions';
 import { selectIsLoading } from 'src/app/store/app.selector';
 
 @Component({
@@ -53,12 +52,15 @@ export class InputComponent implements OnInit, OnDestroy {
   @Output()
   valueChange = new EventEmitter<string>();
 
+  @Output()
+  valueChangeKeyUp = new EventEmitter<string>();
+
   onValueChange() {
     this.valueChange.emit(this.value);
   }
 
-  onSearch() {
-    this.store.dispatch(setSearchTerm({ value: this.value }));
+  onValueChangeKeyUp(){
+      this.valueChangeKeyUp.emit(this.value);
   }
 
   isLoading() {
