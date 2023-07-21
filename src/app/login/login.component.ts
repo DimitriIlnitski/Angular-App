@@ -10,9 +10,7 @@ import { login } from '../store/app.actions';
 export class LoginComponent {
   loginData = { login: '', password: '' };
 
-  constructor(
-    public store: Store
-  ) {}
+  constructor(public store: Store) {}
 
   emailInputHandle(login: string) {
     this.loginData.login = login;
@@ -21,7 +19,8 @@ export class LoginComponent {
     this.loginData.password = password;
   }
 
-  login() {
+  login(e: any) {
+    e.preventDefault();
     this.store.dispatch(login(this.loginData));
   }
 }

@@ -11,7 +11,7 @@ export const initialState: AppState = {
     storedUser !== null
       ? JSON.parse(storedUser)
       : {
-          id: 1,
+          id: 0,
           token: localStorage.getItem('token') || '',
           name: {
             first: '',
@@ -46,7 +46,26 @@ const _appReducer = createReducer(
   on(AppActions.logout, (state): AppState => ({ ...state, isLoading: true })),
   on(
     AppActions.logoutSuccess,
-    (state): AppState => ({ ...state, ...initialState })
+    (state): AppState => ({
+      ...state,
+      ...{
+        token: '',
+        user: {
+          id: 0,
+          token: '',
+          name: {
+            first: '',
+            last: '',
+          },
+          login: '',
+          password: '',
+        },
+        courses: [],
+        start: 0,
+        searchTerm: '',
+        isLoading: false,
+      },
+    })
   ),
   //---------------------------------------------
   on(AppActions.getList, (state): AppState => ({ ...state, isLoading: true })),
@@ -58,10 +77,6 @@ const _appReducer = createReducer(
       isLoading: false,
       start: state.start + 3,
     })
-  ),
-  on(
-    AppActions.setStartZeroAndDirectToGetList,
-    (state): AppState => ({ ...state, start: 0 })
   ),
   //---------------------------------------------
   on(
@@ -88,7 +103,3 @@ const _appReducer = createReducer(
 export function AppReducer(state: AppState | undefined, action: Action) {
   return _appReducer(state, action);
 }
-
-
-
-

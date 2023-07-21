@@ -3,7 +3,11 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Course } from '../interfaces/course.interface';
 import { Observable, Subscription, filter, map, of, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { selectIsLoading, selectItemById, selectToken } from '../store/app.selector';
+import {
+  selectIsLoading,
+  selectItemById,
+  selectToken,
+} from '../store/app.selector';
 
 @Component({
   selector: 'app-breadcrumbs',
@@ -37,7 +41,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
       }),
       switchMap((id) => {
         if (id) {
-          return this.store.select(selectItemById(id)).pipe(
+          return this.store.select(selectItemById(+id)).pipe(
             // eslint-disable-next-line @ngrx/avoid-mapping-selectors
             map((course: Course | undefined) =>
               course?.name ? ` / ${course.name}` : ''
@@ -48,6 +52,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
         }
       })
     );
+
     this.isLoadingValue$ = this.store.select(selectIsLoading);
     this.subscriptionIsLoading = this.isLoadingValue$.subscribe(
       (value) => (this.isLoadingValue = value)

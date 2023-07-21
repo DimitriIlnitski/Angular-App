@@ -31,17 +31,21 @@ export class DataService {
 
   //Courses
 
-  getList(start: number, searchTerm: string): Observable<Course[]> {
+  getList(
+    setStartValue: number | undefined,
+    start: number,
+    searchTerm: string
+  ): Observable<Course[]> {
     let params: HttpParams;
     if (searchTerm) {
       params = new HttpParams()
-        .set('start', start)
+        .set('start', setStartValue || start)
         .set('count', 3)
         .set('sort', 'date')
         .set('textFragment', searchTerm);
     } else {
       params = new HttpParams()
-        .set('start', start)
+        .set('start', setStartValue || start)
         .set('count', 3)
         .set('sort', 'date');
     }

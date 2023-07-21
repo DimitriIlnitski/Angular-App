@@ -1,20 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import {
-  createCourse,
-  setStartZeroAndDirectToGetList,
-  updateCourse,
-} from '../store/app.actions';
+import { createCourse, getList, updateCourse } from '../store/app.actions';
 import { selectItemById } from '../store/app.selector';
-import { map, tap } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { Course } from '../interfaces/course.interface';
 
 @Component({
   selector: 'app-create-course',
   templateUrl: './create-course.component.html',
   styleUrls: ['./create-course.component.css'],
 })
-export class CreateCourseComponent implements OnInit {
+export class CreateCourseComponent implements OnInit, OnDestroy {
+  courseSubscription: Subscription | undefined;
   course = {
     id: 0,
     name: '',
@@ -27,27 +25,36 @@ export class CreateCourseComponent implements OnInit {
 
   shouldEdit = false;
 
-  constructor(private activatedRoute: ActivatedRoute, private store: Store) {}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private store: Store,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    alert('Create component init');
     const id = this.activatedRoute.snapshot.params['id'];
     if (id) {
-      this.store.select(selectItemById(id)).pipe(
-        tap((course)=>alert(course)),
-        map((course) => {
-          if (course) {
-            this.course.id = course.id;
-            this.course.name = course.name;
-            this.course.date = course.date;
-            this.course.length = String(course.length);
-            this.course.description = course.description;
-            this.course.authors = [];
-            this.course.isTopRated = course.isTopRated;
-          }
-        })
+      const courseFromStore: Observable<Course | undefined> = this.store.select(
+        selectItemById(+id)
       );
-      this.shouldEdit = true;
+      this.courseSubscription = courseFromStore.subscribe((course) => {
+        if (course) {
+          this.course.id = course.id;
+          this.course.name = course.name;
+          this.course.date = course.date;
+          this.course.length = String(course.length);
+          this.course.description = course.description;
+          this.course.authors = [];
+          this.course.isTopRated = course.isTopRated;
+          this.shouldEdit = true;
+        }
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.courseSubscription) {
+      this.courseSubscription.unsubscribe();
     }
   }
 
@@ -62,8 +69,9 @@ export class CreateCourseComponent implements OnInit {
   }
 
   cancel(): void {
-    this.store.dispatch(setStartZeroAndDirectToGetList());
+    this.router.navigate(['courses']);
   }
+
   save(): void {
     const modifiedCourse = {
       id:

@@ -29,7 +29,8 @@ export const getUserInfoSuccess = createAction(
 );
 
 //Courses Actions
-export const getList = createAction('[Courses] Get List');
+export const getList = createAction('[Courses] Get List', 
+  props<{ setStartValue: number | undefined }>());
 
 export const getListSuccess = createAction(
   '[Auth] Get List Success',
@@ -71,11 +72,6 @@ export const removeCourse = createAction(
 );
 
 //----------------------------------------
-
-export const setStartZeroAndDirectToGetList = createAction(
-  '[Courses] Set Start And Direct To Get List'
-);
-
 export const setSearchTerm = createAction(
   '[Courses] Set Search Term',
   props<{ value: string }>()

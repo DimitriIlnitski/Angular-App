@@ -3,14 +3,8 @@ import { Course } from '../interfaces/course.interface';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import {
-  selectCourses,
-} from '../store/app.selector';
-import {
-  getList,
-  removeCourse,
-  setSearchTerm,
-} from '../store/app.actions';
+import { selectCourses } from '../store/app.selector';
+import { getList, removeCourse, setSearchTerm } from '../store/app.actions';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -23,7 +17,7 @@ export class CoursesComponent implements OnInit {
   selectedCourses$!: Observable<Course[]>;
 
   constructor(public store: Store, private router: Router) {
-    this.store.dispatch(getList());
+    this.store.dispatch(getList({ setStartValue: 0 }));
   }
 
   ngOnInit() {
@@ -43,7 +37,7 @@ export class CoursesComponent implements OnInit {
   }
 
   handleClickLoadMore() {
-    this.store.dispatch(getList());
+    this.store.dispatch(getList({ setStartValue: undefined }));
   }
 
   deleteCourse(id: string) {

@@ -9,7 +9,6 @@ import {
   switchMap,
   filter,
   debounceTime,
-  exhaustMap,
 } from 'rxjs';
 import * as AppActions from './app.actions';
 
@@ -30,20 +29,17 @@ export class AppEffects {
   login$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AppActions.login),
-      exhaustMap(({ login, password }) =>
-        this.dataService.loginPost({ login, password }).pipe(
-          tap((response) => {
-            const token: string = response.token;
-            localStorage.setItem('token', JSON.stringify(token));
-            console.log('Login successful');
-          }),
-          map((response) => {
-            const token: string = response.token;
-            console.log('Login completed');
-            return AppActions.loginSuccess({ token });
-          })
-        )
-      )
+      switchMap(({ login, password }) => {
+        return this.dataService.loginPost({ login, password });
+      }),
+      tap(({ token }) => {
+        localStorage.setItem('token', JSON.stringify(token));
+        console.log('Login successful');
+      }),
+      map(({ token }) => {
+        console.log('Login completed');
+        return AppActions.loginSuccess({ token });
+      })
     );
   });
 
@@ -60,18 +56,16 @@ export class AppEffects {
   getUserInfo$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AppActions.getUserInfo),
-      exhaustMap(({ token }) => {
-        return this.dataService.getUserInfo(token).pipe(
-          tap((user) => {
-            localStorage.setItem('user', JSON.stringify(user));
-            console.log('User details received successfully');
-            this.router.navigate(['courses']);
-          }),
-          map((user) => AppActions.getUserInfoSuccess({ user })),
-          tap(() => {
-            this.router.navigate(['courses']);
-          })
-        );
+      switchMap(({ token }) => {
+        return this.dataService.getUserInfo(token);
+      }),
+      tap((user) => {
+        localStorage.setItem('user', JSON.stringify(user));
+        console.log('User details received successfully');
+      }),
+      map((user) => AppActions.getUserInfoSuccess({ user })),
+      tap(() => {
+        this.router.navigate(['courses']);
       })
     );
   });
@@ -93,8 +87,8 @@ export class AppEffects {
     return this.actions$.pipe(
       ofType(AppActions.getList),
       concatLatestFrom(() => this.store.select(selectFetchParams)),
-      switchMap(([, { start, searchTerm }]) =>
-        this.dataService.getList(start, searchTerm).pipe(
+      switchMap(([{ setStartValue }, { start, searchTerm }]) =>
+        this.dataService.getList(setStartValue, start, searchTerm).pipe(
           map((courses) => AppActions.getListSuccess({ courses })),
           catchError((error) => {
             console.error('An error occurred in app effects:', error);
@@ -110,7 +104,7 @@ export class AppEffects {
       ofType(AppActions.createCourse),
       mergeMap((newCourse) =>
         this.dataService.createCourse(newCourse).pipe(
-          map(() => AppActions.getList()),
+          map(() => AppActions.getList({ setStartValue: 0 })),
           tap(() => {
             console.log(`Course #${newCourse.id} have been added successfully`);
             this.router.navigate(['courses']);
@@ -125,7 +119,7 @@ export class AppEffects {
       ofType(AppActions.updateCourse),
       mergeMap((updatedCourse) =>
         this.dataService.updateCourse(updatedCourse).pipe(
-          map(() => AppActions.getList()),
+          map(() => AppActions.getList({ setStartValue: 0 })),
           tap(() => {
             `Course #${updatedCourse.id} have been updated successfully`;
             this.router.navigate(['courses']);
@@ -140,7 +134,7 @@ export class AppEffects {
       mergeMap(({ id }) =>
         this.dataService.removeCourse(id).pipe(
           tap(() => `Course #${id} have been updated successfully`),
-          map(() => AppActions.getList())
+          map(() => AppActions.getList({ setStartValue: 0 }))
         )
       )
     );
@@ -151,15 +145,10 @@ export class AppEffects {
       ofType(AppActions.setSearchTerm),
       filter(({ value }) => value.length > 3 || value.length === 0),
       debounceTime(300),
-      map(() => AppActions.setStartZeroAndDirectToGetList())
-    );
-  });
-
-  setStartZero$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(AppActions.setStartZeroAndDirectToGetList),
-      map(() => AppActions.getList()),
-      tap(() => this.router.navigate(['courses']))
+      map(({ value }) => {
+        alert(value);
+        return AppActions.getList({ setStartValue: 0 });
+      })
     );
   });
 }
