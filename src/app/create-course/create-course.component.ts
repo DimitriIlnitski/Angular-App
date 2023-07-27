@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
   createCourse,
-  getList,
   returnToCourses,
   updateCourse,
 } from '../store/app.actions';
@@ -75,6 +74,7 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
 
   cancel(): void {
     this.store.dispatch(returnToCourses());
+    this.router.navigate(['courses']);
   }
 
   save(): void {

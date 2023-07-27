@@ -151,9 +151,6 @@ export class AppEffects {
       ofType(AppActions.returnToCourses),
       map(() => {
         return AppActions.getList();
-      }),
-      tap(() => {
-        this.router.navigate(['courses']);
       })
     );
   });
