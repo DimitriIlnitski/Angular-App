@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { LoginRequest } from '../interfaces/login-request.interface';
 import { User } from '../interfaces/user.interface';
-import { Store } from '@ngrx/store';
 import { Course } from '../interfaces/course.interface';
 
 @Injectable({
@@ -14,7 +13,7 @@ import { Course } from '../interfaces/course.interface';
 export class DataService {
   private apiUrl = '';
 
-  constructor(private http: HttpClient, private store: Store) {
+  constructor(private http: HttpClient) {
     this.apiUrl = environment.apiUrl;
   }
 
@@ -32,20 +31,19 @@ export class DataService {
   //Courses
 
   getList(
-    setStartValue: number | undefined,
     start: number,
     searchTerm: string
   ): Observable<Course[]> {
     let params: HttpParams;
     if (searchTerm) {
       params = new HttpParams()
-        .set('start', setStartValue || start)
+        .set('start', start)
         .set('count', 3)
         .set('sort', 'date')
         .set('textFragment', searchTerm);
     } else {
       params = new HttpParams()
-        .set('start', setStartValue || start)
+        .set('start', start)
         .set('count', 3)
         .set('sort', 'date');
     }

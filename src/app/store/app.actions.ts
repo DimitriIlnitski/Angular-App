@@ -4,7 +4,7 @@ import { Course } from 'src/app/interfaces/course.interface';
 import { User } from 'src/app/interfaces/user.interface';
 
 //=================Auth Actions===================
-export const login = createAction(
+export const loginTo = createAction(
   '[Auth] Login',
   props<{ login: string; password: string }>()
 );
@@ -12,10 +12,8 @@ export const loginSuccess = createAction(
   '[Auth] Login Success',
   props<{ token: string }>()
 );
-
 //----------------------------------
 export const logout = createAction('[Auth] Logout');
-export const logoutSuccess = createAction('[Auth] Logout Success');
 //----------------------------------
 
 export const getUserInfo = createAction(
@@ -29,11 +27,10 @@ export const getUserInfoSuccess = createAction(
 );
 
 //Courses Actions
-export const getList = createAction('[Courses] Get List', 
-  props<{ setStartValue: number | undefined }>());
+export const getList = createAction('[Courses] Get List');
 
 export const getListSuccess = createAction(
-  '[Auth] Get List Success',
+  '[Courses] Get List Success',
   props<{ courses: Course[] }>()
 );
 
@@ -70,7 +67,8 @@ export const removeCourse = createAction(
   '[Courses] Remove Course',
   props<{ id: string }>()
 );
-
+//----------------------------------------
+export const returnToCourses = createAction('[Courses] Return To Courses');
 //----------------------------------------
 export const setSearchTerm = createAction(
   '[Courses] Set Search Term',

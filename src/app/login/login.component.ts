@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { login } from '../store/app.actions';
+import { loginTo } from '../store/app.actions';
 
 @Component({
   selector: 'app-login',
@@ -8,19 +8,19 @@ import { login } from '../store/app.actions';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  loginData = { login: '', password: '' };
+  loginValue = '';
+  passwordValue = '';
 
   constructor(public store: Store) {}
 
-  emailInputHandle(login: string) {
-    this.loginData.login = login;
-  }
-  passwordInputHandle(password: string) {
-    this.loginData.password = password;
-  }
-
-  login(e: any) {
-    e.preventDefault();
-    this.store.dispatch(login(this.loginData));
+  login() {
+    this.store.dispatch(
+      loginTo({
+        login: this.loginValue,
+        password: this.passwordValue,
+      })
+    );
+    this.loginValue = '';
+    this.passwordValue = '';
   }
 }

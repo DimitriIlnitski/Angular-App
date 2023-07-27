@@ -52,7 +52,7 @@ export const selectFetchParams = createSelector(
     searchTerm: state.searchTerm,
   })
 );
- 
+
 export const selectCourseAndStart = createSelector(
   selectAppState,
   (state: AppState) => ({

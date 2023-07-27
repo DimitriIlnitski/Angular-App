@@ -4,7 +4,12 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectCourses } from '../store/app.selector';
-import { getList, removeCourse, setSearchTerm } from '../store/app.actions';
+import {
+  getList,
+  removeCourse,
+  returnToCourses,
+  setSearchTerm,
+} from '../store/app.actions';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -17,7 +22,7 @@ export class CoursesComponent implements OnInit {
   selectedCourses$!: Observable<Course[]>;
 
   constructor(public store: Store, private router: Router) {
-    this.store.dispatch(getList({ setStartValue: 0 }));
+    this.store.dispatch(returnToCourses());
   }
 
   ngOnInit() {
@@ -29,7 +34,9 @@ export class CoursesComponent implements OnInit {
   }
 
   onValueChangeKeyUp(value: string) {
-    this.store.dispatch(setSearchTerm({ value: value }));
+    if (value.length > 3 || value.length === 0) {
+      this.store.dispatch(setSearchTerm({ value: value }));
+    }
   }
 
   addNewCourse(): void {
@@ -37,7 +44,7 @@ export class CoursesComponent implements OnInit {
   }
 
   handleClickLoadMore() {
-    this.store.dispatch(getList({ setStartValue: undefined }));
+    this.store.dispatch(getList());
   }
 
   deleteCourse(id: string) {

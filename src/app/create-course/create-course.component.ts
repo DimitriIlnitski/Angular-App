@@ -1,7 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { createCourse, getList, updateCourse } from '../store/app.actions';
+import {
+  createCourse,
+  getList,
+  returnToCourses,
+  updateCourse,
+} from '../store/app.actions';
 import { selectItemById } from '../store/app.selector';
 import { Observable, Subscription } from 'rxjs';
 import { Course } from '../interfaces/course.interface';
@@ -69,7 +74,7 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
   }
 
   cancel(): void {
-    this.router.navigate(['courses']);
+    this.store.dispatch(returnToCourses());
   }
 
   save(): void {

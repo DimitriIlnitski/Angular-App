@@ -21,6 +21,7 @@ import { LoadingBlockComponent } from './loading-block/loading-block.component';
 import { EffectsModule } from '@ngrx/effects';
 import { AppReducer } from './store/app.reducers';
 import { AppEffects } from './store/app.effects';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -34,12 +35,17 @@ import { AppEffects } from './store/app.effects';
     BrowserModule,
     FormsModule,
     FontAwesomeModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
     SharedModule,
     MatProgressSpinnerModule,
     StoreModule.forRoot({ app: AppReducer }),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    StoreDevtoolsModule.instrument({
+      // maxAge: 25,
+      // logOnly: !isDevMode(),
+      // trace: true,
+    }),
     EffectsModule.forRoot([AppEffects]),
   ],
   providers: [

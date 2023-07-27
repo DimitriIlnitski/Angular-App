@@ -12,7 +12,7 @@ export const initialState: AppState = {
       ? JSON.parse(storedUser)
       : {
           id: 0,
-          token: localStorage.getItem('token') || '',
+          token: '',
           name: {
             first: '',
             last: '',
@@ -28,7 +28,7 @@ export const initialState: AppState = {
 
 const _appReducer = createReducer(
   initialState,
-  on(AppActions.login, (state): AppState => ({ ...state, isLoading: true })),
+  on(AppActions.loginTo, (state): AppState => ({ ...state, isLoading: true })),
   on(
     AppActions.loginSuccess,
     (state, { token }): AppState => ({ ...state, token, isLoading: false })
@@ -43,11 +43,9 @@ const _appReducer = createReducer(
     (state, { user }): AppState => ({ ...state, user, isLoading: false })
   ),
   //---------------------------------------------
-  on(AppActions.logout, (state): AppState => ({ ...state, isLoading: true })),
   on(
-    AppActions.logoutSuccess,
-    (state): AppState => ({
-      ...state,
+    AppActions.logout,
+    (): AppState => ({
       ...{
         token: '',
         user: {
@@ -81,22 +79,32 @@ const _appReducer = createReducer(
   //---------------------------------------------
   on(
     AppActions.createCourse,
-    (state): AppState => ({ ...state, isLoading: true })
+    (state): AppState => ({ ...state, isLoading: true, start: 0, courses: [] })
   ),
   //---------------------------------------------
   on(
     AppActions.updateCourse,
-    (state): AppState => ({ ...state, isLoading: true })
+    (state): AppState => ({ ...state, isLoading: true, start: 0, courses: [] })
   ),
   //---------------------------------------------
   on(
     AppActions.removeCourse,
-    (state): AppState => ({ ...state, isLoading: true })
+    (state): AppState => ({ ...state, isLoading: true, start: 0, courses: [] })
+  ),
+  //----------------------------------------------
+  on(
+    AppActions.returnToCourses,
+    (state): AppState => ({ ...state, isLoading: true, start: 0, courses: [] })
   ),
   //----------------------------------------------
   on(
     AppActions.setSearchTerm,
-    (state, { value }): AppState => ({ ...state, searchTerm: value })
+    (state, { value }): AppState => ({
+      ...state,
+      searchTerm: value,
+      start: 0,
+      courses: [],
+    })
   )
 );
 
