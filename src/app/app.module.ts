@@ -42,9 +42,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatProgressSpinnerModule,
     StoreModule.forRoot({ app: AppReducer }),
     StoreDevtoolsModule.instrument({
-      // maxAge: 25,
-      // logOnly: !isDevMode(),
-      // trace: true,
+      maxAge: 25,
+      logOnly: !isDevMode(),
+      trace: true,
     }),
     EffectsModule.forRoot([AppEffects]),
   ],

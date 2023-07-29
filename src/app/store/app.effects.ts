@@ -14,7 +14,8 @@ import * as AppActions from './app.actions';
 import { Store } from '@ngrx/store';
 import { selectFetchParams } from './app.selector';
 import { Router } from '@angular/router';
-import { DataService } from '../services/data.service';
+import { AuthService } from '../services/auth.service';
+import { CoursesService } from '../services/courses.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,8 @@ import { DataService } from '../services/data.service';
 export class AppEffects {
   constructor(
     private actions$: Actions,
-    private dataService: DataService,
+    private authService: AuthService,
+    private coursesService: CoursesService,
     private store: Store,
     private router: Router
   ) {}
@@ -31,7 +33,7 @@ export class AppEffects {
     return this.actions$.pipe(
       ofType(AppActions.loginTo),
       switchMap(({ login, password }) => {
-        return this.dataService.loginPost({ login, password }).pipe(
+        return this.authService.loginPost({ login, password }).pipe(
           tap(({ token }) => {
             localStorage.setItem('token', JSON.stringify(token));
             console.log('fetching of token successful');
@@ -59,7 +61,7 @@ export class AppEffects {
     return this.actions$.pipe(
       ofType(AppActions.getUserInfo),
       switchMap(({ token }) => {
-        return this.dataService.getUserInfo(token).pipe(
+        return this.authService.getUserInfo(token).pipe(
           tap((user) => {
             localStorage.setItem('user', JSON.stringify(user));
             console.log('User details received successfully');
@@ -78,9 +80,8 @@ export class AppEffects {
       return this.actions$.pipe(
         ofType(AppActions.logout),
         tap(() => {
-          // localStorage.removeItem('user');
-          // localStorage.removeItem('token');
-          localStorage.clear();
+          localStorage.removeItem('user');
+          localStorage.removeItem('token');
           console.log(`User have been logout`);
           this.router.navigate(['login']);
         })
@@ -94,7 +95,7 @@ export class AppEffects {
       ofType(AppActions.getList),
       concatLatestFrom(() => this.store.select(selectFetchParams)),
       switchMap(([, { start, searchTerm }]) =>
-        this.dataService.getList(start, searchTerm).pipe(
+        this.coursesService.getList(start, searchTerm).pipe(
           map((courses) => AppActions.getListSuccess({ courses })),
           catchError((error) => {
             console.error('An error occurred in app effects:', error);
@@ -109,7 +110,7 @@ export class AppEffects {
     return this.actions$.pipe(
       ofType(AppActions.createCourse),
       mergeMap((newCourse) =>
-        this.dataService.createCourse(newCourse).pipe(
+        this.coursesService.createCourse(newCourse).pipe(
           map(() => AppActions.getList()),
           tap(() => {
             console.log(`Course #${newCourse.id} have been added successfully`);
@@ -124,7 +125,7 @@ export class AppEffects {
     return this.actions$.pipe(
       ofType(AppActions.updateCourse),
       mergeMap((updatedCourse) =>
-        this.dataService.updateCourse(updatedCourse).pipe(
+        this.coursesService.updateCourse(updatedCourse).pipe(
           map(() => AppActions.getList()),
           tap(() => {
             `Course #${updatedCourse.id} have been updated successfully`;
@@ -138,7 +139,7 @@ export class AppEffects {
     return this.actions$.pipe(
       ofType(AppActions.removeCourse),
       mergeMap(({ id }) =>
-        this.dataService.removeCourse(id).pipe(
+        this.coursesService.removeCourse(id).pipe(
           tap(() => `Course #${id} have been updated successfully`),
           map(() => AppActions.getList())
         )

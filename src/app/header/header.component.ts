@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { faUser, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngrx/store';
 import { logout } from '../store/app.actions';
@@ -10,22 +10,21 @@ import { Observable, of } from 'rxjs';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   faUser = faUser;
-  faRightFromBracket = faRightFromBracket;  
+  faRightFromBracket = faRightFromBracket;
 
-  constructor(private store: Store) {
+  userName$!: Observable<string>;
+  isLoadingValue$!: Observable<string>;
+
+  constructor(private store: Store) {}
+
+  ngOnInit() {
+    this.userName$ = this.store.select(selectUserDetails) || of('Uknown');
+    this.isLoadingValue$ = this.store.select(selectToken);
   }
 
   logoutHandle() {
     this.store.dispatch(logout());
-  }
-
-  isUserAndBtnVisible(): Observable<string> {
-    return this.store.select(selectToken);
-  }
-
-  getUserName(): Observable<string> {
-    return this.store.select(selectUserDetails) || of('Uknown');
   }
 }

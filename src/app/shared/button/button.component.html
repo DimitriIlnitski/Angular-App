@@ -1,7 +1,7 @@
 <button
   class="button"
   [class]="buttonClass"
-  [ngClass]="{ disabled: !isLoading() }"
+  [class.disabled]="(isLoadingValue$ | async) === false"
   type="submit"
   (click)="clickHandler()"
 >

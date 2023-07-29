@@ -1,52 +1,29 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Token } from '../interfaces/token.interface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
-import { LoginRequest } from '../interfaces/login-request.interface';
-import { User } from '../interfaces/user.interface';
 import { Course } from '../interfaces/course.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DataService {
+export class CoursesService {
   private apiUrl = '';
 
   constructor(private http: HttpClient) {
     this.apiUrl = environment.apiUrl;
   }
 
-  //Auth
-  loginPost(loginData: LoginRequest): Observable<Token> {
-    return this.http.post<Token>(`${this.apiUrl}/auth/login`, loginData);
-  }
+  getList(start: number, searchTerm: string): Observable<Course[]> {
+    const params: HttpParams = new HttpParams()
+      .set('start', start)
+      .set('count', 3)
+      .set('sort', 'date');
 
-  getUserInfo(token: string): Observable<User> {
-    return this.http.post<User>(`${this.apiUrl}/auth/userinfo`, {
-      token: token,
-    });
-  }
-
-  //Courses
-
-  getList(
-    start: number,
-    searchTerm: string
-  ): Observable<Course[]> {
-    let params: HttpParams;
     if (searchTerm) {
-      params = new HttpParams()
-        .set('start', start)
-        .set('count', 3)
-        .set('sort', 'date')
-        .set('textFragment', searchTerm);
-    } else {
-      params = new HttpParams()
-        .set('start', start)
-        .set('count', 3)
-        .set('sort', 'date');
+      params.set('textFragment', searchTerm);
     }
+
     return this.http.get<Course[]>(`${this.apiUrl}/courses`, {
       params,
     });

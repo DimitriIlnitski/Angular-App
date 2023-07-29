@@ -3,41 +3,56 @@ import { Author } from 'src/app/interfaces/author.interface';
 import { Course } from 'src/app/interfaces/course.interface';
 import { User } from 'src/app/interfaces/user.interface';
 
+export enum AppActions {
+  loginTo = '[Auth] Login',
+  loginSuccess = '[Auth] Login Success',
+  logout = '[Auth] Logout',
+  getUserInfo = '[Auth] Get User Info',
+  getUserInfoSuccess = '[Auth] Get User Info Success',
+  getList = '[Courses] Get List',
+  getListSuccess = '[Courses] Get List Success',
+  createCourse = '[Courses] Create Course',
+  updateCourse = '[Courses] Update Course',
+  removeCourse = '[Courses] Remove Course',
+  returnToCourses = '[Courses] Return To Courses',
+  setSearchTerm = '[Courses] Set Search Term',
+}
+
 //=================Auth Actions===================
 export const loginTo = createAction(
-  '[Auth] Login',
+  AppActions.loginTo,
   props<{ login: string; password: string }>()
 );
 export const loginSuccess = createAction(
-  '[Auth] Login Success',
+  AppActions.loginSuccess,
   props<{ token: string }>()
 );
 //----------------------------------
-export const logout = createAction('[Auth] Logout');
+export const logout = createAction(AppActions.logout);
 //----------------------------------
 
 export const getUserInfo = createAction(
-  '[Auth] Get User Info',
+  AppActions.getUserInfo,
   props<{ token: string }>()
 );
 
 export const getUserInfoSuccess = createAction(
-  '[Auth] Get User Info Success',
+  AppActions.getUserInfoSuccess,
   props<{ user: User }>()
 );
 
 //Courses Actions
-export const getList = createAction('[Courses] Get List');
+export const getList = createAction(AppActions.getList);
 
 export const getListSuccess = createAction(
-  '[Courses] Get List Success',
+  AppActions.getListSuccess,
   props<{ courses: Course[] }>()
 );
 
 //--------------------------
 
 export const createCourse = createAction(
-  '[Courses] Create Course',
+  AppActions.createCourse,
   props<{
     id: number;
     name: string;
@@ -50,7 +65,7 @@ export const createCourse = createAction(
 );
 //--------------------------------
 export const updateCourse = createAction(
-  '[Courses] Update Course',
+  AppActions.updateCourse,
   props<{
     id: number;
     name: string;
@@ -64,13 +79,13 @@ export const updateCourse = createAction(
 
 //-------------------------------------
 export const removeCourse = createAction(
-  '[Courses] Remove Course',
+  AppActions.removeCourse,
   props<{ id: string }>()
 );
 //----------------------------------------
-export const returnToCourses = createAction('[Courses] Return To Courses');
+export const returnToCourses = createAction(AppActions.returnToCourses);
 //----------------------------------------
 export const setSearchTerm = createAction(
-  '[Courses] Set Search Term',
+  AppActions.setSearchTerm,
   props<{ value: string }>()
 );

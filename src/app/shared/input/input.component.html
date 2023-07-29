@@ -6,7 +6,7 @@
   <input
     class="input-field"
     [class]="inputClass"
-    [ngClass]="{ disabled: !isLoading() }"
+    [class.disabled]="(isLoadingValue$ | async) === false "
     [type]="inputType"
     [(ngModel)]="value"
     [id]="idInput"

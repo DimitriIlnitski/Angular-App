@@ -3,10 +3,10 @@
     <app-logo></app-logo>
     <div
       class="header__user-name"
-      *appIfAuthenticated="!!(isUserAndBtnVisible() | async)"
+      *appIfAuthenticated="!!(isLoadingValue$ | async)"
     >
       <fa-icon [icon]="faUser"></fa-icon> &nbsp;
-      <div>&nbsp;{{ getUserName() | async }}</div>
+      <div>&nbsp;{{ userName$ | async }}</div>
     </div>
     <app-button
       [buttonClass]="'header__button'"
@@ -14,7 +14,7 @@
       [toShow]="true"
       [iconType]="faRightFromBracket"
       (buttonClick)="logoutHandle()"
-      *appIfAuthenticated="!!(isUserAndBtnVisible() | async)"
+      *appIfAuthenticated="!!(isLoadingValue$ | async)"
     >
     </app-button>
   </div>

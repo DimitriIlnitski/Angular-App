@@ -15,7 +15,7 @@ import { selectIsLoading } from 'src/app/store/app.selector';
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.css'],
 })
-export class InputComponent implements OnInit, OnDestroy {
+export class InputComponent implements OnInit {
   @Input()
   labelText = '';
   @Input()
@@ -32,21 +32,12 @@ export class InputComponent implements OnInit, OnDestroy {
   idInput = '';
   @Input()
   value = '';
-  isLoadingValue = false;
   isLoadingValue$!: Observable<boolean>;
-  subscription!: Subscription;
 
   constructor(public store: Store) {}
 
   ngOnInit() {
     this.isLoadingValue$ = this.store.select(selectIsLoading);
-    this.subscription = this.isLoadingValue$.subscribe(
-      (value) => (this.isLoadingValue = value)
-    );
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 
   @Output()
@@ -59,11 +50,7 @@ export class InputComponent implements OnInit, OnDestroy {
     this.valueChange.emit(this.value);
   }
 
-  onValueChangeKeyUp(){
-      this.valueChangeKeyUp.emit(this.value);
-  }
-
-  isLoading() {
-    return this.isLoadingValue;
+  onValueChangeKeyUp() {
+    this.valueChangeKeyUp.emit(this.value);
   }
 }
