@@ -1,7 +1,7 @@
-<div class="login">
+<form class="login" [formGroup]="loginForm" (ngSubmit)="login()">
   <h1 class="login__title">Login</h1>
 
-  <div class="input-wrapper">
+  <div class="input-wrapper" formGroupName="loginGroup">
     <label class="label login__label" [for]="'login'">
       <div class="label__text">Login:</div>
       <div class="label__required-text">*required</div>
@@ -13,10 +13,10 @@
       name="login"
       placeholder="  Enter login"
       autocomplete="off"
-      [(ngModel)]="loginValue"
+      formControlName="login"
     />
   </div>
-  <div class="input-wrapper">
+  <div class="input-wrapper" formGroupName="passwordGroup">
     <label class="label login__label" [for]="'password'">
       <div class="label__text">Password:</div>
       <div class="label__required-text">*required</div>
@@ -28,7 +28,7 @@
       name="password"
       placeholder="  Enter password"
       autocomplete="off"
-      [(ngModel)]="passwordValue"
+      formControlName="password"
     />
   </div>
   <div class="login_button-container">
@@ -36,7 +36,7 @@
     <app-button
       [buttonClass]="'login__button'"
       [buttonText]="'LOGIN'"
-      (buttonClick)="login()"
+      [buttonType]="'submit'"
     ></app-button>
   </div>
-</div>
+</form>

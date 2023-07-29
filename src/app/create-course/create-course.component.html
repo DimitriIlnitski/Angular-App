@@ -1,4 +1,4 @@
-<form class="create-course">
+<form class="create-course" [formGroup]="editAndCreateForm" (ngSubmit)="save()">
   <h1 class="create-course__title">New Course</h1>
   <div class="create-course__input-wrapper-column">
     <label class="create-course__label" for="createTitle">
@@ -8,10 +8,10 @@
     <input
       class="create-course_input-alternative"
       type="text"
-      [(ngModel)]="course.name"
       id="createTitle"
       name="createTitle"
       placeholder=" Text input"
+      formControlName="createTitle"
     />
   </div>
   <div class="create-course__input-wrapper-column">
@@ -22,10 +22,9 @@
     <textarea
       class="create-course__description"
       name="createDescription"
-       [(ngModel)]="course.description"
       placeholder=" Add description"
       required="true"
-      form="create-course"
+      formControlName="createTitle"
     ></textarea>
   </div>
   <div class="create-course__input-wrapper--row">
@@ -75,7 +74,7 @@
     <app-button
       [buttonClass]="'create-course__save-button'"
       [buttonText]="'Save'"
-      (buttonClick)="save()"
+      [buttonType]="'submit'"
     ></app-button>
   </div>
 </form>

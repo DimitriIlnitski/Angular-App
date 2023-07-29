@@ -2,7 +2,7 @@
   class="button"
   [class]="buttonClass"
   [class.disabled]="(isLoadingValue$ | async) === false"
-  type="submit"
+  [type]="buttonType"
   (click)="clickHandler()"
 >
   <fa-icon *ngIf="toShow" [class]="iconClass" [icon]="iconType"></fa-icon>

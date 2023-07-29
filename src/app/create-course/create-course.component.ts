@@ -9,6 +9,7 @@ import {
 import { selectItemById } from '../store/app.selector';
 import { Observable, Subscription } from 'rxjs';
 import { Course } from '../interfaces/course.interface';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-create-course',
@@ -16,6 +17,8 @@ import { Course } from '../interfaces/course.interface';
   styleUrls: ['./create-course.component.css'],
 })
 export class CreateCourseComponent implements OnInit, OnDestroy {
+  editAndCreateForm!: FormGroup;
+
   courseSubscription: Subscription | undefined;
   course = {
     id: 0,
@@ -36,6 +39,26 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.editAndCreateForm = new FormGroup({
+      createTitle: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(50),
+      ]),
+      'ec-description': new FormControl('', [
+        Validators.required,
+        Validators.maxLength(500),
+      ]),
+      duration: new FormGroup({
+        value: new FormControl(0, Validators.required),
+      }),
+      date: new FormGroup({
+        value: new FormControl(0, Validators.required),
+      }),
+      authors: new FormGroup({
+        value: new FormControl(0, Validators.required),
+      }),
+    });
+
     const id = this.activatedRoute.snapshot.params['id'];
     if (id) {
       const courseFromStore: Observable<Course | undefined> = this.store.select(
