@@ -1,25 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { faUser, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
-import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { logout } from '../store/app.actions';
+import { selectToken, selectUserDetails } from '../store/app.selector';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent{
+export class HeaderComponent implements OnInit {
   faUser = faUser;
   faRightFromBracket = faRightFromBracket;
 
-  constructor(public authService: AuthService, private router: Router) {}
+  userName$!: Observable<string>;
+  isLoadingValue$!: Observable<string>;
 
-  logoutHandle() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+  constructor(private store: Store) {}
+
+  ngOnInit() {
+    this.userName$ = this.store.select(selectUserDetails) || of('Uknown');
+    this.isLoadingValue$ = this.store.select(selectToken);
   }
 
-  isUserAndBtnVisible(): boolean {
-    return this.authService.isAuthenticated();
+  logoutHandle() {
+    this.store.dispatch(logout());
   }
 }

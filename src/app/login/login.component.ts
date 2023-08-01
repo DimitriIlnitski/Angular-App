@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
-import { CourseService } from '../services/course.service';
+import { Store } from '@ngrx/store';
+import { loginTo } from '../store/app.actions';
 
 @Component({
   selector: 'app-login',
@@ -9,27 +8,19 @@ import { CourseService } from '../services/course.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  loginData = { login: '', password: '' };
+  loginValue = '';
+  passwordValue = '';
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    public courseService: CourseService
-  ) {}
-
-  emailInputHandle(login: string) {
-    this.loginData.login = login;
-  }
-  passwordInputHandle(password: string) {
-    this.loginData.password = password;
-  }
+  constructor(public store: Store) {}
 
   login() {
-    this.authService.login(this.loginData).subscribe({
-      next: () => {
-        this.router.navigate(['courses']);
-        console.log('Logged in successfully');
-      },
-    });
+    this.store.dispatch(
+      loginTo({
+        login: this.loginValue,
+        password: this.passwordValue,
+      })
+    );
+    this.loginValue = '';
+    this.passwordValue = '';
   }
 }

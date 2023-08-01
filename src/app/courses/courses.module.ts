@@ -10,7 +10,7 @@ import { DateComponent } from '../date/date.component';
 import { DurationComponent } from '../duration/duration.component';
 import { AuthorsComponent } from '../authors/authors.component';
 import { SharedModule } from '../shared/shared.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -28,6 +28,7 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule,
     CoursesRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     SharedModule,
     FontAwesomeModule,
     HttpClientModule,

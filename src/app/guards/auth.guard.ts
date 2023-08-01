@@ -1,17 +1,22 @@
 import { CanActivate, UrlTree } from '@angular/router';
-import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, map} from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectToken } from '../store/app.selector';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private router: Router, private store: Store) {}
 
   canActivate(): Observable<boolean | UrlTree> {
-    if (!this.authService.isAuthenticated()) {
-      return of(this.router.createUrlTree(['login']));
-    }
-    return of(true);
+    return this.store.select(selectToken).pipe(
+      map((token) => {
+        if (!token) {
+          return this.router.createUrlTree(['login']);
+        }
+        return true;
+      })
+    );
   }
 }

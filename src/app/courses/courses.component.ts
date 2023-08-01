@@ -1,10 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Course } from '../interfaces/course.interface';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { CourseService } from '../services/course.service';
 import { Router } from '@angular/router';
-import { debounceTime, filter, of, switchMap, tap } from 'rxjs';
-import { LoadingBlockService } from '../services/loading-block.service';
+import { Store } from '@ngrx/store';
+import { selectCourses } from '../store/app.selector';
+import {
+  getList,
+  removeCourse,
+  returnToCourses,
+  setSearchTerm,
+} from '../store/app.actions';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-courses',
@@ -13,61 +19,24 @@ import { LoadingBlockService } from '../services/loading-block.service';
 })
 export class CoursesComponent implements OnInit {
   faPlus = faPlus;
+  selectedCourses$!: Observable<Course[]>;
 
-  constructor(
-    public courseService: CourseService,
-    private router: Router,
-    private loadingBlockService: LoadingBlockService
-  ) {}
+  constructor(public store: Store, private router: Router) {
+    this.store.dispatch(returnToCourses());
+  }
 
   ngOnInit() {
-    if (
-      this.courseService.courses.length === 0 &&
-      this.courseService.start === 0
-    ) {
-      this.courseService.getList().subscribe({
-        next: (fetchedData) => {
-          this.courseService.courses.push(...fetchedData);
-          this.courseService.start += 3;
-          this.loadingBlockService.isLoading = false;
-        },
-        error: (e) => {
-          this.loadingBlockService.isLoading = false;
-          console.log(e);
-        },
-      });
-    }
-
-    this.courseService.SearchCourses.pipe(
-      filter((str: string) => str.length > 3 || str.length === 0),
-      debounceTime(300),
-      tap((str: string) => {
-        this.courseService.searchTerm = str;
-      }),
-      switchMap((str: string) => {
-        if (str.length === 0 || str.length >= 3) {
-          this.courseService.start = 0;
-          return this.courseService.getList();
-        } else {
-          return of([]); 
-        }
-      })
-    ).subscribe({
-      next: (fetchedData) => {
-        this.courseService.courses = [];
-        this.courseService.courses.push(...fetchedData);
-        this.courseService.start += 3;
-        this.loadingBlockService.isLoading = false;
-      },
-      error: (e) => {
-        this.loadingBlockService.isLoading = false;
-        console.log(e);
-      },
-    });
+    this.selectedCourses$ = this.store.select(selectCourses);
   }
 
   trackByCourseId(index: number, course: Course): number {
     return course.id;
+  }
+
+  onValueChangeKeyUp(value: string) {
+    if (value.length > 3 || value.length === 0) {
+      this.store.dispatch(setSearchTerm({ value: value }));
+    }
   }
 
   addNewCourse(): void {
@@ -75,17 +44,7 @@ export class CoursesComponent implements OnInit {
   }
 
   handleClickLoadMore() {
-    this.courseService.getList().subscribe({
-      next: (fetchedData) => {
-        this.courseService.courses.push(...fetchedData);
-        this.loadingBlockService.isLoading = false;
-        this.courseService.start += 3;
-      },
-      error: (e) => {
-        this.loadingBlockService.isLoading = false;
-        console.log(e);
-      },
-    });
+    this.store.dispatch(getList());
   }
 
   deleteCourse(id: string) {
@@ -93,19 +52,7 @@ export class CoursesComponent implements OnInit {
       'Do you really want to delete this course?'
     );
     if (decision) {
-      this.courseService.removeItem(id).subscribe({
-        next: () => {
-          console.log(`Course #${id} have been deleted`);
-          this.courseService.courses = this.courseService.courses.filter(
-            (course) => course.id !== Number(id)
-          );
-          this.loadingBlockService.isLoading = false;
-        },
-        error: (e) => {
-          this.loadingBlockService.isLoading = false;
-          console.log(e);
-        },
-      });
+      this.store.dispatch(removeCourse({ id: id }));
     }
   }
 }
