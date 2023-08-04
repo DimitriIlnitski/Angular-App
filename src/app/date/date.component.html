@@ -7,10 +7,10 @@
     class="input-field"
     [class]="inputClass"
     [type]="inputType"
-    [(ngModel)]="value"
     [id]="idInput"
     [name]="idInput"
     [placeholder]="placeholderText"
-    (input)="onValueChange()"
+    [value]="value"
+    (input)="onInput($event)"
   />
 </div>

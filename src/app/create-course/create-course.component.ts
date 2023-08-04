@@ -7,9 +7,11 @@ import {
   updateCourse,
 } from '../store/app.actions';
 import { selectItemById } from '../store/app.selector';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, of } from 'rxjs';
 import { Course } from '../interfaces/course.interface';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DBAuthor } from '../interfaces/db-author.interface';
+import { AuthorsService } from '../services/authors.service';
 
 @Component({
   selector: 'app-create-course',
@@ -17,7 +19,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./create-course.component.css'],
 })
 export class CreateCourseComponent implements OnInit, OnDestroy {
-  editAndCreateForm!: FormGroup;
+  createForm!: FormGroup;
+  authorsData: Observable<DBAuthor[]> = of([]);
 
   courseSubscription: Subscription | undefined;
   course = {
@@ -35,27 +38,35 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private store: Store,
-    private router: Router
+    private router: Router,
+    private authorsService: AuthorsService
   ) {}
 
   ngOnInit(): void {
-    this.editAndCreateForm = new FormGroup({
-      createTitle: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(50),
-      ]),
-      'ec-description': new FormControl('', [
-        Validators.required,
-        Validators.maxLength(500),
-      ]),
-      duration: new FormGroup({
-        value: new FormControl(0, Validators.required),
+    this.authorsData = this.authorsService.getAuthors();
+
+    this.createForm = new FormGroup({
+      createTitleGroup: new FormGroup({
+        createTitle: new FormControl('', [
+          Validators.required,
+          Validators.maxLength(50),
+        ]),
       }),
-      date: new FormGroup({
-        value: new FormControl(0, Validators.required),
+      createDescriptionGroup: new FormGroup({
+        createDescription: new FormControl('', [
+          Validators.required,
+          Validators.maxLength(500),
+        ]),
       }),
-      authors: new FormGroup({
-        value: new FormControl(0, Validators.required),
+
+      durationGroup: new FormGroup({
+        duration: new FormControl('', Validators.required),
+      }),
+      dateGroup: new FormGroup({
+        date: new FormControl('', Validators.required),
+      }),
+      authorsGroup: new FormGroup({
+        authors: new FormControl('', Validators.required),
       }),
     });
 
@@ -74,6 +85,19 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
           this.course.authors = [];
           this.course.isTopRated = course.isTopRated;
           this.shouldEdit = true;
+          this.createForm
+            .get('createTitleGroup.createTitle')
+            ?.setValue(course.name);
+          this.createForm
+            .get('createDescriptionGroup.createDescription')
+            ?.setValue(course.description);
+          this.createForm
+            .get('durationGroup.duration')
+            ?.setValue(String(course.length));
+          this.createForm
+            .get('dateGroup.date')
+            ?.setValue(course.date.slice(0, 10));
+          this.createForm.get('authorsGroup.authors')?.setValue('John Doe');
         }
       });
     }
@@ -85,34 +109,25 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
     }
   }
 
-  dateInputHandler(date: string): void {
-    this.course.date = date;
-  }
-  durationInputHandler(length: string) {
-    this.course.length = length;
-  }
-  authorsInputHandler(authors: string) {
-    return;
-  }
-
   cancel(): void {
     this.store.dispatch(returnToCourses());
     this.router.navigate(['courses']);
   }
 
   save(): void {
-    const modifiedCourse = {
-      id:
-        this.course.id || Math.floor(Math.random() * (20000 - 1000 + 1)) + 1000,
-      name: this.course.name,
-      date: new Date().toISOString(),
-      length: +this.course.length,
-      description: this.course.description,
-      authors: [],
-      isTopRated: this.course.isTopRated,
-    };
-    !this.shouldEdit
-      ? this.store.dispatch(createCourse(modifiedCourse))
-      : this.store.dispatch(updateCourse(modifiedCourse));
+    console.log(this.createForm.value);
+    // const modifiedCourse = {
+    //   id:
+    //     this.course.id || Math.floor(Math.random() * (20000 - 1000 + 1)) + 1000,
+    //   name: this.course.name,
+    //   date: new Date().toISOString(),
+    //   length: +this.course.length,
+    //   description: this.course.description,
+    //   authors: [],
+    //   isTopRated: this.course.isTopRated,
+    // };
+    // !this.shouldEdit
+    //   ? this.store.dispatch(createCourse(modifiedCourse))
+    //   : this.store.dispatch(updateCourse(modifiedCourse));
   }
 }

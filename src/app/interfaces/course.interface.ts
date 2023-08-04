@@ -1,4 +1,4 @@
-import { Author } from "./author.interface";
+import { CourseAuthor } from './course-author.interface';
 
 export interface Course {
   id: number;
@@ -6,6 +6,6 @@ export interface Course {
   date: string;
   length: number;
   description: string;
-  authors: Author[];
+  authors: CourseAuthor[];
   isTopRated: boolean;
 }

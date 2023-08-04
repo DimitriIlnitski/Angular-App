@@ -29,7 +29,6 @@ export class LoginComponent {
         password: this.loginForm.value.passwordGroup.password,
       };
       this.store.dispatch(loginTo(loginData));
-      console.log(this.loginForm.value);
     }
   }
 }

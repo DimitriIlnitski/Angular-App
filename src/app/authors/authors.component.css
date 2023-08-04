@@ -2,9 +2,10 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  width: 38rem;
 }
 
-.label {
+.label-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin-bottom: 0.5rem;
@@ -23,15 +24,25 @@
   font-size: 0.9rem;
 }
 
-.input-field {
+.content-wrapper {
+  display: grid;
+  grid-template-columns: fit-content(0) 1fr;
+}
+.authors-field {
+  height: 1.85rem;
+  width: max-content;
+  display: flex;
+  align-items: center;
+}
+.authors-block {
+  height: 1.75rem;
+  margin-right: 0.1rem;
+  padding: 0 1%;
+  width: max-content;
+}
+
+.authors-input-field {
+  display: block;
   height: 1.7rem;
-  width: 18rem;
-}
-
-.authors__label--medium {
-  width: 21.3rem;
-}
-
-.authors__input--medium {
-  width: 21rem;
+  width: 99%;
 }

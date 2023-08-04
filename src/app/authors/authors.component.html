@@ -1,16 +1,27 @@
 <div class="input-wrapper">
-  <label class="label" [class]="labelClass" [for]="idInput">
+  <div class="label-wrapper" [class]="labelClass">
     <div class="label__text">{{ labelText }}</div>
     <div class="label__required-text">{{ requiredText }}</div>
-  </label>
-  <input
-    class="input-field"
-    [class]="inputClass"
-    [type]="inputType"
-    [(ngModel)]="value"
-    [id]="idInput"
-    [name]="idInput"
-    [placeholder]="placeholderText"
-    (input)="onValueChange()"
-  />
+  </div>
+  <div class="content-wrapper">
+    <div class="authors-field">
+      <div class="authors-block" *ngFor="let author of savedAuthorsList">{{author.name + author.lastName }}</div>
+    </div>
+    <input
+      class="authors-input-field"
+      [class]="inputClass"
+      [type]="inputType"
+      [id]="idInput"
+      [name]="idInput"
+      [placeholder]="placeholderText"
+      [value]="value"
+      list="authorsList"
+      (keyup)="onKeyUp($event)"
+    />
+    <datalist id="authorsList">
+      <option *ngFor="let author of authorsData | async" [value]="author.name">
+        {{ author.name }}
+      </option>
+    </datalist>
+  </div>
 </div>
