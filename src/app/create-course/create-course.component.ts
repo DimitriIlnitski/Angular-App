@@ -23,11 +23,11 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
   authorsData: Observable<DBAuthor[]> = of([]);
 
   courseSubscription: Subscription | undefined;
-  course = {
+  course: Course = {
     id: 0,
     name: '',
     date: '',
-    length: '',
+    length: 0,
     description: '',
     authors: [],
     isTopRated: false,
@@ -66,7 +66,7 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
         date: new FormControl('', Validators.required),
       }),
       authorsGroup: new FormGroup({
-        authors: new FormControl('', Validators.required),
+        authors: new FormControl([], Validators.required),
       }),
     });
 
@@ -80,9 +80,9 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
           this.course.id = course.id;
           this.course.name = course.name;
           this.course.date = course.date;
-          this.course.length = String(course.length);
+          this.course.length = course.length;
           this.course.description = course.description;
-          this.course.authors = [];
+          this.course.authors.push(...course.authors);
           this.course.isTopRated = course.isTopRated;
           this.shouldEdit = true;
           this.createForm
@@ -97,7 +97,7 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
           this.createForm
             .get('dateGroup.date')
             ?.setValue(course.date.slice(0, 10));
-          this.createForm.get('authorsGroup.authors')?.setValue('John Doe');
+          this.createForm.get('authorsGroup.authors')?.setValue(course.authors);
         }
       });
     }
@@ -115,19 +115,19 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
   }
 
   save(): void {
-    console.log(this.createForm.value);
-    // const modifiedCourse = {
-    //   id:
-    //     this.course.id || Math.floor(Math.random() * (20000 - 1000 + 1)) + 1000,
-    //   name: this.course.name,
-    //   date: new Date().toISOString(),
-    //   length: +this.course.length,
-    //   description: this.course.description,
-    //   authors: [],
-    //   isTopRated: this.course.isTopRated,
-    // };
-    // !this.shouldEdit
-    //   ? this.store.dispatch(createCourse(modifiedCourse))
-    //   : this.store.dispatch(updateCourse(modifiedCourse));
+    const modifiedCourse = {
+      id:
+        this.course.id || Math.floor(Math.random() * (20000 - 1000 + 1)) + 1000,
+      name: this.createForm.value.createTitleGroup.createTitle,
+      date: this.createForm.value.dateGroup.date || new Date().toISOString(),
+      length: +this.createForm.value.durationGroup.duration,
+      description:
+        this.createForm.value.createDescriptionGroup.createDescription,
+      authors: this.createForm.value.authorsGroup.authors,
+      isTopRated: this.course.isTopRated,
+    };
+    !this.shouldEdit
+      ? this.store.dispatch(createCourse(modifiedCourse))
+      : this.store.dispatch(updateCourse(modifiedCourse));
   }
 }

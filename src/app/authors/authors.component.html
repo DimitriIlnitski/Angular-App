@@ -5,7 +5,14 @@
   </div>
   <div class="content-wrapper">
     <div class="authors-field">
-      <div class="authors-block" *ngFor="let author of savedAuthorsList">{{author.name + author.lastName }}</div>
+      <div class="authors-block" *ngFor="let author of savedAuthorsList">
+        <div class="authors-block__name">
+          {{ author.name + author.lastName }}
+        </div>
+        <button class="authors-block__button" (click)="deleteAuthor(author.id)">
+          <fa-icon class="authors-block__icon" [icon]="faXmark"></fa-icon>
+        </button>
+      </div>
     </div>
     <input
       class="authors-input-field"
@@ -16,7 +23,7 @@
       [placeholder]="placeholderText"
       [value]="value"
       list="authorsList"
-      (keyup)="onKeyUp($event)"
+      (change)="onChangeInput($event)"
     />
     <datalist id="authorsList">
       <option *ngFor="let author of authorsData | async" [value]="author.name">

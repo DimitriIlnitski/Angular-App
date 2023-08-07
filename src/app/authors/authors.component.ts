@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Component, Input, forwardRef } from '@angular/core';
-import {
-  ControlValueAccessor,
-  NG_VALUE_ACCESSOR,
-} from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DBAuthor } from '../interfaces/db-author.interface';
 import { Observable, of } from 'rxjs';
 import { CourseAuthor } from '../interfaces/course-author.interface';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-authors',
@@ -23,6 +21,7 @@ import { CourseAuthor } from '../interfaces/course-author.interface';
 export class AuthorsComponent implements ControlValueAccessor {
   value = '';
   savedAuthorsList: CourseAuthor[] = [];
+  faXmark = faXmark;
 
   onChange: any = () => {};
   onTouch: any = () => {};
@@ -45,8 +44,8 @@ export class AuthorsComponent implements ControlValueAccessor {
   @Input()
   authorsData: Observable<DBAuthor[]> = of([]);
 
-  writeValue(value: string): void {
-    this.savedAuthorsList.push();
+  writeValue(courseAuthor: CourseAuthor[]): void {
+    this.savedAuthorsList.push(...courseAuthor);
     this.value = '';
   }
   registerOnChange(fn: any): void {
@@ -60,13 +59,25 @@ export class AuthorsComponent implements ControlValueAccessor {
     this.disabled = isDisabled;
   }
 
-  onKeyUp(event: Event) {
+  onChangeInput(event: Event) {
     const inputValue = (event.target as HTMLInputElement).value;
 
-    if (inputValue !== null) {
-      this.value = inputValue;
+    if (inputValue !== '') {
+      const arrFromString = inputValue.split(' ');
+      this.savedAuthorsList.push({
+        id: Number(new Date().toISOString().replace(/\D/g, '').slice(0, 14)),
+        name: arrFromString[0],
+        lastName: arrFromString[1],
+      });
       this.onChange(this.savedAuthorsList);
       this.onTouch();
+      (event.target as HTMLInputElement).value='';
     }
+  }
+
+  deleteAuthor(id: number) {
+    this.savedAuthorsList = this.savedAuthorsList.filter(
+      (author) => author.id !== id
+    );
   }
 }
