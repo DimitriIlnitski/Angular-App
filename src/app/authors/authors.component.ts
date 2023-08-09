@@ -1,6 +1,13 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Component, Input, forwardRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormControl,
+  FormGroup,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  Validator,
+} from '@angular/forms';
 import { DBAuthor } from '../interfaces/db-author.interface';
 import { Observable, of } from 'rxjs';
 import { CourseAuthor } from '../interfaces/course-author.interface';
@@ -16,9 +23,14 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
       useExisting: forwardRef(() => AuthorsComponent),
       multi: true,
     },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => AuthorsComponent),
+      multi: true,
+    },
   ],
 })
-export class AuthorsComponent implements ControlValueAccessor {
+export class AuthorsComponent implements ControlValueAccessor, Validator {
   value = '';
   savedAuthorsList: CourseAuthor[] = [];
   faXmark = faXmark;
@@ -43,6 +55,8 @@ export class AuthorsComponent implements ControlValueAccessor {
   idInput = '';
   @Input()
   authorsData: Observable<DBAuthor[]> = of([]);
+  @Input()
+  createForm!: FormGroup;
 
   writeValue(courseAuthor: CourseAuthor[]): void {
     this.savedAuthorsList.push(...courseAuthor);
@@ -62,7 +76,7 @@ export class AuthorsComponent implements ControlValueAccessor {
   onChangeInput(event: Event) {
     const inputValue = (event.target as HTMLInputElement).value;
 
-    if (inputValue !== '') {
+    if (inputValue.trim().length !== 0) {
       const arrFromString = inputValue.split(' ');
       this.savedAuthorsList.push({
         id: Number(new Date().toISOString().replace(/\D/g, '').slice(0, 14)),
@@ -71,7 +85,7 @@ export class AuthorsComponent implements ControlValueAccessor {
       });
       this.onChange(this.savedAuthorsList);
       this.onTouch();
-      (event.target as HTMLInputElement).value='';
+      (event.target as HTMLInputElement).value = '';
     }
   }
 
@@ -79,5 +93,10 @@ export class AuthorsComponent implements ControlValueAccessor {
     this.savedAuthorsList = this.savedAuthorsList.filter(
       (author) => author.id !== id
     );
+    this.onChange(this.savedAuthorsList);
+  }
+
+  validate(control: FormControl) {
+    return control.value.length < 1 ? { lessThaOneAuthor: true } : null;
   }
 }

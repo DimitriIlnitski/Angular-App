@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Component, Input, forwardRef } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-
+import {
+  NG_VALUE_ACCESSOR,
+  ControlValueAccessor,
+  NG_VALIDATORS,
+  Validator,
+  FormControl,
+  FormGroup,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-duration',
@@ -13,9 +19,14 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
       useExisting: forwardRef(() => DurationComponent),
       multi: true,
     },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => DurationComponent),
+      multi: true,
+    },
   ],
 })
-export class DurationComponent implements ControlValueAccessor {
+export class DurationComponent implements ControlValueAccessor, Validator {
   value = '';
   onChange: any = () => {};
   onTouch: any = () => {};
@@ -35,6 +46,8 @@ export class DurationComponent implements ControlValueAccessor {
   inputType = 'text';
   @Input()
   idInput = '';
+  @Input()
+  createForm!: FormGroup;
 
   writeValue(value: string): void {
     this.value = value;
@@ -58,5 +71,10 @@ export class DurationComponent implements ControlValueAccessor {
       this.onChange(this.value);
       this.onTouch();
     }
+  }
+
+  validate(control: FormControl) {
+    const numericValue = parseFloat(control.value);
+    return isNaN(numericValue) ? { lengthIsNotNumber: true } : null;
   }
 }

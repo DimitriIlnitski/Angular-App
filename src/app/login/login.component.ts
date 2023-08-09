@@ -9,6 +9,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
+  myControlFocus = false;
   loginForm!: FormGroup;
 
   constructor(public store: Store) {

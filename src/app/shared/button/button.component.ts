@@ -24,13 +24,15 @@
     @Input()
     buttonText = 'Default Text';
     @Input()
-    buttonType='button'
+    buttonType = 'button';
     @Input()
     iconType: IconDefinition = faQuestion;
     @Input()
     iconClass = '';
     @Input()
     toShow = false;
+    @Input()
+    shouldDisableBtn = false;
     @Output()
     buttonClick = new EventEmitter<void>();
 

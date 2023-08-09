@@ -1,7 +1,8 @@
 <button
   class="button"
   [class]="buttonClass"
-  [class.disabled]="(isLoadingValue$ | async) === false"
+  [class.disabled]="isLoadingValue$ | async"
+  [disabled]="shouldDisableBtn"
   [type]="buttonType"
   (click)="clickHandler()"
 >

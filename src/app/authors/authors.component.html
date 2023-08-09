@@ -1,13 +1,41 @@
 <div class="input-wrapper">
   <div class="label-wrapper" [class]="labelClass">
     <div class="label__text">{{ labelText }}</div>
-    <div class="label__required-text">{{ requiredText }}</div>
+    <div
+      class="label__required-text"
+      class="label__required-text"
+      *ngIf="
+        createForm.get('authorsGroup.authors')!.valid ||
+        !createForm.get('authorsGroup.authors')!.touched
+      "
+    >
+      {{ requiredText }}
+    </div>
+    <div
+      class="authors__error-text"
+      *ngIf="
+        createForm.get('authorsGroup.authors')!.invalid &&
+        createForm.get('authorsGroup.authors')!.touched
+      "
+    >
+      Should be at least one author
+    </div>
   </div>
   <div class="content-wrapper">
-    <div class="authors-field">
+    <div
+      class="authors-field"
+      [class.valid-input]="
+        createForm.get('authorsGroup.authors')!.valid &&
+        createForm.get('authorsGroup.authors')!.touched
+      "
+      [class.invalid-input]="
+        createForm.get('authorsGroup.authors')!.invalid &&
+        createForm.get('authorsGroup.authors')!.touched
+      "
+    >
       <div class="authors-block" *ngFor="let author of savedAuthorsList">
         <div class="authors-block__name">
-          {{ author.name + author.lastName }}
+          {{ author.name + " " + author.lastName }}
         </div>
         <button class="authors-block__button" (click)="deleteAuthor(author.id)">
           <fa-icon class="authors-block__icon" [icon]="faXmark"></fa-icon>
@@ -23,6 +51,14 @@
       [placeholder]="placeholderText"
       [value]="value"
       list="authorsList"
+      [class.valid-input]="
+        createForm.get('authorsGroup.authors')!.valid &&
+        createForm.get('authorsGroup.authors')!.touched
+      "
+      [class.invalid-input]="
+        createForm.get('authorsGroup.authors')!.invalid &&
+        createForm.get('authorsGroup.authors')!.touched
+      "
       (change)="onChangeInput($event)"
     />
     <datalist id="authorsList">

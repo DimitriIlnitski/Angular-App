@@ -60,13 +60,13 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
       }),
 
       durationGroup: new FormGroup({
-        duration: new FormControl('', Validators.required),
+        duration: new FormControl('', [Validators.required]),
       }),
       dateGroup: new FormGroup({
-        date: new FormControl('', Validators.required),
+        date: new FormControl('', [Validators.required]),
       }),
       authorsGroup: new FormGroup({
-        authors: new FormControl([], Validators.required),
+        authors: new FormControl([], [Validators.required]),
       }),
     });
 

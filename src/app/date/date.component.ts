@@ -1,6 +1,13 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Component, Input, forwardRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormControl,
+  FormGroup,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  Validator,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-date',
@@ -12,9 +19,14 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       useExisting: forwardRef(() => DateComponent),
       multi: true,
     },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => DateComponent),
+      multi: true,
+    },
   ],
 })
-export class DateComponent implements ControlValueAccessor {
+export class DateComponent implements ControlValueAccessor, Validator {
   value = '';
   onChange: any = () => {};
   onTouch: any = () => {};
@@ -34,7 +46,9 @@ export class DateComponent implements ControlValueAccessor {
   inputType = 'text';
   @Input()
   idInput = '';
-
+  @Input()
+  createForm!: FormGroup;
+  
   writeValue(value: string): void {
     this.value = value;
   }
@@ -57,5 +71,11 @@ export class DateComponent implements ControlValueAccessor {
       this.onChange(this.value);
       this.onTouch();
     }
+  }
+
+  validate(control: FormControl) {
+    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+
+    return !datePattern.test(control.value) ? { isNotDateString: true } : null;
   }
 }

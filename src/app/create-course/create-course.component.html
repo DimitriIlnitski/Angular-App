@@ -6,7 +6,24 @@
   >
     <label class="create-course__label" for="createTitle">
       <div class="create-course__label-text">Title:</div>
-      <div class="create-course__required-text">*required</div>
+      <div
+        class="create-course__required-text"
+        *ngIf="
+          createForm.get('createTitleGroup.createTitle')!.valid ||
+          !createForm.get('createTitleGroup.createTitle')!.touched
+        "
+      >
+        *required
+      </div>
+      <div
+        class="create-course__error-text"
+        *ngIf="
+          !createForm.get('createTitleGroup.createTitle')!.valid &&
+          createForm.get('createTitleGroup.createTitle')!.touched
+        "
+      >
+        Not more than 50 characters
+      </div>
     </label>
     <input
       class="create-course_input-alternative"
@@ -15,6 +32,14 @@
       name="createTitle"
       placeholder=" Text input"
       formControlName="createTitle"
+      [class.valid-input]="
+        createForm.get('createTitleGroup.createTitle')!.valid &&
+        createForm.get('createTitleGroup.createTitle')!.touched
+      "
+      [class.invalid-input]="
+        createForm.get('createTitleGroup.createTitle')!.invalid &&
+        createForm.get('createTitleGroup.createTitle')!.touched
+      "
     />
   </div>
   <div
@@ -23,7 +48,24 @@
   >
     <label class="create-course__label" for="createDescription">
       <div class="create-course__label-text">Description:</div>
-      <div class="create-course__required-text">*required</div>
+      <div
+        class="create-course__required-text"
+        *ngIf="
+          createForm.get('createDescriptionGroup.createDescription')!.valid ||
+          !createForm.get('createDescriptionGroup.createDescription')!.touched
+        "
+      >
+        *required
+      </div>
+      <div
+        class="create-course__error-text"
+        *ngIf="
+          !createForm.get('createDescriptionGroup.createDescription')!.valid &&
+          createForm.get('createDescriptionGroup.createDescription')!.touched
+        "
+      >
+        Not more than 500 characters
+      </div>
     </label>
     <textarea
       class="create-course__description"
@@ -31,6 +73,14 @@
       placeholder=" Add description"
       required="true"
       formControlName="createDescription"
+      [class.valid-input]="
+        createForm.get('createDescriptionGroup.createDescription')!.valid &&
+        createForm.get('createDescriptionGroup.createDescription')!.touched
+      "
+      [class.invalid-input]="
+        createForm.get('createDescriptionGroup.createDescription')!.invalid &&
+        createForm.get('createDescriptionGroup.createDescription')!.touched
+      "
     ></textarea>
   </div>
   <div class="create-course__input-wrapper--row" formGroupName="durationGroup">
@@ -41,6 +91,7 @@
       [requiredText]="'*required'"
       [placeholderText]="' Minutes'"
       [inputType]="'text'"
+      [createForm]="createForm"
       formControlName="duration"
     ></app-duration>
   </div>
@@ -55,6 +106,7 @@
       MM/DD/YYYY'
       "
       [inputType]="'date'"
+      [createForm]="createForm"
       formControlName="date"
     ></app-date>
   </div>
@@ -67,6 +119,7 @@
       [placeholderText]="' Start typing'"
       [inputType]="'text'"
       [authorsData]="authorsData"
+      [createForm]="createForm"
       formControlName="authors"
     ></app-authors>
   </div>
@@ -80,6 +133,7 @@
       [buttonClass]="'create-course__save-button'"
       [buttonText]="'Save'"
       [buttonType]="'submit'"
+      [shouldDisableBtn]="!createForm.valid"
     ></app-button>
   </div>
 </form>

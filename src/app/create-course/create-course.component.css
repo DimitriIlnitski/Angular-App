@@ -40,6 +40,13 @@
   font-size: 0.9rem;
 }
 
+.create-course__error-text {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.8rem;
+  color: red;
+}
+
 .create-course_input-alternative {
   height: 1.7rem;
   width: 38rem;
@@ -63,4 +70,20 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+}
+
+.invalid-input {
+  border: 2px solid red;
+}
+
+.valid-input {
+  border: 2px solid green;
+}
+
+input:focus {
+  outline: none;
+}
+
+textarea:focus {
+  outline: none;
 }

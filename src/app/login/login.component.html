@@ -1,5 +1,10 @@
 <form class="login" [formGroup]="loginForm" (ngSubmit)="login()">
-  <h1 class="login__title">Login</h1>
+  <div class="login__title--wrapper">
+    <h1 class="login__title">Login</h1>
+    <h6 class="login__error" *ngIf="loginForm.invalid && loginForm.touched">
+      Wrong e-mail or password
+    </h6>
+  </div>
 
   <div class="input-wrapper" formGroupName="loginGroup">
     <label class="label login__label" [for]="'login'">
@@ -14,6 +19,14 @@
       placeholder="  Enter login"
       autocomplete="off"
       formControlName="login"
+      [class.invalid-input]="
+        loginForm.get('loginGroup.login')!.invalid &&
+        loginForm.get('loginGroup.login')!.touched
+      "
+      [class.valid-input]="
+        loginForm.get('loginGroup.login')!.valid &&
+        loginForm.get('loginGroup.login')!.touched
+      "
     />
   </div>
   <div class="input-wrapper" formGroupName="passwordGroup">
@@ -29,6 +42,16 @@
       placeholder="  Enter password"
       autocomplete="off"
       formControlName="password"
+      [class.invalid-input]="
+        !myControlFocus &&
+        loginForm.get('passwordGroup.password')!.invalid &&
+        loginForm.get('passwordGroup.password')!.touched
+      "
+      [class.valid-input]="
+        !myControlFocus &&
+        loginForm.get('passwordGroup.password')!.valid &&
+        loginForm.get('passwordGroup.password')!.touched
+      "
     />
   </div>
   <div class="login_button-container">
@@ -37,6 +60,7 @@
       [buttonClass]="'login__button'"
       [buttonText]="'LOGIN'"
       [buttonType]="'submit'"
+      [shouldDisableBtn]="!loginForm.valid"
     ></app-button>
   </div>
 </form>

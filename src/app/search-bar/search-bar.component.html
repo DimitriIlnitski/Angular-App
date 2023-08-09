@@ -1,14 +1,18 @@
-<form class="search-bar">
+<form
+  class="search-bar"
+  [formGroup]="searchForm"
+  (ngSubmit)="onValueChangeKeyUp()"
+>
   <div class="input-wrapper">
-  <input
-    class="input-field"
-    [class.disabled]="(isLoadingValue$ | async) === false"
-    type="text"
-    [(ngModel)]="value"
-    id='Search'
-    name='Search'
-    placeholder="Text to search"
-    (keyup)="onValueChangeKeyUp()"
-  />
-</div>
+    <input
+      class="input-field"
+      [class.disabled]="(isLoadingValue$ | async) === false"
+      type="text"
+      id="Search"
+      name="Search"
+      placeholder="Text to search"
+      formControlName="searchValue"
+      (keyup.enter)="submitForm()"
+    />
+  </div>
 </form>
