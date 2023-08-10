@@ -3,7 +3,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { selectIsLoading } from '../store/app.selector';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-search-bar',
@@ -31,11 +31,5 @@ export class SearchBarComponent implements OnInit {
     return this.valueChangeKeyUp.emit(
       this.searchForm.get('searchValue')!.value
     );
-  }
-
-  submitForm() {
-    if (this.searchForm.valid) {
-      this.onValueChangeKeyUp();
-    }
   }
 }

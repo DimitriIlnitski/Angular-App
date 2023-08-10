@@ -1,7 +1,8 @@
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <form
   class="search-bar"
   [formGroup]="searchForm"
-  (ngSubmit)="onValueChangeKeyUp()"
+  (keyup)="onValueChangeKeyUp()"
 >
   <div class="input-wrapper">
     <input
@@ -12,7 +13,6 @@
       name="Search"
       placeholder="Text to search"
       formControlName="searchValue"
-      (keyup.enter)="submitForm()"
     />
   </div>
 </form>

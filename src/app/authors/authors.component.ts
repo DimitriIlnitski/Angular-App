@@ -75,8 +75,8 @@ export class AuthorsComponent implements ControlValueAccessor, Validator {
 
   onChangeInput(event: Event) {
     const inputValue = (event.target as HTMLInputElement).value;
-
-    if (inputValue.trim().length !== 0) {
+    const pattern = /^[a-zA-Z]+\s[a-zA-Z]+$/;
+    if (pattern.test(inputValue)) {
       const arrFromString = inputValue.split(' ');
       this.savedAuthorsList.push({
         id: Number(new Date().toISOString().replace(/\D/g, '').slice(0, 14)),
@@ -85,6 +85,8 @@ export class AuthorsComponent implements ControlValueAccessor, Validator {
       });
       this.onChange(this.savedAuthorsList);
       this.onTouch();
+      (event.target as HTMLInputElement).value = '';
+    } else {
       (event.target as HTMLInputElement).value = '';
     }
   }
