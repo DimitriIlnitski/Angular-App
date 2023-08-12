@@ -24,14 +24,18 @@
     @Input()
     buttonText = 'Default Text';
     @Input()
+    buttonType = 'button';
+    @Input()
     iconType: IconDefinition = faQuestion;
     @Input()
     iconClass = '';
     @Input()
     toShow = false;
+    @Input()
+    shouldDisableBtn = false;
     @Output()
     buttonClick = new EventEmitter<void>();
- 
+
     isLoadingValue$!: Observable<boolean>;
 
     clickHandler() {
@@ -40,7 +44,5 @@
 
     ngOnInit() {
       this.isLoadingValue$ = this.store.select(selectIsLoading);
-
     }
-
   }

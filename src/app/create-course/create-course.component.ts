@@ -7,8 +7,11 @@ import {
   updateCourse,
 } from '../store/app.actions';
 import { selectItemById } from '../store/app.selector';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, of } from 'rxjs';
 import { Course } from '../interfaces/course.interface';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DBAuthor } from '../interfaces/db-author.interface';
+import { AuthorsService } from '../services/authors.service';
 
 @Component({
   selector: 'app-create-course',
@@ -16,12 +19,15 @@ import { Course } from '../interfaces/course.interface';
   styleUrls: ['./create-course.component.css'],
 })
 export class CreateCourseComponent implements OnInit, OnDestroy {
+  createForm!: FormGroup;
+  authorsData: Observable<DBAuthor[]> = of([]);
+
   courseSubscription: Subscription | undefined;
-  course = {
+  course: Course = {
     id: 0,
     name: '',
     date: '',
-    length: '',
+    length: 0,
     description: '',
     authors: [],
     isTopRated: false,
@@ -32,10 +38,38 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private store: Store,
-    private router: Router
+    private router: Router,
+    private authorsService: AuthorsService
   ) {}
 
   ngOnInit(): void {
+    this.authorsData = this.authorsService.getAuthors();
+
+    this.createForm = new FormGroup({
+      createTitleGroup: new FormGroup({
+        createTitle: new FormControl('', [
+          Validators.required,
+          Validators.maxLength(50),
+        ]),
+      }),
+      createDescriptionGroup: new FormGroup({
+        createDescription: new FormControl('', [
+          Validators.required,
+          Validators.maxLength(500),
+        ]),
+      }),
+
+      durationGroup: new FormGroup({
+        duration: new FormControl('', [Validators.required]),
+      }),
+      dateGroup: new FormGroup({
+        date: new FormControl('', [Validators.required]),
+      }),
+      authorsGroup: new FormGroup({
+        authors: new FormControl([], [Validators.required]),
+      }),
+    });
+
     const id = this.activatedRoute.snapshot.params['id'];
     if (id) {
       const courseFromStore: Observable<Course | undefined> = this.store.select(
@@ -46,11 +80,24 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
           this.course.id = course.id;
           this.course.name = course.name;
           this.course.date = course.date;
-          this.course.length = String(course.length);
+          this.course.length = course.length;
           this.course.description = course.description;
-          this.course.authors = [];
+          this.course.authors.push(...course.authors);
           this.course.isTopRated = course.isTopRated;
           this.shouldEdit = true;
+          this.createForm
+            .get('createTitleGroup.createTitle')
+            ?.setValue(course.name);
+          this.createForm
+            .get('createDescriptionGroup.createDescription')
+            ?.setValue(course.description);
+          this.createForm
+            .get('durationGroup.duration')
+            ?.setValue(String(course.length));
+          this.createForm
+            .get('dateGroup.date')
+            ?.setValue(course.date.slice(0, 10));
+          this.createForm.get('authorsGroup.authors')?.setValue(course.authors);
         }
       });
     }
@@ -62,16 +109,6 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
     }
   }
 
-  dateInputHandler(date: string): void {
-    this.course.date = date;
-  }
-  durationInputHandler(length: string) {
-    this.course.length = length;
-  }
-  authorsInputHandler(authors: string) {
-    return;
-  }
-
   cancel(): void {
     this.store.dispatch(returnToCourses());
     this.router.navigate(['courses']);
@@ -81,11 +118,12 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
     const modifiedCourse = {
       id:
         this.course.id || Math.floor(Math.random() * (20000 - 1000 + 1)) + 1000,
-      name: this.course.name,
-      date: new Date().toISOString(),
-      length: +this.course.length,
-      description: this.course.description,
-      authors: [],
+      name: this.createForm.value.createTitleGroup.createTitle,
+      date: this.createForm.value.dateGroup.date || new Date().toISOString(),
+      length: +this.createForm.value.durationGroup.duration,
+      description:
+        this.createForm.value.createDescriptionGroup.createDescription,
+      authors: this.createForm.value.authorsGroup.authors,
       isTopRated: this.course.isTopRated,
     };
     !this.shouldEdit

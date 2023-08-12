@@ -26,6 +26,7 @@
 .input-field {
   height: 1.7rem;
   width: 18rem;
+  color: grey;
 }
 
 .login__input {
@@ -51,4 +52,23 @@
   margin-left: 1rem;
   display: flex;
   align-items: center;
+}
+
+.invalid-input {
+  border: 2px solid red;
+}
+
+.valid-input {
+  border: 2px solid green;
+}
+
+input:focus {
+  outline: none;
+}
+
+.duration__error-text {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.8rem;
+  color: red;
 }

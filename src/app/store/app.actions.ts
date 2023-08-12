@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Author } from 'src/app/interfaces/author.interface';
+import { CourseAuthor } from 'src/app/interfaces/course-author.interface';
 import { Course } from 'src/app/interfaces/course.interface';
 import { User } from 'src/app/interfaces/user.interface';
 
@@ -59,7 +59,7 @@ export const createCourse = createAction(
     date: string;
     length: number;
     description: string;
-    authors: Author[];
+    authors: CourseAuthor[];
     isTopRated: boolean;
   }>()
 );
@@ -72,7 +72,7 @@ export const updateCourse = createAction(
     date: string;
     length: number;
     description: string;
-    authors: Author[];
+    authors: CourseAuthor[];
     isTopRated: boolean;
   }>()
 );

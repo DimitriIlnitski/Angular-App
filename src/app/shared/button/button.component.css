@@ -59,3 +59,8 @@
   height: 2.5rem;
   margin-left: 0.7rem;
 }
+
+button:disabled {
+  background-color: coral;
+  color: white;
+}

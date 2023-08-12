@@ -1,8 +1,18 @@
-<form class="search-bar">
-  <app-input
-    [placeholderText]="'Text to search'"
-    [idInput]="'Search'"
-    (valueChangeKeyUp)="onValueChangeKeyUp($event)"
-  >
-  </app-input>
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+<form
+  class="search-bar"
+  [formGroup]="searchForm"
+  (keyup)="onValueChangeKeyUp()"
+>
+  <div class="input-wrapper">
+    <input
+      class="input-field"
+      [class.disabled]="(isLoadingValue$ | async) === false"
+      type="text"
+      id="Search"
+      name="Search"
+      placeholder="Text to search"
+      formControlName="searchValue"
+    />
+  </div>
 </form>

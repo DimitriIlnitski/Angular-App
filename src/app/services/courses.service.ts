@@ -18,11 +18,8 @@ export class CoursesService {
     const params: HttpParams = new HttpParams()
       .set('start', start)
       .set('count', 3)
-      .set('sort', 'date');
-
-    if (searchTerm) {
-      params.set('textFragment', searchTerm);
-    }
+      .set('sort', 'date')
+      .set('textFragment', searchTerm);
 
     return this.http.get<Course[]>(`${this.apiUrl}/courses`, {
       params,

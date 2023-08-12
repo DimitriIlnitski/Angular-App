@@ -2,9 +2,10 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  width: 38rem;
 }
 
-.label {
+.label-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin-bottom: 0.5rem;
@@ -23,15 +24,96 @@
   font-size: 0.9rem;
 }
 
-.input-field {
-  height: 1.7rem;
-  width: 18rem;
+.content-wrapper {
+  display: grid;
+  grid-template-columns: fit-content(0) 1fr;
 }
 
-.authors__label--medium {
-  width: 21.3rem;
+.authors-field {
+  height: 2.2rem;
+  width: max-content;
+  display: flex;
+  align-items: center;
+  border-top: 0.1px solid grey;
+  border-left: 0.1px solid grey;
+  border-bottom: 0.1px solid grey;
+  border-right: none;
+  border-radius: 2px 0 0 2px;
 }
 
-.authors__input--medium {
-  width: 21rem;
+.authors-block {
+  height: 1.5rem;
+  margin-right: 0.5rem;
+  width: max-content;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 5%;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+  padding: 0 0.5rem;
+  background: rgb(224, 227, 234);
+  border: none;
+  color: grey;
+  font-size: 0.9rem;
+}
+
+.authors-block:first-child {
+  margin-left: 0.2rem;
+}
+
+.authors-block__name {
+  display: flex;
+  width: max-content;
+}
+
+.authors-block__button {
+  height: min-content;
+  width: min-content;
+  padding: 0;
+  border: none;
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+  background: rgb(224, 227, 234);
+}
+.authors-block__icon {
+  font-size: 1rem;
+  margin: 0;
+  border: none;
+  color: grey;
+}
+
+.authors-input-field {
+  display: block;
+  height: 2.05rem;
+  width: 99%;
+  border-top: 0.1px solid grey;
+  border-left: none;
+  border-bottom: 0.1px solid grey;
+  border-right: 0.1px solid grey;
+  border-radius: 0 2px 2px 0;
+}
+
+.invalid-input {
+  border-color: red;
+  border-width: 2px;
+}
+
+.valid-input {
+  border-color: green;
+  border-width: 2px;
+}
+
+input:focus {
+  outline: none;
+}
+
+.authors__error-text {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.8rem;
+  color: red;
 }
