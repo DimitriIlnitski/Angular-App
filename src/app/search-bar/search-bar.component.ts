@@ -3,7 +3,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { selectIsLoading } from '../store/app.selector';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-search-bar',
@@ -14,12 +14,12 @@ export class SearchBarComponent implements OnInit {
   searchForm!: FormGroup;
   isLoadingValue$!: Observable<boolean>;
 
-  constructor(public store: Store) {}
+  constructor(public store: Store, private fb: FormBuilder) {}
 
   ngOnInit() {
     this.isLoadingValue$ = this.store.select(selectIsLoading);
-    this.searchForm = new FormGroup({
-      searchValue: new FormControl(''),
+    this.searchForm = this.fb.group({
+      searchValue: [''],
     });
   }
 
@@ -27,9 +27,6 @@ export class SearchBarComponent implements OnInit {
   valueChangeKeyUp = new EventEmitter<string>();
 
   onValueChangeKeyUp() {
-    console.log(this.searchForm.get('searchValue')!.value);
-    return this.valueChangeKeyUp.emit(
-      this.searchForm.get('searchValue')!.value
-    );
+    this.valueChangeKeyUp.emit(this.searchForm.get('searchValue')!.value);
   }
 }

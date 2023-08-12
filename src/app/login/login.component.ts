@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { loginTo } from '../store/app.actions';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -12,13 +16,13 @@ export class LoginComponent {
   myControlFocus = false;
   loginForm!: FormGroup;
 
-  constructor(public store: Store) {
-    this.loginForm = new FormGroup({
-      loginGroup: new FormGroup({
-        login: new FormControl('', [Validators.required]),
+  constructor(public store: Store, private fb: FormBuilder) {
+    this.loginForm = this.fb.group({
+      loginGroup: this.fb.group({
+        login: ['', [Validators.required]],
       }),
-      passwordGroup: new FormGroup({
-        password: new FormControl('', [Validators.required]),
+      passwordGroup: this.fb.group({
+        password: ['', [Validators.required]],
       }),
     });
   }

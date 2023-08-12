@@ -9,7 +9,12 @@ import {
 import { selectItemById } from '../store/app.selector';
 import { Observable, Subscription, of } from 'rxjs';
 import { Course } from '../interfaces/course.interface';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { DBAuthor } from '../interfaces/db-author.interface';
 import { AuthorsService } from '../services/authors.service';
 
@@ -39,34 +44,32 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private store: Store,
     private router: Router,
-    private authorsService: AuthorsService
+    private authorsService: AuthorsService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
     this.authorsData = this.authorsService.getAuthors();
 
-    this.createForm = new FormGroup({
-      createTitleGroup: new FormGroup({
-        createTitle: new FormControl('', [
-          Validators.required,
-          Validators.maxLength(50),
-        ]),
+    this.createForm = this.fb.group({
+      createTitleGroup: this.fb.group({
+        createTitle: ['', [Validators.required, Validators.maxLength(50)]],
       }),
-      createDescriptionGroup: new FormGroup({
-        createDescription: new FormControl('', [
-          Validators.required,
-          Validators.maxLength(500),
-        ]),
+      createDescriptionGroup: this.fb.group({
+        createDescription: [
+          '',
+          [Validators.required, Validators.maxLength(500)],
+        ],
       }),
 
-      durationGroup: new FormGroup({
-        duration: new FormControl('', [Validators.required]),
+      durationGroup: this.fb.group({
+        duration: ['', [Validators.required]],
       }),
-      dateGroup: new FormGroup({
-        date: new FormControl('', [Validators.required]),
+      dateGroup: this.fb.group({
+        date: ['', [Validators.required]],
       }),
-      authorsGroup: new FormGroup({
-        authors: new FormControl([], [Validators.required]),
+      authorsGroup: this.fb.group({
+        authors: [[], [Validators.required]],
       }),
     });
 
