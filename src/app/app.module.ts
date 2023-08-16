@@ -11,17 +11,29 @@ import { FooterComponent } from './footer/footer.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ListFilterCourseNamePipe } from './shared/pipes/list-filter-course-name.pipe';
 import { AppRoutingModule } from './app-routing.module';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  HttpClientModule,
+} from '@angular/common/http';
 import { AuthInterceptorService } from './interceptors/auth-interceptor.service';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './services/custom-route-reuse.strategy';
 import { SharedModule } from './shared/shared.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 import { LoadingBlockComponent } from './loading-block/loading-block.component';
 import { EffectsModule } from '@ngrx/effects';
 import { AppReducer } from './store/app.reducers';
 import { AppEffects } from './store/app.effects';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -33,6 +45,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     FontAwesomeModule,
     ReactiveFormsModule,
@@ -40,6 +53,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     SharedModule,
     MatProgressSpinnerModule,
+    MatSelectModule,
     StoreModule.forRoot({ app: AppReducer }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
@@ -47,6 +61,13 @@ import { ReactiveFormsModule } from '@angular/forms';
       trace: true,
     }),
     EffectsModule.forRoot([AppEffects]),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
   ],
   providers: [
     ListFilterCourseNamePipe,

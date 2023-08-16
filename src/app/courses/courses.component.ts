@@ -11,6 +11,7 @@ import {
   setSearchTerm,
 } from '../store/app.actions';
 import { Observable } from 'rxjs';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-courses',
@@ -21,11 +22,21 @@ export class CoursesComponent implements OnInit {
   faPlus = faPlus;
   selectedCourses$!: Observable<Course[]>;
 
-  constructor(public store: Store, private router: Router) {
+
+  constructor(
+    public store: Store,
+    private router: Router,
+    public translate: TranslateService
+  ) {
     this.store.dispatch(returnToCourses());
   }
 
   ngOnInit() {
+   this.translate.store.onLangChange.subscribe(
+      (lang: LangChangeEvent) => {
+        this.translate.use(lang.lang);
+      }
+    );
     this.selectedCourses$ = this.store.select(selectCourses);
   }
 

@@ -1,11 +1,19 @@
 <form class="create-course" [formGroup]="createForm" (ngSubmit)="save()">
-  <h1 class="create-course__title">New Course</h1>
+  <h1 class="create-course__title">
+    {{
+      shouldEdit
+        ? ("CREATE_COURSE.EDIT_COURSE_TITLE" | translate)
+        : ("CREATE_COURSE.CREATE_COURSE_TITLE" | translate)
+    }}
+  </h1>
   <div
     class="create-course__input-wrapper-column"
     formGroupName="createTitleGroup"
   >
     <label class="create-course__label" for="createTitle">
-      <div class="create-course__label-text">Title:</div>
+      <div class="create-course__label-text">
+        {{ "CREATE_COURSE.TITLE" | translate }}:
+      </div>
       <div
         class="create-course__required-text"
         *ngIf="
@@ -13,7 +21,7 @@
           !createForm.get('createTitleGroup.createTitle')!.touched
         "
       >
-        *required
+        {{ "*" + ("CREATE_COURSE.CREATE_COURSE_LABEL_REQUIRED" | translate) }}
       </div>
       <div
         class="create-course__error-text"
@@ -22,7 +30,7 @@
           createForm.get('createTitleGroup.createTitle')!.touched
         "
       >
-        Not more than 50 characters
+        {{ "CREATE_COURSE.NOT_MORE_THAN_50_CHARACTERS" | translate }}
       </div>
     </label>
     <input
@@ -30,7 +38,7 @@
       type="text"
       id="createTitle"
       name="createTitle"
-      placeholder=" Text input"
+      [placeholder]="'CREATE_COURSE.ADD_TITLE' | translate"
       formControlName="createTitle"
       [class.valid-input]="
         createForm.get('createTitleGroup.createTitle')!.valid &&
@@ -47,7 +55,9 @@
     formGroupName="createDescriptionGroup"
   >
     <label class="create-course__label" for="createDescription">
-      <div class="create-course__label-text">Description:</div>
+      <div class="create-course__label-text">
+        {{ "CREATE_COURSE.DESCRIPTION" | translate }}:
+      </div>
       <div
         class="create-course__required-text"
         *ngIf="
@@ -55,7 +65,7 @@
           !createForm.get('createDescriptionGroup.createDescription')!.touched
         "
       >
-        *required
+        {{ "*" + ("CREATE_COURSE.CREATE_COURSE_LABEL_REQUIRED" | translate) }}
       </div>
       <div
         class="create-course__error-text"
@@ -64,13 +74,13 @@
           createForm.get('createDescriptionGroup.createDescription')!.touched
         "
       >
-        Not more than 500 characters
+        {{ "CREATE_COURSE.NOT_MORE_THAN_500_CHARACTERS" | translate }}
       </div>
     </label>
     <textarea
       class="create-course__description"
       name="createDescription"
-      placeholder=" Add description"
+      [placeholder]="'CREATE_COURSE.ADD_DESCRIPTION' | translate"
       required="true"
       formControlName="createDescription"
       [class.valid-input]="
@@ -85,11 +95,13 @@
   </div>
   <div class="create-course__input-wrapper--row" formGroupName="durationGroup">
     <app-duration
-      [labelText]="'Duration:'"
+      [labelText]="'CREATE_COURSE.DURATION' | translate"
       [labelClass]="'duration__label--short'"
       [inputClass]="'duration__input--short'"
-      [requiredText]="'*required'"
-      [placeholderText]="' Minutes'"
+      [requiredText]="
+        '*' + ('CREATE_COURSE.CREATE_COURSE_LABEL_REQUIRED' | translate)
+      "
+      [placeholderText]="'CREATE_COURSE.ADD_DURATION_IN_MINUTES' | translate"
       [inputType]="'text'"
       [createForm]="createForm"
       formControlName="duration"
@@ -97,10 +109,12 @@
   </div>
   <div class="create-course__input-wrapper-column" formGroupName="dateGroup">
     <app-date
-      [labelText]="'Date:'"
+      [labelText]="'CREATE_COURSE.DATE' | translate"
       [labelClass]="'date__label--short'"
       [inputClass]="'date__input--time-short'"
-      [requiredText]="'*required'"
+      [requiredText]="
+        '*' + ('CREATE_COURSE.CREATE_COURSE_LABEL_REQUIRED' | translate)
+      "
       [placeholderText]="
         '
       MM/DD/YYYY'
@@ -112,11 +126,13 @@
   </div>
   <div class="create-course__input-wrapper--row" formGroupName="authorsGroup">
     <app-authors
-      [labelText]="'Authors:'"
+      [labelText]="'CREATE_COURSE.AUTHORS' | translate"
       [labelClass]="'authors__label--medium'"
       [inputClass]="'authors__input--medium'"
-      [requiredText]="'*required'"
-      [placeholderText]="' Start typing'"
+      [requiredText]="
+        '*' + ('CREATE_COURSE.CREATE_COURSE_LABEL_REQUIRED' | translate)
+      "
+      [placeholderText]="'CREATE_COURSE.SELECT_AUTHOR' | translate"
       [inputType]="'text'"
       [authorsData]="authorsData"
       [createForm]="createForm"
@@ -126,12 +142,12 @@
   <div class="create-course__buttons">
     <app-button
       [buttonClass]="'create-course__cancel-button'"
-      [buttonText]="'Cancel'"
+      [buttonText]="'CREATE_COURSE.CANCEL' | translate"
       (buttonClick)="cancel()"
     ></app-button>
     <app-button
       [buttonClass]="'create-course__save-button'"
-      [buttonText]="'Save'"
+      [buttonText]="'CREATE_COURSE.SAVE' | translate"
       [buttonType]="'submit'"
       [shouldDisableBtn]="!createForm.valid"
     ></app-button>

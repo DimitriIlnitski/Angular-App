@@ -1,30 +1,34 @@
 <article class="course-card" [appCardBorderColor]="courseItem.date">
   <div>
     <div class="course-card__name-container">
-      <h2 class="course-card__name">{{ courseItem.name | uppercase}}</h2>
-      <fa-icon class="course-card__star" [class.course-card__star--not-visible]="!courseItem.isTopRated" [icon]="faStar"></fa-icon>
+      <h2 class="course-card__name">{{ courseItem.name | uppercase }}</h2>
+      <fa-icon
+        class="course-card__star"
+        [class.course-card__star--not-visible]="!courseItem.isTopRated"
+        [icon]="faStar"
+      ></fa-icon>
     </div>
     <p class="course-card__description">{{ courseItem.description }}</p>
   </div>
   <div class="course-card__right">
     <div>
       <fa-icon class="course-card__time" [icon]="faClock"></fa-icon>
-      {{ courseItem.length | durationFormat}}
+      {{ courseItem.length | durationFormat }}
     </div>
     <div>
       <fa-icon class="course-card__time" [icon]="faCalendar"></fa-icon>
-      {{ courseItem.date | date: 'd MMM yyyy' }}
+      {{ courseItem.date | date : "d MMM yyyy" }}
     </div>
     <app-button
       [buttonClass]="'course-card__button'"
-      [buttonText]="'Edit'"
+      [buttonText]="'COURSE_CARD.EDIT' | translate"
       [toShow]="true"
       [iconType]="faPen"
       (buttonClick)="editClick()"
     ></app-button>
     <app-button
       [buttonClass]="'course-card__button'"
-      [buttonText]="'Delete'"
+      [buttonText]="'COURSE_CARD.DELETE' | translate"
       [toShow]="true"
       [iconType]="faTrash"
       (buttonClick)="deleteClick()"

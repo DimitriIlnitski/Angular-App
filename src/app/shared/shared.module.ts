@@ -9,6 +9,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CardBorderColorDirective } from './directives/card-border-color.directive';
 import { IfAuthenticatedDirective } from './directives/if-authenticated.directive';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
 @NgModule({
   declarations: [
     ButtonComponent,
@@ -19,7 +27,20 @@ import { IfAuthenticatedDirective } from './directives/if-authenticated.directiv
     CardBorderColorDirective,
     IfAuthenticatedDirective,
   ],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, FontAwesomeModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    FontAwesomeModule,
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+      isolate: true,
+    }),
+  ],
   exports: [
     ButtonComponent,
     LogoComponent,

@@ -1,7 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { selectIsLoading } from './store/app.selector';
+import { TranslateService } from '@ngx-translate/core';
+import { environment } from 'src/environments/environment.development';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +13,10 @@ import { selectIsLoading } from './store/app.selector';
 export class AppComponent implements OnInit {
   isLoadingValue$!: Observable<boolean>;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, public translate: TranslateService) {
+    translate.addLangs(environment.supportedLanguages);
+    translate.setDefaultLang('en');
+  }
 
   ngOnInit() {
     this.isLoadingValue$ = this.store.select(selectIsLoading);

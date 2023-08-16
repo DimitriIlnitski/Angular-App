@@ -29,17 +29,12 @@
   color: grey;
 }
 
-.login__input {
-  width: 22rem;
-  margin-top: 0.5rem;
-}
-
 .duration__label--short {
-  width: 11.25rem;
+  width: 14.25rem;
 }
 
 .duration__input--short {
-  width: 11rem;
+  width: 14rem;
 }
 .duration__input-wrapper--row {
   display: flex;

@@ -1,0 +1,51 @@
+{
+  "BREADCRUMBS": {
+    "COURSES": "Courses"
+  },
+  "HEADER": {
+    "LOGOUT": "Logout"
+  },
+  "LOGIN": {
+    "LOGIN": "Login",
+    "PASSWORD": "Password",
+    "LABEL_REQUIRED": "reqiured",
+    "FORGOT_PASSWORD": "Forgot password",
+    "ERROR": "Wrong e-mail or password",
+    "ENTER_LOGIN": "Enter login",
+    "ENTER_PASSWORD": "Enter password"
+  },
+  "COURSES": {
+    "ADD_COURSE": "Add course",
+    "COURSE_LIST_IS_EMPTY": "No data, feel free to add new course",
+    "LOAD_MORE": "Load more"
+  },
+  "COURSE_CARD": {
+    "DELETE": "Delete",
+    "EDIT": "Edit"
+  },
+  "SEARCH_BAR": {
+    "PLACEHOLDER": "Text to search"
+  },
+  "CREATE_COURSE": {
+    "CREATE_COURSE_TITLE": "New Course",
+    "EDIT_COURSE_TITLE": "Edit Course",
+    "TITLE": "Title",
+    "CREATE_COURSE_LABEL_REQUIRED": "reqiured",
+    "NOT_MORE_THAN_50_CHARACTERS": "Not more than 50 characters",
+    "DESCRIPTION": "Description",
+    "NOT_MORE_THAN_500_CHARACTERS": "Not more than 500 characters",
+    "CANCEL": "Cancel",
+    "SAVE": "Save",
+    "ADD_TITLE": "Add title",
+    "ADD_DESCRIPTION": "Add description",
+    "ADD_DURATION_IN_MINUTES": "Add minutes",
+    "SELECT_AUTHOR": "Select author",
+    "DURATION": "Duration:",
+    "DATE": "Date",
+    "AUTHORS": "Authors"
+  },
+  "PIPE":{
+    "MIN": "min",
+    "HOUR": "h"
+  }
+}

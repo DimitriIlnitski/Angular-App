@@ -7,5 +7,5 @@
   (click)="clickHandler()"
 >
   <fa-icon *ngIf="toShow" [class]="iconClass" [icon]="iconType"></fa-icon>
-  {{ buttonText }}
+  {{ buttonText | translate}}
 </button>

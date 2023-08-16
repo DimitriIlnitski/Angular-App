@@ -11,12 +11,12 @@ import { Observable, Subscription, of } from 'rxjs';
 import { Course } from '../interfaces/course.interface';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
 import { DBAuthor } from '../interfaces/db-author.interface';
 import { AuthorsService } from '../services/authors.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create-course',
@@ -45,7 +45,8 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
     private store: Store,
     private router: Router,
     private authorsService: AuthorsService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
