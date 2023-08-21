@@ -30,7 +30,7 @@
           createForm.get('createTitleGroup.createTitle')!.touched
         "
       >
-        {{ "CREATE_COURSE.NOT_MORE_THAN_50_CHARACTERS" | translate }}
+        {{ "CREATE_COURSE.NOT_MORE_THAN" | translate : { value: 50 } }}
       </div>
     </label>
     <input
@@ -74,7 +74,7 @@
           createForm.get('createDescriptionGroup.createDescription')!.touched
         "
       >
-        {{ "CREATE_COURSE.NOT_MORE_THAN_500_CHARACTERS" | translate }}
+        {{ "CREATE_COURSE.NOT_MORE_THAN" | translate : { value: 500 } }}
       </div>
     </label>
     <textarea

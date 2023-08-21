@@ -31,9 +31,8 @@
     "EDIT_COURSE_TITLE": "Edit Course",
     "TITLE": "Title",
     "CREATE_COURSE_LABEL_REQUIRED": "reqiured",
-    "NOT_MORE_THAN_50_CHARACTERS": "Not more than 50 characters",
+    "NOT_MORE_THAN": "Not more than {{value}} characters",
     "DESCRIPTION": "Description",
-    "NOT_MORE_THAN_500_CHARACTERS": "Not more than 500 characters",
     "CANCEL": "Cancel",
     "SAVE": "Save",
     "ADD_TITLE": "Add title",
@@ -44,7 +43,7 @@
     "DATE": "Date",
     "AUTHORS": "Authors"
   },
-  "PIPE":{
+  "PIPE": {
     "MIN": "min",
     "HOUR": "h"
   }

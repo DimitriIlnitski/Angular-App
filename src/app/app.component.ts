@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { selectIsLoading } from './store/app.selector';
-import { TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment.development';
 
 @Component({
@@ -19,6 +19,9 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.translate.store.onLangChange.subscribe((lang: LangChangeEvent) => {
+      this.translate.use(lang.lang);
+    });
     this.isLoadingValue$ = this.store.select(selectIsLoading);
   }
 }

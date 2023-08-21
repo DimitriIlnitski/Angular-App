@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { loginTo } from '../store/app.actions';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   myControlFocus = false;
   loginForm!: FormGroup;
 
@@ -25,12 +25,6 @@ export class LoginComponent implements OnInit {
       passwordGroup: this.fb.group({
         password: ['', [Validators.required]],
       }),
-    });
-  }
-
-  ngOnInit() {
-    this.translate.store.onLangChange.subscribe((lang: LangChangeEvent) => {
-      this.translate.use(lang.lang);
     });
   }
 

@@ -32,14 +32,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     ReactiveFormsModule,
     FontAwesomeModule,
-    TranslateModule.forChild({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient],
-      },
-      isolate: true,
-    }),
+    TranslateModule.forChild(),
   ],
   exports: [
     ButtonComponent,
@@ -49,6 +42,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ListSortByCreationDatePipe,
     CardBorderColorDirective,
     IfAuthenticatedDirective,
+    TranslateModule,
   ],
 })
 export class SharedModule {}

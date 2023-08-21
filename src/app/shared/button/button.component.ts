@@ -2,7 +2,6 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { selectIsLoading } from 'src/app/store/app.selector';
 
@@ -12,10 +11,7 @@ import { selectIsLoading } from 'src/app/store/app.selector';
   styleUrls: ['./button.component.css'],
 })
 export class ButtonComponent implements OnInit {
-  constructor(private store: Store, public translate: TranslateService) {
-    translate.addLangs(['en', 'ua']);
-    translate.setDefaultLang('en');
-  }
+  constructor(private store: Store) {}
 
   @Input()
   buttonClass = '';
