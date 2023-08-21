@@ -1,22 +1,24 @@
 <form class="login" [formGroup]="loginForm" (ngSubmit)="login()">
   <div class="login__title--wrapper">
-    <h1 class="login__title">Login</h1>
+    <h1 class="login__title">{{ "LOGIN.LOGIN" | translate }}</h1>
     <h6 class="login__error" *ngIf="loginForm.invalid && loginForm.touched">
-      Wrong e-mail or password
+      {{ "LOGIN.ERROR" | translate }}
     </h6>
   </div>
 
   <div class="input-wrapper" formGroupName="loginGroup">
     <label class="label login__label" [for]="'login'">
-      <div class="label__text">Login:</div>
-      <div class="label__required-text">*required</div>
+      <div class="label__text">{{ "LOGIN.LOGIN" | translate }}:</div>
+      <div class="label__required-text">
+        *{{ "LOGIN.LABEL_REQUIRED" | translate }}
+      </div>
     </label>
     <input
       class="input-field login__input"
       type="text"
       id="login"
       name="login"
-      placeholder="  Enter login"
+      [placeholder]="'LOGIN.ENTER_LOGIN' | translate"
       autocomplete="off"
       formControlName="login"
       [class.invalid-input]="
@@ -31,15 +33,17 @@
   </div>
   <div class="input-wrapper" formGroupName="passwordGroup">
     <label class="label login__label" [for]="'password'">
-      <div class="label__text">Password:</div>
-      <div class="label__required-text">*required</div>
+      <div class="label__text">{{ "LOGIN.PASSWORD" | translate }}:</div>
+      <div class="label__required-text">
+        *{{ "LOGIN.LABEL_REQUIRED" | translate }}
+      </div>
     </label>
     <input
       class="input-field login__input"
       type="password"
       id="password"
       name="password"
-      placeholder="  Enter password"
+      [placeholder]="'LOGIN.ENTER_PASSWORD' | translate"
       autocomplete="off"
       formControlName="password"
       [class.invalid-input]="
@@ -55,10 +59,12 @@
     />
   </div>
   <div class="login_button-container">
-    <div class="login__link"><a href="#">Forgot password?</a></div>
+    <div class="login__link">
+      <a href="#">{{ "LOGIN.FORGOT_PASSWORD" | translate }}?</a>
+    </div>
     <app-button
       [buttonClass]="'login__button'"
-      [buttonText]="'LOGIN'"
+      [buttonText]="'LOGIN.LOGIN' | translate"
       [buttonType]="'submit'"
       [shouldDisableBtn]="!loginForm.valid"
     ></app-button>

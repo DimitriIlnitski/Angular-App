@@ -1,0 +1,50 @@
+{
+  "BREADCRUMBS": {
+    "COURSES": "Курси"
+  },
+  "HEADER": {
+    "LOGOUT": "Вийти"
+  },
+  "LOGIN": {
+    "LOGIN": "Логін",
+    "PASSWORD": "Пароль",
+    "LABEL_REQUIRED": "обов'язково",
+    "FORGOT_PASSWORD": "Забули пароль",
+    "ERROR": "Невірний email або пароль",
+    "ENTER_LOGIN": "Введіть логін",
+    "ENTER_PASSWORD": "Введіть пароль"
+  },
+  "COURSES": {
+    "ADD_COURSE": "Додати курс",
+    "COURSE_LIST_IS_EMPTY": "Немає даних, вільно додайте новий курс",
+    "LOAD_MORE": "Завантажити ще"
+  },
+  "COURSE_CARD": {
+    "DELETE": "Видалити",
+    "EDIT": "Редагувати"
+  },
+  "SEARCH_BAR": {
+    "PLACEHOLDER": "Текст для пошуку"
+  },
+  "CREATE_COURSE": {
+    "CREATE_COURSE_TITLE": "Новий курс",
+    "EDIT_COURSE_TITLE": "Редагувати курс",
+    "TITLE": "Заголовок",
+    "CREATE_COURSE_LABEL_REQUIRED": "обов'язково",
+    "NOT_MORE_THAN": "Не більше ніж {{value}} символів",
+    "DESCRIPTION": "Опис",
+    "CANCEL": "Скасувати",
+    "SAVE": "Зберегти",
+    "ADD_TITLE": "Додати заголовок",
+    "ADD_DESCRIPTION": "Додати опис",
+    "ADD_DURATION_IN_MINUTES": "Додати хвилини",
+    "SELECT_AUTHOR": "Вибрати автора",
+    "DURATION": "Тривалість:",
+    "DATE": "Дата",
+    "AUTHORS": "Автори"
+  },
+  "PIPE": {
+    "MIN": "хв",
+    "HOUR": "год"
+  }
+}

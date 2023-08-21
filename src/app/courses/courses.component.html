@@ -1,9 +1,11 @@
 <div class="courses">
   <div class="course-controls">
-    <app-search-bar  (valueChangeKeyUp)="onValueChangeKeyUp($event)"></app-search-bar>
+    <app-search-bar
+      (valueChangeKeyUp)="onValueChangeKeyUp($event)"
+    ></app-search-bar>
     <app-button
       [buttonClass]="'courses__button'"
-      [buttonText]="'Add course'"
+      [buttonText]="'COURSES.ADD_COURSE' | translate"
       [toShow]="true"
       [iconType]="faPlus"
       (buttonClick)="addNewCourse()"
@@ -20,7 +22,7 @@
   <app-button
     *ngIf="(selectedCourses$ | async)?.length !== 0"
     [buttonClass]="'load-more__button'"
-    [buttonText]="'Load more'"
+    [buttonText]="'COURSES.LOAD_MORE' | translate"
     (buttonClick)="handleClickLoadMore()"
   >
   </app-button>
@@ -28,6 +30,6 @@
     *ngIf="(selectedCourses$ | async)?.length === 0"
     class="course-nocourses"
   >
-    No data, feel free to add new course
+    {{ "COURSES.COURSE_LIST_IS_EMPTY" | translate }}
   </div>
 </div>

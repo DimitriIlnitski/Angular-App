@@ -24,17 +24,17 @@
 }
 
 .input-field {
-  height: 1.7rem;
+  height: 2.2rem;
   width: 18rem;
   color: grey;
 }
 
 .date__label--short {
-  width: 11.25rem;
+  width: 14.25rem;
 }
 
 .date__input--time-short {
-  width: 11.2rem;
+  width: 14rem;
 }
 
 .invalid-input {

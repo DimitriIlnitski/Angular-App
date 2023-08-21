@@ -13,6 +13,7 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule } from '@angular/common/http';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,9 @@ import { HttpClientModule } from '@angular/common/http';
     SharedModule,
     FontAwesomeModule,
     HttpClientModule,
+    TranslateModule.forChild({
+      extend: true,
+    }),
   ],
 })
 export class CoursesModule {}
