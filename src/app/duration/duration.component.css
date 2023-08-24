@@ -26,19 +26,15 @@
 .input-field {
   height: 1.7rem;
   width: 18rem;
-}
-
-.login__input {
-  width: 22rem;
-  margin-top: 0.5rem;
+  color: grey;
 }
 
 .duration__label--short {
-  width: 11.25rem;
+  width: 14.25rem;
 }
 
 .duration__input--short {
-  width: 11rem;
+  width: 14rem;
 }
 .duration__input-wrapper--row {
   display: flex;
@@ -51,4 +47,23 @@
   margin-left: 1rem;
   display: flex;
   align-items: center;
+}
+
+.invalid-input {
+  border: 2px solid red;
+}
+
+.valid-input {
+  border: 2px solid green;
+}
+
+input:focus {
+  outline: none;
+}
+
+.duration__error-text {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.8rem;
+  color: red;
 }

@@ -1,31 +1,72 @@
-<form class="login">
-  <h1 class="login__title">Login</h1>
-  <app-input
-    [labelText]="'Email:'"
-    [requiredText]="'*required'"
-    [ngClass]="'login__label'"
-    [placeholderText]="'  Enter email'"
-    [inputClass]="'login__input'"
-    [inputType]="'email'"
-    [idInput]="'loginEmail'"
-    (valueChange)="emailInputHandle($event)"
-  ></app-input>
-  <app-input
-    [labelText]="'Password:'"
-    [requiredText]="'*required'"
-    [ngClass]="'login__label'"
-    [placeholderText]="'  Enter password'"
-    [inputClass]="'login__input'"
-    [inputType]="'password'"
-    [idInput]="'loginPassword'"
-    (valueChange)="passwordInputHandle($event)"
-  ></app-input>
+<form class="login" [formGroup]="loginForm" (ngSubmit)="login()">
+  <div class="login__title--wrapper">
+    <h1 class="login__title">{{ "LOGIN.LOGIN" | translate }}</h1>
+    <h6 class="login__error" *ngIf="loginForm.invalid && loginForm.touched">
+      {{ "LOGIN.ERROR" | translate }}
+    </h6>
+  </div>
+
+  <div class="input-wrapper" formGroupName="loginGroup">
+    <label class="label login__label" [for]="'login'">
+      <div class="label__text">{{ "LOGIN.LOGIN" | translate }}:</div>
+      <div class="label__required-text">
+        *{{ "LOGIN.LABEL_REQUIRED" | translate }}
+      </div>
+    </label>
+    <input
+      class="input-field login__input"
+      type="text"
+      id="login"
+      name="login"
+      [placeholder]="'LOGIN.ENTER_LOGIN' | translate"
+      autocomplete="off"
+      formControlName="login"
+      [class.invalid-input]="
+        loginForm.get('loginGroup.login')!.invalid &&
+        loginForm.get('loginGroup.login')!.touched
+      "
+      [class.valid-input]="
+        loginForm.get('loginGroup.login')!.valid &&
+        loginForm.get('loginGroup.login')!.touched
+      "
+    />
+  </div>
+  <div class="input-wrapper" formGroupName="passwordGroup">
+    <label class="label login__label" [for]="'password'">
+      <div class="label__text">{{ "LOGIN.PASSWORD" | translate }}:</div>
+      <div class="label__required-text">
+        *{{ "LOGIN.LABEL_REQUIRED" | translate }}
+      </div>
+    </label>
+    <input
+      class="input-field login__input"
+      type="password"
+      id="password"
+      name="password"
+      [placeholder]="'LOGIN.ENTER_PASSWORD' | translate"
+      autocomplete="off"
+      formControlName="password"
+      [class.invalid-input]="
+        !myControlFocus &&
+        loginForm.get('passwordGroup.password')!.invalid &&
+        loginForm.get('passwordGroup.password')!.touched
+      "
+      [class.valid-input]="
+        !myControlFocus &&
+        loginForm.get('passwordGroup.password')!.valid &&
+        loginForm.get('passwordGroup.password')!.touched
+      "
+    />
+  </div>
   <div class="login_button-container">
-    <div class="login__link"><a href="#">Forgot password?</a></div>
+    <div class="login__link">
+      <a href="#">{{ "LOGIN.FORGOT_PASSWORD" | translate }}?</a>
+    </div>
     <app-button
       [buttonClass]="'login__button'"
-      [buttonText]="'LOGIN'"
-      (buttonClick)="login()"
+      [buttonText]="'LOGIN.LOGIN' | translate"
+      [buttonType]="'submit'"
+      [shouldDisableBtn]="!loginForm.valid"
     ></app-button>
   </div>
 </form>

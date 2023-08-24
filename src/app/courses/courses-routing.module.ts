@@ -1,28 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CreateCourseComponent } from '../create-course/create-course.component';
 import { CoursesComponent } from './courses.component';
-import { AuthGuard } from '../guards/auth.guard';
 
 const routes: Routes = [
-  { path: '', component: CoursesComponent },
+  { path: '', component: CoursesComponent},
   {
     path: ':id',
-    loadChildren: () =>
-      import('../create-course/create-course.module').then(
-        (m) => m.CreateCourseModule
-      ),
-    canActivate: [AuthGuard],
+    component: CreateCourseComponent,
   },
   {
     path: 'new',
-    loadChildren: () =>
-      import('../create-course/create-course.module').then(
-        (m) => m.CreateCourseModule
-      ),
-    canActivate: [AuthGuard],
+    component: CreateCourseComponent,
   },
 ];
-
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -1,7 +1,22 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CourseService } from '../services/course.service';
-import { RouteParameterService } from '../services/route-parameter.service';
+import { Store } from '@ngrx/store';
+import {
+  createCourse,
+  returnToCourses,
+  updateCourse,
+} from '../store/app.actions';
+import { selectItemById } from '../store/app.selector';
+import { Observable, Subscription, of } from 'rxjs';
+import { Course } from '../interfaces/course.interface';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { DBAuthor } from '../interfaces/db-author.interface';
+import { AuthorsService } from '../services/authors.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create-course',
@@ -9,50 +24,114 @@ import { RouteParameterService } from '../services/route-parameter.service';
   styleUrls: ['./create-course.component.css'],
 })
 export class CreateCourseComponent implements OnInit, OnDestroy {
-  titleValue = '';
-  descriptionValue = '';
-  durationValue = 0;
-  dateValue = '';
-  authorsValue = '';
+  createForm!: FormGroup;
+  authorsData: Observable<DBAuthor[]> = of([]);
+
+  courseSubscription: Subscription | undefined;
+  course: Course = {
+    id: 0,
+    name: '',
+    date: '',
+    length: 0,
+    description: '',
+    authors: [],
+    isTopRated: false,
+  };
+
+  shouldEdit = false;
 
   constructor(
-    private router: Router,
     private activatedRoute: ActivatedRoute,
-    private courseService: CourseService,
-    private routeParameterService: RouteParameterService
+    private store: Store,
+    private router: Router,
+    private authorsService: AuthorsService,
+    private fb: FormBuilder,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
+    this.authorsData = this.authorsService.getAuthors();
+
+    this.createForm = this.fb.group({
+      createTitleGroup: this.fb.group({
+        createTitle: ['', [Validators.required, Validators.maxLength(50)]],
+      }),
+      createDescriptionGroup: this.fb.group({
+        createDescription: [
+          '',
+          [Validators.required, Validators.maxLength(500)],
+        ],
+      }),
+
+      durationGroup: this.fb.group({
+        duration: ['', [Validators.required]],
+      }),
+      dateGroup: this.fb.group({
+        date: ['', [Validators.required]],
+      }),
+      authorsGroup: this.fb.group({
+        authors: [[], [Validators.required]],
+      }),
+    });
+
     const id = this.activatedRoute.snapshot.params['id'];
     if (id) {
-      this.routeParameterService.setData(id);
-      const course = this.courseService.getItemById(id);
-      if (course) {
-        this.titleValue = course.title;
-        this.descriptionValue = course.description;
-        this.durationValue = course.duration;
-        this.dateValue = course.creationDate;
-      }
+      const courseFromStore: Observable<Course | undefined> = this.store.select(
+        selectItemById(+id)
+      );
+      this.courseSubscription = courseFromStore.subscribe((course) => {
+        if (course) {
+          this.course.id = course.id;
+          this.course.name = course.name;
+          this.course.date = course.date;
+          this.course.length = course.length;
+          this.course.description = course.description;
+          this.course.authors.push(...course.authors);
+          this.course.isTopRated = course.isTopRated;
+          this.shouldEdit = true;
+          this.createForm
+            .get('createTitleGroup.createTitle')
+            ?.setValue(course.name);
+          this.createForm
+            .get('createDescriptionGroup.createDescription')
+            ?.setValue(course.description);
+          this.createForm
+            .get('durationGroup.duration')
+            ?.setValue(String(course.length));
+          this.createForm
+            .get('dateGroup.date')
+            ?.setValue(course.date.slice(0, 10));
+          this.createForm.get('authorsGroup.authors')?.setValue(course.authors);
+        }
+      });
     }
   }
+
   ngOnDestroy() {
-    this.routeParameterService.setData(null);
-  }
-  
-  dateInputHandler(date: string): string {
-    return (this.dateValue = date);
-  }
-  durationInputHandler(duration: string): number {
-    return (this.durationValue = parseInt(duration));
-  }
-  authorsInputHandler(authors: string): string {
-    return (this.authorsValue = authors);
+    if (this.courseSubscription) {
+      this.courseSubscription.unsubscribe();
+    }
   }
 
   cancel(): void {
-    this.router.navigate(['/courses']);
+    this.store.dispatch(returnToCourses());
+    this.router.navigate(['courses']);
   }
+
   save(): void {
-    this.router.navigate(['/courses']);
+    const modifiedCourse = {
+      id:
+        this.course.id || Math.floor(Math.random() * (20000 - 1000 + 1)) + 1000,
+      name: this.createForm.value.createTitleGroup.createTitle,
+      date: this.createForm.value.dateGroup.date || new Date().toISOString(),
+      length: +this.createForm.value.durationGroup.duration,
+      description:
+        this.createForm.value.createDescriptionGroup.createDescription,
+      authors: this.createForm.value.authorsGroup.authors,
+      isTopRated: this.course.isTopRated,
+    };
+    !this.shouldEdit
+      ? this.store.dispatch(createCourse(modifiedCourse))
+      : this.store.dispatch(updateCourse(modifiedCourse));
   }
 }

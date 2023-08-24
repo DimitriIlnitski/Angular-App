@@ -1,79 +1,155 @@
-<form class="create-course">
-  <h1 class="create-course__title">New Course</h1>
-  <div class="create-course__input-wrapper-column">
+<form class="create-course" [formGroup]="createForm" (ngSubmit)="save()">
+  <h1 class="create-course__title">
+    {{
+      shouldEdit
+        ? ("CREATE_COURSE.EDIT_COURSE_TITLE" | translate)
+        : ("CREATE_COURSE.CREATE_COURSE_TITLE" | translate)
+    }}
+  </h1>
+  <div
+    class="create-course__input-wrapper-column"
+    formGroupName="createTitleGroup"
+  >
     <label class="create-course__label" for="createTitle">
-      <div class="create-course__label-text">Title:</div>
-      <div class="create-course__required-text">*required</div>
+      <div class="create-course__label-text">
+        {{ "CREATE_COURSE.TITLE" | translate }}:
+      </div>
+      <div
+        class="create-course__required-text"
+        *ngIf="
+          createForm.get('createTitleGroup.createTitle')!.valid ||
+          !createForm.get('createTitleGroup.createTitle')!.touched
+        "
+      >
+        {{ "*" + ("CREATE_COURSE.CREATE_COURSE_LABEL_REQUIRED" | translate) }}
+      </div>
+      <div
+        class="create-course__error-text"
+        *ngIf="
+          !createForm.get('createTitleGroup.createTitle')!.valid &&
+          createForm.get('createTitleGroup.createTitle')!.touched
+        "
+      >
+        {{ "CREATE_COURSE.NOT_MORE_THAN" | translate : { value: 50 } }}
+      </div>
     </label>
     <input
       class="create-course_input-alternative"
       type="text"
-      [(ngModel)]="titleValue"
       id="createTitle"
       name="createTitle"
-      placeholder=" Text input"
+      [placeholder]="'CREATE_COURSE.ADD_TITLE' | translate"
+      formControlName="createTitle"
+      [class.valid-input]="
+        createForm.get('createTitleGroup.createTitle')!.valid &&
+        createForm.get('createTitleGroup.createTitle')!.touched
+      "
+      [class.invalid-input]="
+        createForm.get('createTitleGroup.createTitle')!.invalid &&
+        createForm.get('createTitleGroup.createTitle')!.touched
+      "
     />
   </div>
-  <div class="create-course__input-wrapper-column">
+  <div
+    class="create-course__input-wrapper-column"
+    formGroupName="createDescriptionGroup"
+  >
     <label class="create-course__label" for="createDescription">
-      <div class="create-course__label-text">Description:</div>
-      <div class="create-course__required-text">*required</div>
+      <div class="create-course__label-text">
+        {{ "CREATE_COURSE.DESCRIPTION" | translate }}:
+      </div>
+      <div
+        class="create-course__required-text"
+        *ngIf="
+          createForm.get('createDescriptionGroup.createDescription')!.valid ||
+          !createForm.get('createDescriptionGroup.createDescription')!.touched
+        "
+      >
+        {{ "*" + ("CREATE_COURSE.CREATE_COURSE_LABEL_REQUIRED" | translate) }}
+      </div>
+      <div
+        class="create-course__error-text"
+        *ngIf="
+          !createForm.get('createDescriptionGroup.createDescription')!.valid &&
+          createForm.get('createDescriptionGroup.createDescription')!.touched
+        "
+      >
+        {{ "CREATE_COURSE.NOT_MORE_THAN" | translate : { value: 500 } }}
+      </div>
     </label>
     <textarea
       class="create-course__description"
-      [(ngModel)]="descriptionValue"
       name="createDescription"
-      placeholder=" Add description"
+      [placeholder]="'CREATE_COURSE.ADD_DESCRIPTION' | translate"
       required="true"
-      form="create-course"
+      formControlName="createDescription"
+      [class.valid-input]="
+        createForm.get('createDescriptionGroup.createDescription')!.valid &&
+        createForm.get('createDescriptionGroup.createDescription')!.touched
+      "
+      [class.invalid-input]="
+        createForm.get('createDescriptionGroup.createDescription')!.invalid &&
+        createForm.get('createDescriptionGroup.createDescription')!.touched
+      "
     ></textarea>
   </div>
-  <div class="create-course__input-wrapper--row">
+  <div class="create-course__input-wrapper--row" formGroupName="durationGroup">
     <app-duration
-      [labelText]="'Duration:'"
+      [labelText]="'CREATE_COURSE.DURATION' | translate"
       [labelClass]="'duration__label--short'"
       [inputClass]="'duration__input--short'"
-      [requiredText]="'*required'"
-      [placeholderText]="' Minutes'"
+      [requiredText]="
+        '*' + ('CREATE_COURSE.CREATE_COURSE_LABEL_REQUIRED' | translate)
+      "
+      [placeholderText]="'CREATE_COURSE.ADD_DURATION_IN_MINUTES' | translate"
       [inputType]="'text'"
-      (valueChange)="durationInputHandler($event)"
+      [createForm]="createForm"
+      formControlName="duration"
     ></app-duration>
   </div>
-  <div class="create-course__input-wrapper-column">
+  <div class="create-course__input-wrapper-column" formGroupName="dateGroup">
     <app-date
-      [labelText]="'Date:'"
+      [labelText]="'CREATE_COURSE.DATE' | translate"
       [labelClass]="'date__label--short'"
       [inputClass]="'date__input--time-short'"
-      [requiredText]="'*required'"
+      [requiredText]="
+        '*' + ('CREATE_COURSE.CREATE_COURSE_LABEL_REQUIRED' | translate)
+      "
       [placeholderText]="
         '
       MM/DD/YYYY'
       "
       [inputType]="'date'"
-      (valueChange)="dateInputHandler($event)"
+      [createForm]="createForm"
+      formControlName="date"
     ></app-date>
   </div>
-  <div class="create-course__input-wrapper--row">
+  <div class="create-course__input-wrapper--row" formGroupName="authorsGroup">
     <app-authors
-      [labelText]="'Authors:'"
+      [labelText]="'CREATE_COURSE.AUTHORS' | translate"
       [labelClass]="'authors__label--medium'"
       [inputClass]="'authors__input--medium'"
-      [requiredText]="'*required'"
-      [placeholderText]="' Start typing'"
+      [requiredText]="
+        '*' + ('CREATE_COURSE.CREATE_COURSE_LABEL_REQUIRED' | translate)
+      "
+      [placeholderText]="'CREATE_COURSE.SELECT_AUTHOR' | translate"
       [inputType]="'text'"
-      (valueChange)="authorsInputHandler($event)"
+      [authorsData]="authorsData"
+      [createForm]="createForm"
+      formControlName="authors"
     ></app-authors>
   </div>
   <div class="create-course__buttons">
     <app-button
       [buttonClass]="'create-course__cancel-button'"
-      [buttonText]="'Cancel'"
+      [buttonText]="'CREATE_COURSE.CANCEL' | translate"
       (buttonClick)="cancel()"
     ></app-button>
     <app-button
       [buttonClass]="'create-course__save-button'"
-      [buttonText]="'Save'"
-      (buttonClick)="save()"
+      [buttonText]="'CREATE_COURSE.SAVE' | translate"
+      [buttonType]="'submit'"
+      [shouldDisableBtn]="!createForm.valid"
     ></app-button>
   </div>
 </form>

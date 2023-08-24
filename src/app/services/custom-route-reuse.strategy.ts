@@ -10,7 +10,7 @@ export class CustomRouteReuseStrategy implements RouteReuseStrategy {
   shouldDetach(route: ActivatedRouteSnapshot): boolean {
     const path = route.routeConfig?.path;
     if (path) {
-      return !!path && ['courses'].includes(path);
+      return !!path && ['courses', 'courses/new'].includes(path);
     } else {
       return false;
     }
@@ -25,7 +25,9 @@ export class CustomRouteReuseStrategy implements RouteReuseStrategy {
     const path = route.routeConfig?.path;
     if (path) {
       return (
-        !!path && ['courses'].includes(path) && !!this.routeStore.get(path)
+        !!path &&
+        ['courses', 'courses/new'].includes(path) &&
+        !!this.routeStore.get(path)
       );
     } else {
       return false;

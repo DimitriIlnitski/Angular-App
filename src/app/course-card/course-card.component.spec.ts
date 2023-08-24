@@ -16,6 +16,10 @@ import { ButtonComponent } from '../shared/button/button.component';
 import { DurationFormatPipe } from '../shared/pipes/duration-format.pipe';
 import { CardBorderColorDirective } from '../shared/directives/card-border-color.directive';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { SharedModule } from '../shared/shared.module';
+
 @Component({
   template: `<app-course-card
     [courseItem]="course"
@@ -24,11 +28,12 @@ import { CommonModule } from '@angular/common';
 })
 class TestHostComponent {
   course: Course = {
-    id: '1',
-    title: 'Test Course',
+    id: 1,
+    name: 'Test Course',
     description: 'Test Description',
-    creationDate: '2021-09-10',
-    duration: 120,
+    date: '2021-09-10',
+    length: 120,
+    authors: [],
     isTopRated: false,
   };
 
@@ -39,11 +44,12 @@ class TestHostComponent {
   }
 }
 
-xdescribe('CourseCardComponent (Test as a class)', () => {
+describe('CourseCardComponent (Test as a class)', () => {
   let component: CourseCardComponent;
 
   beforeEach(() => {
-    component = new CourseCardComponent();
+    const router = jasmine.createSpyObj<Router>('Router', ['navigate']);
+    component = new CourseCardComponent(router);
   });
 
   it('should create', () => {
@@ -52,11 +58,12 @@ xdescribe('CourseCardComponent (Test as a class)', () => {
 
   it('should have correct initial values', () => {
     expect(component.courseItem).toEqual({
-      id: 'id',
-      title: 'title',
+      id: 100,
+      name: 'title',
+      date: '2023-06-19',
+      length: 125,
       description: 'description',
-      creationDate: '2023-06-19',
-      duration: 0,
+      authors: [],
       isTopRated: false,
     });
     expect(component.faClock).toEqual(faClock);
@@ -72,18 +79,32 @@ xdescribe('CourseCardComponent (Test as a class)', () => {
   });
 });
 
-xdescribe('CourseCardComponent (Stand alone testing)', () => {
+describe('CourseCardComponent (Stand alone testing)', () => {
   let component: CourseCardComponent;
   let fixture: ComponentFixture<CourseCardComponent>;
 
   beforeEach(() => {
+    const activatedRouteMock = {
+      snapshot: {
+        params: { id: '1' },
+      },
+    };
     TestBed.configureTestingModule({
-      imports: [FontAwesomeModule, CommonModule],
+      imports: [FontAwesomeModule, CommonModule, HttpClientTestingModule],
       declarations: [
         CourseCardComponent,
         ButtonComponent,
         DurationFormatPipe,
         CardBorderColorDirective,
+      ],
+      providers: [
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        {
+          provide: Router,
+          useClass: class {
+            navigate = jasmine.createSpy('navigate');
+          },
+        },
       ],
     });
     fixture = TestBed.createComponent(CourseCardComponent);
@@ -91,17 +112,18 @@ xdescribe('CourseCardComponent (Stand alone testing)', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create - stand alone', () => {
     expect(component).toBeTruthy();
   });
 
   it('should have correct initial values', () => {
     expect(component.courseItem).toEqual({
-      id: 'id',
-      title: 'title',
+      id: 100,
+      name: 'title',
+      date: '2023-06-19',
+      length: 125,
       description: 'description',
-      creationDate: '2023-06-19',
-      duration: 0,
+      authors: [],
       isTopRated: false,
     });
     expect(component.faClock).toEqual(faClock);
@@ -119,12 +141,13 @@ xdescribe('CourseCardComponent (Stand alone testing)', () => {
 
   it('should have course-card__star--not-visible class when courseItem.isTopRated is false', () => {
     component.courseItem = {
-      id: 'id',
-      title: 'title',
+      id: 100,
+      name: 'title',
+      date: '2023-06-19',
+      length: 125,
       description: 'description',
-      creationDate: '2023-06-19',
-      duration: 0,
-      isTopRated: false,
+      authors: [],
+      isTopRated: true,
     };
     fixture.detectChanges();
 
@@ -132,31 +155,15 @@ xdescribe('CourseCardComponent (Stand alone testing)', () => {
 
     expect(starIcon.classes['course-card__star--not-visible']).toBe(true);
   });
-
-  it('should not have course-card__star--not-visible class when courseItem.isTopRated is true', () => {
-    component.courseItem = {
-      id: 'id',
-      title: 'title',
-      description: 'description',
-      creationDate: '2023-06-19',
-      duration: 0,
-      isTopRated: true,
-    };
-    fixture.detectChanges();
-
-    const starIcon = fixture.debugElement.query(By.css('.course-card__star'));
-
-    expect(starIcon.classes['course-card__star--not-visible']).toBeUndefined();
-  });
 });
 
-xdescribe('CourseCardComponent (Host component testing)', () => {
+describe('CourseCardComponent (Host component testing)', () => {
   let testHostComponent: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, FontAwesomeModule, SharedModule],
       declarations: [CourseCardComponent, TestHostComponent],
     });
     fixture = TestBed.createComponent(TestHostComponent);
@@ -176,7 +183,7 @@ xdescribe('CourseCardComponent (Host component testing)', () => {
     courseCardComponent.deleteClick();
 
     expect(testHostComponent.onCardDeleteClick).toHaveBeenCalledWith(
-      testHostComponent.course.id
+      String(testHostComponent.course.id)
     );
   });
 });

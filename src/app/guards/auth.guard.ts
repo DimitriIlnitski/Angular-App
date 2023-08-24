@@ -1,23 +1,22 @@
-import { CanActivateFn, UrlTree } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { CanActivate, UrlTree } from '@angular/router';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
+import { Observable, map} from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectToken } from '../store/app.selector';
 
 @Injectable({ providedIn: 'root' })
-export class AuthGuard {
-  constructor(private authService: AuthService, private router: Router) {}
+export class AuthGuard implements CanActivate {
+  constructor(private router: Router, private store: Store) {}
 
-  canActivate(): boolean | UrlTree {
-    if (!this.authService.isAuthenticated()) {
-      return this.router.createUrlTree(['login']);
-    }
-    return true;
+  canActivate(): Observable<boolean | UrlTree> {
+    return this.store.select(selectToken).pipe(
+      map((token) => {
+        if (!token) {
+          return this.router.createUrlTree(['login']);
+        }
+        return true;
+      })
+    );
   }
 }
-
-export const authGuard: CanActivateFn = () => {
-  const authService = new AuthService();
-  const router = new Router();
-  const guard = new AuthGuard(authService, router);
-  return guard.canActivate();
-};

@@ -24,11 +24,12 @@ import { Router } from '@angular/router';
 export class CourseCardComponent {
   @Input()
   courseItem: Course = {
-    id: 'id',
-    title: 'title',
+    id: 100,
+    name: 'title',
+    date: '2023-06-19',
+    length: 125,
     description: 'description',
-    creationDate: '2023-06-19',
-    duration: 0,
+    authors: [],
     isTopRated: false,
   };
   faClock = faClock;
@@ -46,6 +47,6 @@ export class CourseCardComponent {
   }
 
   deleteClick() {
-    this.cardDeleteClick.emit(this.courseItem.id);
+    this.cardDeleteClick.emit(String(this.courseItem.id));
   }
 }

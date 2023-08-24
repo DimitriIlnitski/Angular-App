@@ -1,9 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { Course } from '../interfaces/course.interface';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { ListFilterCourseNamePipe } from '../shared/pipes/list-filter-course-name.pipe';
-import { CourseService } from '../services/course.service';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { selectCourses } from '../store/app.selector';
+import {
+  getList,
+  removeCourse,
+  returnToCourses,
+  setSearchTerm,
+} from '../store/app.actions';
+import { Observable } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-courses',
@@ -11,24 +19,29 @@ import { Router } from '@angular/router';
   styleUrls: ['./courses.component.css'],
 })
 export class CoursesComponent implements OnInit {
-  courseList: Course[] = [];
-  filteredCourseList: Course[] = [];
-  searchTerm = '';
   faPlus = faPlus;
+  selectedCourses$!: Observable<Course[]>;
 
   constructor(
-    private listFilterCourseNamePipe: ListFilterCourseNamePipe,
-    private courseService: CourseService,
-    private router: Router
-  ) {}
-
-  ngOnInit() {
-    this.courseList = this.courseService.getList();
-    this.filteredCourseList = [...this.courseList];
+    public store: Store,
+    private router: Router,
+    public translate: TranslateService
+  ) {
+    this.store.dispatch(returnToCourses());
   }
 
-  trackByCourseId(index: number, course: Course): string {
+  ngOnInit() {
+    this.selectedCourses$ = this.store.select(selectCourses);
+  }
+
+  trackByCourseId(index: number, course: Course): number {
     return course.id;
+  }
+
+  onValueChangeKeyUp(value: string) {
+    if (value.length > 3 || value.length === 0) {
+      this.store.dispatch(setSearchTerm({ value: value }));
+    }
   }
 
   addNewCourse(): void {
@@ -36,7 +49,7 @@ export class CoursesComponent implements OnInit {
   }
 
   handleClickLoadMore() {
-    console.log('Load more');
+    this.store.dispatch(getList());
   }
 
   deleteCourse(id: string) {
@@ -44,21 +57,7 @@ export class CoursesComponent implements OnInit {
       'Do you really want to delete this course?'
     );
     if (decision) {
-      this.courseService.removeItem(id);
-      this.courseList = this.courseList.filter((course) => course.id !== id);
-      this.filteredCourseList = this.filteredCourseList.filter(
-        (course) => course.id !== id
-      );
+      this.store.dispatch(removeCourse({ id: id }));
     }
-  }
-
-  handleValueChange(value: string) {
-    this.searchTerm = value;
-  }
-
-  filterArray() {
-    this.filteredCourseList = this.listFilterCourseNamePipe
-      .transform(this.courseList, this.searchTerm)
-      .slice();
   }
 }

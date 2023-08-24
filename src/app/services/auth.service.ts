@@ -1,41 +1,29 @@
+import { HttpClient } from '@angular/common/http';
+import { Token } from '../interfaces/token.interface';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment.development';
+import { LoginRequest } from '../interfaces/login-request.interface';
 import { User } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private token = '';
+  private apiUrl = '';
 
-  constructor() {
-    const token = localStorage.getItem('token');
-    this.token = token ? JSON.parse(token) : null;
+  constructor(private http: HttpClient) {
+    this.apiUrl = environment.apiUrl;
   }
 
-  login(loginData: { email: string; password: string }): void {
-    if (loginData) {
-      const fakeUser: User = {
-        id: 1,
-        name: 'name',
-        lastName: 'lastName',
-      };
-      const fakeToken = 'fakeToken';
-      localStorage.setItem('token', JSON.stringify(fakeToken));
-      localStorage.setItem('user', JSON.stringify(fakeUser));
-      this.token = fakeToken;
-    }
+  //Auth
+  loginPost(loginData: LoginRequest): Observable<Token> {
+    return this.http.post<Token>(`${this.apiUrl}/auth/login`, loginData);
   }
-  logout(): void {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    this.token = '';
-    console.log(`User have been deleted`);
-  }
-  isAuthenticated(): boolean {
-    return !!this.token;
-  }
-  getUserInfo(): User | null {
-    const user = localStorage.getItem('user');
-    return user ? (JSON.parse(user) as User) : null;
+
+  getUserInfo(token: string): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/auth/userinfo`, {
+      token: token,
+    });
   }
 }

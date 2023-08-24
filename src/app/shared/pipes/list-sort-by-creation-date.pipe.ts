@@ -9,7 +9,7 @@ export class ListSortByCreationDatePipe implements PipeTransform {
     const sortedList: Course[] = [...courseList];
     return sortedList.sort(
       (a, b) =>
-        new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
+        new Date(b.date).getTime() - new Date(a.date).getTime()
     );
   }
 }

@@ -1,16 +1,41 @@
 <div class="input-wrapper">
   <label class="label" [class]="labelClass" [for]="idInput">
-    <div class="label__text">{{ labelText }}</div>
-    <div class="label__required-text">{{ requiredText }}</div>
+    <div class="label__text">{{ labelText }}:</div>
+    <div
+      class="label__required-text"
+      *ngIf="
+        createForm.get('dateGroup.date')!.valid ||
+        !createForm.get('dateGroup.date')!.touched
+      "
+    >
+      {{ requiredText }}
+    </div>
+    <div
+      class="date__error-text"
+      *ngIf="
+        createForm.get('dateGroup.date')!.invalid &&
+        createForm.get('dateGroup.date')!.touched
+      "
+    >
+      Only date
+    </div>
   </label>
   <input
     class="input-field"
     [class]="inputClass"
     [type]="inputType"
-    [(ngModel)]="value"
     [id]="idInput"
     [name]="idInput"
     [placeholder]="placeholderText"
-    (input)="onValueChange()"
+    [value]="value"
+    [class.valid-input]="
+      createForm.get('dateGroup.date')!.valid &&
+      createForm.get('dateGroup.date')!.touched
+    "
+    [class.invalid-input]="
+      createForm.get('dateGroup.date')!.invalid &&
+      createForm.get('dateGroup.date')!.touched
+    "
+    (input)="onInput($event)"
   />
 </div>

@@ -1,17 +1,37 @@
 <header class="header">
   <div class="header_wrapper">
     <app-logo></app-logo>
-    <div class="header__user-name" *appIfAuthenticated="isUserAndBtnVisible()">
+    <mat-form-field
+      appearance="outline"
+      [color]="'accent'"
+      *appIfAuthenticated="!!(isLoadingValue$ | async)"
+    >
+      <mat-label>Languages</mat-label>
+      <mat-select
+        [(ngModel)]="selectedLanguage"
+        (selectionChange)="onLanguageChange()"
+      >
+        <mat-option
+          *ngFor="let lang of supportedLanguages"
+          [value]="lang | uppercase"
+          >{{ lang | uppercase }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+    <div
+      class="header__user-name"
+      *appIfAuthenticated="!!(isLoadingValue$ | async)"
+    >
       <fa-icon [icon]="faUser"></fa-icon> &nbsp;
-      <div>User login</div>
+      <div>&nbsp;{{ userName$ | async }}</div>
     </div>
     <app-button
       [buttonClass]="'header__button'"
-      [buttonText]="'Logout'"
+      [buttonText]="'HEADER.LOGOUT' | translate"
       [toShow]="true"
       [iconType]="faRightFromBracket"
       (buttonClick)="logoutHandle()"
-      *appIfAuthenticated="isUserAndBtnVisible()"
+      *appIfAuthenticated="!!(isLoadingValue$ | async)"
     >
     </app-button>
   </div>

@@ -1,38 +1,79 @@
-import { Component, AfterContentChecked } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CourseService } from '../services/course.service';
-import { RouteParameterService } from '../services/route-parameter.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Course } from '../interfaces/course.interface';
+import { Observable, Subscription, filter, map, of, switchMap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import {
+  selectIsLoading,
+  selectItemById,
+  selectToken,
+} from '../store/app.selector';
 
 @Component({
   selector: 'app-breadcrumbs',
   templateUrl: './breadcrumbs.component.html',
   styleUrls: ['./breadcrumbs.component.css'],
 })
-export class BreadcrumbsComponent implements AfterContentChecked {
-  breadcrumbsValue: string | null | undefined = null;
+export class BreadcrumbsComponent implements OnInit, OnDestroy {
+  breadcrumbsValue$!: Observable<string>;
+
+  isLoadingValue = false;
+  isLoadingValue$!: Observable<boolean>;
+  subscriptionIsLoading!: Subscription;
+
+  isAuthenticated = false;
+  isAuthenticated$!: Observable<string>;
+  subscriptionIsAuthenticated!: Subscription;
 
   constructor(
-    private authService: AuthService,
-    private route: ActivatedRoute,
+    private store: Store,
     private router: Router,
-    private courseService: CourseService,
-    private routeParameterService: RouteParameterService
+    private activatedRoute: ActivatedRoute
   ) {}
 
-  isBreadcrumbsVisible(): boolean {
-    return this.authService.isAuthenticated();
+  ngOnInit() {
+    this.breadcrumbsValue$ = this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      map(() => {
+        const id =
+          this.activatedRoute.firstChild?.firstChild?.snapshot.params['id'];
+        return id;
+      }),
+      switchMap((id) => {
+        if (id) {
+          return this.store.select(selectItemById(+id)).pipe(
+            // eslint-disable-next-line @ngrx/avoid-mapping-selectors
+            map((course: Course | undefined) =>
+              course?.name ? ` / ${course.name}` : ''
+            )
+          );
+        } else {
+          return of('');
+        }
+      })
+    );
+
+    this.isLoadingValue$ = this.store.select(selectIsLoading);
+    this.subscriptionIsLoading = this.isLoadingValue$.subscribe(
+      (value) => (this.isLoadingValue = value)
+    );
+
+    this.isAuthenticated$ = this.store.select(selectToken);
+    this.subscriptionIsAuthenticated = this.isAuthenticated$.subscribe(
+      (value) => (this.isAuthenticated = !!value)
+    );
   }
 
-  ngAfterContentChecked(): void {
-    const id = this.routeParameterService.getData();
-    if (id) {
-      const title = this.courseService.getItemById(id)?.title;
-      title
-        ? (this.breadcrumbsValue = `/ ${title}`)
-        : (this.breadcrumbsValue = null);
-      return;
-    }
-    this.breadcrumbsValue = null;
+  ngOnDestroy() {
+    this.subscriptionIsLoading.unsubscribe();
+    this.subscriptionIsAuthenticated.unsubscribe();
+  }
+
+  isLoading() {
+    return this.isLoadingValue;
+  }
+
+  isBreadcrumbsVisible(): boolean {
+    return this.isAuthenticated;
   }
 }

@@ -6,6 +6,6 @@
       <router-outlet></router-outlet>
     </div>
   </section>
-
   <app-footer></app-footer>
+  <app-loading-block *ngIf="isLoadingValue$ | async"></app-loading-block>
 </div>

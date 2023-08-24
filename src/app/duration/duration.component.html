@@ -2,19 +2,48 @@
   <div class="input-wrapper">
     <label class="label" [class]="labelClass" [for]="idInput">
       <div class="label__text">{{ labelText }}</div>
-      <div class="label__required-text">{{ requiredText }}</div>
+      <div
+        class="label__required-text"
+        *ngIf="
+          createForm.get('durationGroup.duration')!.valid ||
+          !createForm.get('durationGroup.duration')!.touched
+        "
+      >
+        {{ requiredText }}
+      </div>
+      <div
+        class="duration__error-text"
+        *ngIf="
+          createForm.get('durationGroup.duration')!.invalid &&
+          createForm.get('durationGroup.duration')!.touched
+        "
+      >
+        Only numbers
+      </div>
     </label>
     <input
       class="input-field"
       [class]="inputClass"
       [type]="inputType"
-      [(ngModel)]="value"
       [id]="idInput"
       [name]="idInput"
       [placeholder]="placeholderText"
+      [value]="value"
+      [class.valid-input]="
+        createForm.get('durationGroup.duration')!.valid &&
+        createForm.get('durationGroup.duration')!.touched
+      "
+      [class.invalid-input]="
+        createForm.get('durationGroup.duration')!.invalid &&
+        createForm.get('durationGroup.duration')!.touched
+      "
+      (input)="onInput($event)"
     />
   </div>
-  <div class="duration__formated-time">
+  <div
+    class="duration__formated-time"
+    *ngIf="createForm.get('durationGroup.duration')!.valid"
+  >
     {{ +value | durationFormat }}
   </div>
 </div>
